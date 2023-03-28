@@ -1,0 +1,18 @@
+﻿@page
+@model SiteKit.Session.UI.Areas.Session.Pages.LoggedOutModel
+@{ ViewBag._ChromeOff = true;
+    ViewBag._Title = "Logged Out";
+    string returnUrl = ViewBag.ReturnUrl; }
+
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card">
+        <p>
+            You have been logged out of this website.
+        </p>
+        <p>
+            <a class="button" asp-page="./Login">Login</a>
+        </p>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+﻿@* Called by SiteNav *@
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-organizations-dropdown">
+        Organizations
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-organizations-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Organizations</a>
+                @if (User.CanProcess())
+                {
+                    <a href="@Url.Action("CreateLicensedOrganization")">New Licensed Organization</a>
+                    <a href="@Url.Action("Create")">New Organization</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var organizationId))
+{
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-organization-dropdown">
+            Organization
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-organization-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id = organizationId })">View Organization</a>
+                    @if (User.CanReview())
+                    {
+                        <a href="@Url.Action("Index", "ReturnReport", new { area = "Fin", organizationIds = organizationId })">Print Returns</a>
+                    }
+                    @if (User.CanProcess())
+                    {
+                        <hr />
+                        <a href="@Url.ActionWithReturnUrl("ChangeId", new { id = organizationId })">Change Organization ID</a>
+                        <a href="@Url.ActionWithReturnUrl("Close", new { id = organizationId })">Close Organization</a>
+                        <a href="@Url.ActionWithReturnUrl("Edit", new { id = organizationId })">Edit Organization</a>
+                        <a href="@Url.ActionWithReturnUrl("Delete", new { id = organizationId })">Delete Organization</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<partial name="UI/SiteNavSearch" />

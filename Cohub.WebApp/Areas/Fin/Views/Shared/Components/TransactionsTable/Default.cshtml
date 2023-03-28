@@ -1,0 +1,203 @@
+﻿@model IReadOnlyList<Transaction>
+@inject CohubDbContext db
+@{
+    var stats = Model.SelectMany(o => o.Details)
+        .GroupBy(o => new { o.BucketId })
+        .OrderBy(o => o.Key.BucketId)
+        .ToArray();
+    var categoryIds = Model.SelectMany(o => o.Details)
+        .Select(o => o.CategoryId)
+        .Distinct()
+        .OrderBy(o => o)
+        .ToArray();
+    var txIndexMap = Model.Select((o, i) => new { o, i })
+        .OrderByDescending(o => o.o.Id)
+        .ThenBy(o => o.o.Details.Min(d => d.OrganizationId))
+        .Select(o => o.i)
+        .ToArray();
+    var txIds = Model.Select(o => o.BatchId);
+    var returnLookup = await (
+        from t in db.TransactionDetails()
+        where txIds.Contains(t.Transaction.BatchId)
+        from r in db.Set<Return>()
+        where
+            r.OrganizationId == t.OrganizationId &&
+            r.CategoryId == t.CategoryId &&
+            r.PeriodId == t.PeriodId
+        select new
+        {
+            TransactionId = t.Id,
+            ReturnId = r.Id,
+            StatusId = r.StatusId,
+        }
+    ).ToDictionaryAsync(o => o.TransactionId);
+}
+
+<div class="flex-right mb">
+
+    <div>
+        <table class="card">
+            <thead>
+                <tr>
+                    <th>
+                        Transactions
+                    </th>
+                    <th>
+                        Deposited
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @(Model.Count)
+                    </td>
+                    <td>
+                        @(Model.Sum(o => o.Deposited ?? 0).ToString("C2"))
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div sk-if="stats.Any()">
+        <table class="card">
+            <thead>
+                <tr>
+                    <th></th>
+                    @foreach (var categoryId in categoryIds)
+                    {
+                        <th>@categoryId</th>
+                    }
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="text-right">
+                @foreach (var stat in stats)
+                {
+                    <tr>
+                        <th>@stat.Key.BucketId</th>
+                        @foreach (var categoryId in categoryIds)
+                        {
+                            var matches = stat.Where(o => o.CategoryId == categoryId);
+                            <td>
+                                @if (matches.Any())
+                                {
+                                    @($"{matches.Sum(o => o.Amount):C2}")
+                                }
+                            </td>
+                        }
+                        <th>
+                            @if (stat.Any())
+                            {
+                                @($"{stat.Sum(o => o.Amount):C2}")
+                            }
+                        </th>
+                    </tr>
+                }
+            </tbody>
+            <tfoot class="text-right">
+                <tr>
+                    <th></th>
+                    @foreach (var categoryId in categoryIds)
+                    {
+                        var matches = stats.SelectMany(o => o).Where(o => o.CategoryId == categoryId);
+                        <th>
+                            @if (matches.Any())
+                            {
+                                @($"{matches.Sum(o => o.Amount):C2}")
+                            }
+                        </th>
+                    }
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</div>
+
+<table sk-if="txIndexMap.Any()">
+    <thead>
+        <tr>
+            <th>TX</th>
+            <th>TXD</th>
+            <th>@Html.DisplayNameFor(m => m[-1].Details[-1].Organization)</th>
+            <th>@Html.DisplayNameFor(m => m[-1].Details[-1].Period)</th>
+            <th>@Html.DisplayNameFor(m => m[-1].Details[-1].Category)</th>
+            <th>@Html.DisplayNameFor(m => m[-1].Details[-1].Bucket)</th>
+            <th>@Html.DisplayNameFor(m => m[-1].Details[-1].Subcategory)</th>
+            <th>@Html.DisplayNameFor(m => m[-1].Details[-1].EffectiveDate)</th>
+            <th>@Html.DisplayNameFor(m => m[-1].Details[-1].Amount)</th>
+            <th>Return Status</th>
+        </tr>
+    </thead>
+    @foreach (var i in txIndexMap)
+    {
+        var row = 0;
+        var tx = Model[i];
+        var indexMap = tx.Details.Select((o, i) => new { o, i })
+        .OrderBy(o => o.o.OrganizationId)
+        .ThenBy(o => o.o.Period?.StartDate)
+        .ThenBy(o => o.o.Period?.EndDate)
+        .ThenBy(o => o.o.PeriodId)
+        .ThenBy(o => o.o.CategoryId)
+        .ThenBy(o => o.o.BucketId)
+        .ThenBy(o => o.o.SubcategoryId)
+        .ThenBy(o => o.o.EffectiveDate)
+        .ThenBy(o => o.o.Amount)
+        .Select(o => o.i)
+        .ToArray();
+        <tbody class="text-right">
+            @foreach (int index in indexMap)
+            {
+                var detail = tx.Details[index];
+                <tr>
+                    @if (row == 0)
+                    {
+                        row = 1;
+                        <td rowspan="@tx.Details.Count" class="text-left">
+                            <a href="@Url.Action("Details", "Transactions", new { area = "Fin", id = tx.Id })" title="@tx.Note">@tx</a>
+                            @if (tx.Batch is Batch batch)
+                            {
+                                @if (batch.IsPosted)
+                                {
+                                    <span class="badge-green">Posted @batch</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-red">Unposted @batch</span>
+                                }
+                            }
+                            <span class="text-nowrap">
+                                <partial name="DisplayTemplates/Currency" model="tx.Deposited" /> Dep
+                            </span>
+                        </td>
+                    }
+                    <td>
+                        <a href="@Url.Action("Details", "TransactionDetails", new { area = "Fin", id = detail.Id })" title="@detail.Note">@detail.Id</a>
+                    </td>
+                    <td>@(detail.OrganizationId)</td>
+                    <td>@(detail.PeriodId)</td>
+                    <td>@(detail.CategoryId)</td>
+                    <td>@(detail.BucketId)</td>
+                    <td>@(detail.SubcategoryId)</td>
+                    <td><partial name="DisplayTemplates/Date" model="detail.EffectiveDate" /></td>
+                    <td><partial name="DisplayTemplates/Currency" model="detail.Amount" /></td>
+                    <td>
+                        @if (returnLookup.TryGetValue(detail.Id, out var @return))
+                        {
+                            <a href="@Url.Action("Details", "Returns", new { area = "Fin", id = @return.ReturnId })" title="View the return">
+                                @(@return.StatusId)
+                            </a>
+                        }
+                        else
+                        {
+                            <text>None</text>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    }
+</table>

@@ -1,0 +1,32 @@
+﻿@* Called by SiteNav *@
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-periods-dropdown">
+        Periods
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-periods-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Periods</a>
+                <a href="@Url.Action("Create")">New Period</a>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var id))
+{
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-period-dropdown">
+            Period
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-period-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id })">View Period</a>
+                    <a href="@Url.Action("Edit", new { id })">Edit Period</a>
+                    <a href="@Url.Action("Delete", new { id })">Delete Period</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<partial name="UI/SiteNavSearch" />

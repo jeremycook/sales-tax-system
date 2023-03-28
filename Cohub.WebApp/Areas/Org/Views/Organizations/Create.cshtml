@@ -1,0 +1,228 @@
+@model CreateOrganization
+@inject IStringLocalizer<Organization> L
+@using Cohub.WebApp.Areas.Org.Views.Organizations
+@{
+    ViewBag._Title = L["New Organization"];
+}
+
+<div class="m">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card w-sm">
+
+        <form method="post">
+
+            <partial name="UI/ValidationSummary" />
+
+            <div class="input-group">
+                <label asp-for="Id"></label>
+                @Html.EditorFor(m => m.Id)
+                <span asp-validation-for="Id"></span>
+                @if (Html.MetadataFor(m => m.Id).Description is string IdDescription)
+                {
+                    <span class="text-muted">@IdDescription</span>
+                }
+            </div>
+
+            <div class="input-group">
+                <label asp-for="StatusId"></label>
+                @Html.EditorFor(m => m.StatusId)
+                <span asp-validation-for="StatusId"></span>
+                @if (Html.MetadataFor(m => m.StatusId).Description is string StatusIdDescription)
+                {
+                    <span class="text-muted">@StatusIdDescription</span>
+                }
+            </div>
+
+            <div class="input-group">
+                <label asp-for="OrganizationName"></label>
+                @Html.EditorFor(m => m.OrganizationName)
+                <span asp-validation-for="OrganizationName"></span>
+                @if (Html.MetadataFor(m => m.OrganizationName).Description is string OrganizationNameDescription)
+                {
+                    <span class="text-muted">@OrganizationNameDescription</span>
+                }
+            </div>
+
+            <div class="input-group">
+                <label asp-for="Dba"></label>
+                @Html.EditorFor(m => m.Dba)
+                <span asp-validation-for="Dba"></span>
+                @if (Html.MetadataFor(m => m.Dba).Description is string DbaDescription)
+                {
+                    <span class="text-muted">@DbaDescription</span>
+                }
+            </div>
+
+            <div class="input-group">
+                <label asp-for="OnlineFiler"></label>
+                @Html.EditorFor(m => m.OnlineFiler)
+                <span asp-validation-for="OnlineFiler"></span>
+                @if (Html.MetadataFor(m => m.OnlineFiler).Description is string OnlineFilerDescription)
+                {
+                    <span class="text-muted">@OnlineFilerDescription</span>
+                }
+            </div>
+
+            <div class="input-group">
+                <label asp-for="SendPhysicalMail"></label>
+                @Html.EditorFor(m => m.SendPhysicalMail)
+                <span asp-validation-for="SendPhysicalMail"></span>
+                @if (Html.MetadataFor(m => m.SendPhysicalMail).Description is string SendPhysicalMailDescription)
+                {
+                    <span class="text-muted">@SendPhysicalMailDescription</span>
+                }
+            </div>
+
+            <div class="input-group">
+                <label asp-for="OrganizationDescription"></label>
+                @Html.EditorFor(m => m.OrganizationDescription)
+                <span asp-validation-for="OrganizationDescription"></span>
+                @if (Html.MetadataFor(m => m.OrganizationDescription).Description is string OrganizationDescriptionDescription)
+                {
+                    <span class="text-muted">@OrganizationDescriptionDescription</span>
+                }
+            </div>
+
+            <div class="input-group">
+                <label asp-for="Restrictions"></label>
+                @Html.EditorFor(m => m.Restrictions)
+                <span asp-validation-for="Restrictions"></span>
+                @if (Html.MetadataFor(m => m.Restrictions).Description is string RestrictionsDescription)
+                {
+                    <span class="text-muted">@RestrictionsDescription</span>
+                }
+            </div>
+
+            <div class="grid-2 gap">
+
+                <div class="input-group">
+                    <label asp-for="ClassificationId"></label>
+                    @Html.EditorFor(m => m.ClassificationId)
+                    <span asp-validation-for="ClassificationId"></span>
+                    @if (Html.MetadataFor(m => m.ClassificationId).Description is string ClassificationIdDescription)
+                    {
+                        <span class="text-muted">@ClassificationIdDescription</span>
+                    }
+                </div>
+
+                <div class="input-group">
+                    <label asp-for="TypeId"></label>
+                    @Html.EditorFor(m => m.TypeId)
+                    <span asp-validation-for="TypeId"></span>
+                    @if (Html.MetadataFor(m => m.TypeId).Description is string TypeIdDescription)
+                    {
+                        <span class="text-muted">@TypeIdDescription</span>
+                    }
+                </div>
+
+            </div>
+
+            <div class="input-group">
+                <label asp-for="IndustryLabelId"></label>
+                @Html.EditorFor(m => m.IndustryLabelId)
+                <span asp-validation-for="IndustryLabelId"></span>
+                @if (Html.MetadataFor(m => m.IndustryLabelId).Description is string IndustryLabelIdDescription)
+                {
+                    <span class="text-muted">@IndustryLabelIdDescription</span>
+                }
+            </div>
+
+            <div class="input-group">
+                <label asp-for="GeocodeLabelId"></label>
+                @Html.EditorFor(m => m.GeocodeLabelId)
+                <span asp-validation-for="GeocodeLabelId"></span>
+                @if (Html.MetadataFor(m => m.GeocodeLabelId).Description is string GeocodeLabelIdDescription)
+                {
+                    <span class="text-muted">@GeocodeLabelIdDescription</span>
+                }
+            </div>
+
+            <div class="grid-2 gap">
+
+                <div class="input-group">
+                    <label asp-for="StateID"></label>
+                    @Html.EditorFor(m => m.StateID)
+                    <span asp-validation-for="StateID"></span>
+                    @if (Html.MetadataFor(m => m.StateID).Description is string StateIDDescription)
+                    {
+                        <span class="text-muted">@StateIDDescription</span>
+                    }
+                </div>
+
+                <div class="input-group">
+                    <label asp-for="FederalID"></label>
+                    @Html.EditorFor(m => m.FederalID)
+                    <span asp-validation-for="FederalID"></span>
+                    @if (Html.MetadataFor(m => m.FederalID).Description is string FederalIDDescription)
+                    {
+                        <span class="text-muted">@FederalIDDescription</span>
+                    }
+                </div>
+
+            </div>
+
+            <div class="grid-2 gap">
+
+                <div class="input-group">
+                    <label asp-for="OrganizationEmail"></label>
+                    @Html.EditorFor(m => m.OrganizationEmail)
+                    <span asp-validation-for="OrganizationEmail"></span>
+                    @if (Html.MetadataFor(m => m.OrganizationEmail).Description is string OrganizationEmailDescription)
+                    {
+                        <span class="text-muted">@OrganizationEmailDescription</span>
+                    }
+                </div>
+
+                <div class="input-group">
+                    <label asp-for="OrganizationPhoneNumber"></label>
+                    @Html.EditorFor(m => m.OrganizationPhoneNumber)
+                    <span asp-validation-for="OrganizationPhoneNumber"></span>
+                    @if (Html.MetadataFor(m => m.OrganizationPhoneNumber).Description is string OrganizationPhoneNumberDescription)
+                    {
+                        <span class="text-muted">@OrganizationPhoneNumberDescription</span>
+                    }
+                </div>
+
+            </div>
+
+            <fieldset>
+                <legend>@Html.DisplayNameFor(m => m.PhysicalAddress)</legend>
+                <span asp-validation-for="PhysicalAddress"></span>
+                @Html.EditorFor(m => m.PhysicalAddress)
+                @if (Html.MetadataFor(m => m.PhysicalAddress).Description is string PhysicalAddressDescription)
+                {
+                    <span class="text-muted">@PhysicalAddressDescription</span>
+                }
+            </fieldset>
+
+            <fieldset>
+                <legend>@Html.DisplayNameFor(m => m.MailingAddress)</legend>
+                <span asp-validation-for="MailingAddress"></span>
+                @Html.EditorFor(m => m.MailingAddress)
+                @if (Html.MetadataFor(m => m.MailingAddress).Description is string MailingAddressDescription)
+                {
+                    <span class="text-muted">@MailingAddressDescription</span>
+                }
+            </fieldset>
+
+            <fieldset>
+                <legend>@Html.DisplayNameFor(m => m.FilingSchedule)</legend>
+                <span asp-validation-for="FilingSchedule"></span>
+                @Html.EditorFor(m => m.FilingSchedule)
+                @if (Html.MetadataFor(m => m.FilingSchedule).Description is string FilingScheduleDescription)
+                {
+                    <span class="text-muted">@FilingScheduleDescription</span>
+                }
+            </fieldset>
+
+            <div class="input-group">
+                <button class="button">@L["Create Organization"]</button>
+                <a class="button" href="@Url.ReturnUrlOrAction("Index", "Organizations")">@SL["Cancel"]</a>
+            </div>
+
+        </form>
+    </div>
+
+</div>

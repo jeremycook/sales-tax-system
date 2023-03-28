@@ -1,0 +1,3 @@
+﻿@model string
+@if (Model != null)
+{<span class="badge-@(Model.Underscore().Hyphenate())">@Model</span>}

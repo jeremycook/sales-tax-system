@@ -1,0 +1,7 @@
+﻿@model bool?
+@if (Model is null && ViewData.ModelMetadata.IsRequired)
+{<span class="badge-gray">@VL["Unknown"]</span>}
+else if (Model == true)
+{<span class="badge-green">@VL["Balanced"]</span>}
+else if (Model == false)
+{<span class="badge-red">@VL["Unbalanced"]</span>}

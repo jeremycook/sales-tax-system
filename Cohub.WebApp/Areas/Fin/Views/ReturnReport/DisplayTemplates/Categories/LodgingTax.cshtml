@@ -1,0 +1,501 @@
+﻿@model PrintModel.PrintRecordModel
+
+<div class="d-flex">
+    <div>
+
+        <table class="border">
+            <colgroup>
+                <col>
+                <col>
+                <col style="width: 80px">
+                <col style="width: 80px">
+            </colgroup>
+            <tr>
+                <td colspan="4" style="text-align: center;">
+                    <img style="width: 200px;" alt="AnywhereUSA" src="~/lib/anywhereusa/anywhereusa-logo-horizontal.png"><br>
+                    <h1>LODGING TAX RETURN</h1>
+                    <strong>A SEPARATE RETURN MUST BE FILED FOR EACH LOCATION</strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <table class="fixed">
+                        <tr>
+                            <td>
+                                <strong>PERIOD COVERED</strong><br>
+                                @Model.PeriodId
+                            </td>
+                            <td>
+                                <strong>DUE DATE</strong><br>
+                                @Model.DueDate.ToShortDateString()
+                            </td>
+                            <td>
+                                <strong>ACCT.#</strong><br>
+                                @Model.OrganizationId
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>1.</td>
+                <td colspan="2">
+                    <h2>GROSS SALES &amp; SERVICES:</h2>
+                    TOTAL RECEIPTS, <u>BEFORE LODGING AND SALES TAX</u>, FROM CITY ACTIVITY MUST BE REPORTED.
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+            <tr>
+                <td>2.</td>
+                <td colspan="2">
+                    A. ADD- BAD DEBTS COLLECTED WHICH WERE PREVIOUSLY DEDUCTED:
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td colspan="2">
+                    B. TOTAL OF LINES 1 & 2A
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>3.</td>
+                    <td>
+                        A. NON-TAXABLE SERVICE OR LABOR
+                    </td>
+                    <td>
+                        $
+                    </td>
+                    <td class="disabled">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        B. SALES TO OTHER LICENSED DEALERS FOR PURPOSES OF TAXABLE RESALE
+                    </td>
+                    <td>
+                        $
+                    </td>
+                    <td class="disabled">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        C. SALES SHIPPED OUT OF CITY AND/OR STATE<br>
+                        (INCLUDED IN ITEM 1 ABOVE)
+                    </td>
+                    <td>
+                        $
+                    </td>
+                    <td class="disabled">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        D. BAD DEBTS CHARGED OFF<br>
+                        (ON WHICH CITY SALES TAX HAS BEEN PAID)
+                    </td>
+                    <td>
+                        $
+                    </td>
+                    <td class="disabled">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        E. TRADE-INS FOR TAXABLE RESALE
+                    </td>
+                    <td>
+                        $
+                    </td>
+                    <td class="disabled">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        F. SALES OF GASOLINE AND CIGARETTES
+                    </td>
+                    <td>
+                        $
+                    </td>
+                    <td class="disabled">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        G. SALES TO GOVERNMENTAL, RELIGIOUS AND CHARITABLE ORGANIZATIONS
+                    </td>
+                    <td>
+                        $
+                    </td>
+                    <td class="disabled">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        H. RETURNED GOODS<br>
+                        (ON WHICH CITY TAX WAS PREVIOUSLY PAID)
+                    </td>
+                    <td>
+                        $
+                    </td>
+                    <td class="disabled">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        I. PRESCRIPTION DRUGS/PROSTHETIC DEVICES
+                    </td>
+                    <td>
+                        $
+                    </td>
+                    <td class="disabled">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        J. LODGING OVER 30 CONSECUTIVE DAYS
+                    </td>
+                    <td>
+                        $
+                    </td>
+                    <td class="disabled">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        K. OTHER DEDUCTIONS - PLEASE LIST
+                    </td>
+                    <td>
+                        $
+                    </td>
+                    <td class="disabled">
+                    </td>
+                </tr>
+            </tbody>
+            <tr>
+                <td>
+                    4.
+                </td>
+                <td colspan="2">
+                    TOTAL DEDUCTIONS<br>
+                    (ADD LINES 3A THRU 3K)
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    5.
+                </td>
+                <td colspan="2">
+                    TOTAL CITY NET TAXABLE SALES & SERVICES<br>
+                    (LINE 2B MINUS LINE 4)
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div style="max-width: 4px;"></div>
+
+    <div>
+
+        <table class="border">
+            <tr>
+                <td>
+                    <h2 style="text-align: center;">
+                        LODGING TAX RETURN FILING INSTRUCTIONS
+                    </h2>
+                    <p>
+                        <strong>RETURN WITH PAYMENT - STANDARD MAIL</strong><br>
+                        City of AnywhereUSA, PO Box 913297, Denver, CO 80291-3297
+                    </p>
+                    <p>
+                        <strong>RETURN WITH PAYMENT - CERTIFIED OR EXPRESS DELIVERY</strong><br>
+                        500 South 4th Avenue, AnywhereUSA, CO 80601 Attn: Sales Tax
+                    </p>
+                    <p>
+                        <strong>ZERO RETURN E-MAIL</strong> - <a href="mailto:SalesTax@anywhereusa.gov?subject=Zero Return">SalesTax@anywhereusa.gov</a>
+                    </p>
+                    <p>
+                        <strong>CANNOT BE FILED ONLINE AT THIS TIME</strong>
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+        <table class="border">
+            <tr style="text-align: center;">
+                <td>
+                    <p>
+                        <strong>______ AMENDED RETURN</strong>
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+        <table class="border">
+            <colgroup>
+                <col>
+                <col>
+                <col style="width: 80px;">
+            </colgroup>
+
+            <tr>
+                <td colspan="3">
+                    <h2 style="text-align: center;">
+                        COMPUTATION OF TAX
+                    </h2>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    6.
+                </td>
+                <td>
+                    AMOUNT OF CITY LODGING TAX<br>
+                    (LINE 5 X 3.00%)
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    7.
+                </td>
+                <td>
+                    ADD EXCESS TAX COLLECTED
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    8.
+                </td>
+                <td>
+                    ADJUSTED CITY LODGING TAX (LINES 6 PLUS 7)
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    9.
+                </td>
+                <td>
+                    VENDOR FEE - IF PAID IN FULL BY DUE DATE<br>
+                    <strong>DEDUCT 3.33% OF LINE 8 **MAX 25.00**</strong>
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    10.
+                </td>
+                <td>
+                    NET TAX DUE (LINE 8 MINUS LINE 9)
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    11.
+                </td>
+                <td>
+                    PENALTY - IF FILED AFTER DUE DATE<br>
+                    ADD 10% OF LINE 10
+
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    12.
+                </td>
+                <td>
+                    INTEREST - IF FILED AFTER DUE DATE<br>
+                    ADD 1% OF LINE 10 PER MONTH
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    13.
+                </td>
+                <td>
+                    TOTAL TAX, PENALTY AND INTEREST DUE<br>
+                    (LINES 10 THRU 12)
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    14.
+                </td>
+                <td>
+                    PRIOR PERIOD'S ADJUSTMENT NOTICE OF OVER OR UNDERPAYMENTS
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    15.
+                </td>
+                <td>
+                    TOTAL DUE AND PAYABLE<br>
+                    (MAKE CHECK PAYABLE TO CITY OF ANYWHEREUSA)
+                </td>
+                <td>
+                    $
+                </td>
+            </tr>
+
+        </table>
+
+        <table class="border fixed">
+            <tr>
+                <td>
+                    <h2 style="text-align: center;">
+                        TAXPAYER'S INFORMATION
+                    </h2>
+                    <p class="border-bottom">
+                        COMPANY: @Model.OrganizationName
+                    </p>
+                    <p class="border-bottom">
+                        TRADE NAME: @Model.Dba
+                    </p>
+                    <p class="border-bottom">
+                        ADDRESS: @Model.PhysicalAddress
+                    </p>
+                    <p class="d-flex border-bottom">
+                        <span>
+                            PHONE: @Model.OrganizationPhone
+                        </span>
+                        <span>
+                            FAX: @Model.OrganizationFax
+                        </span>
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+<table class="border">
+    <tr style="text-align: center; color: red">
+        <td>
+            <strong>Returns postmarked AFTER the Due date will be late and subject to penalties and interest</strong>
+        </td>
+    </tr>
+</table>
+
+<table class="border">
+    <tr>
+        <td style="white-space: nowrap; text-align: center;">
+            NEW BUSINESS DATE<br><br>
+            MON/DAY/YEAR<br><br>
+            ____/____/________<br><br>
+            DISCONTINUED DATE<br><br>
+            MON/DAY/YEAR<br><br>
+            ____/____/________
+        </td>
+        <td>
+            <ol>
+                <li>If ownership has changed, give date of change and new owner's name.
+                <li>If business has been permanently discontinued, give date discontinued.
+                <li>If business location has changed, give new address.
+                <li>
+                    Records are kept at what address?<br>
+                    <hr>
+                <li>If business is temporarily closed, give dates to be closed.
+                <li>If business is seasonal, give months of operation.
+            </ol>
+        </td>
+        <td>
+            SHOW BELOW CHANGE OF OWNERSHIP, NAME AND ADDRESS<br>
+            <hr>
+            <hr>
+            <hr>
+            <hr>
+            <hr>
+            __ Physical Address<br>
+            __ Mailing Address
+        </td>
+        <td>
+            I, hereby certify, under penalty of perjury,
+            that the statements made herein are to the
+            best of my knowledge true and correct.
+            <p class="border-bottom">
+                Name:
+            </p>
+            <p class="border-bottom">
+                Signature:
+            </p>
+            <p class="border-bottom">
+                Title:
+            </p>
+            <p class="border-bottom">
+                Company:
+            </p>
+            <div class="border-bottom" style="display: flex;">
+                <span style="flex: 1">
+                    Date:
+                </span>
+                <span style="flex: 1">
+                    Phone#:
+                </span>
+            </div>
+        </td>
+    </tr>
+</table>

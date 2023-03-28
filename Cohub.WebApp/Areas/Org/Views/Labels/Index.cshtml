@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Label>
+@{ 
+    ViewBag._Title ??= SL[ViewData.ModelMetadata.ElementMetadata!.UnderlyingOrModelType.Name.Titleize().Pluralize()];
+}
+<div class="m">
+
+    <h1>@ViewBag._Title</h1>
+
+    @foreach (var group in Model.GroupBy(o => o.GroupId).OrderBy(o => o.Key))
+	{
+		 <details>
+             <summary>@group.Key</summary>
+             <partial name="DisplayTemplates/LabelList" model="@group" />
+         </details>
+	}
+
+</div>

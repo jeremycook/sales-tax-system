@@ -1,0 +1,68 @@
+﻿@model QueryDefinition
+@inject IStringLocalizer<QueryDefinition> L
+@{ ViewBag._Title = $"{Model.Id}"; }
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <details open>
+        <summary>Properties</summary>
+
+        <form method="post">
+
+            <partial name="UI/ValidationSummary" />
+
+            <div class="input-group">
+                @Html.EditorFor(o => o.Sql)
+            </div>
+
+            <div class="input-group">
+                <button class="button">@L["Save Changes"]</button>
+            </div>
+        </form>
+    </details>
+
+    <details open>
+        <summary>
+            Preview*
+        </summary>
+
+        <div id="query-preview-spreadsheet">
+        </div>
+
+        <p>
+            *Preview of up to the first 100
+        </p>
+
+        <script defer src="~/lib/jexcel/jexcel.min.js"></script>
+        <link href="~/lib/jexcel/jexcel.min.css" rel="stylesheet" />
+        <script defer src="~/lib/jsuites/dist/jsuites.min.js"></script>
+        <link href="~/lib/jsuites/dist/jsuites.min.css" rel="stylesheet" />
+        <style>
+            table.jexcel {
+                width: auto;
+            }
+        </style>
+
+        <script>
+                    jexcel(document.getElementById('query-preview-spreadsheet'), {
+                        csv: "@Url.Action("ExportCsv", new { id = Model.Id, limit = 100 })",
+                        csvHeaders: true,
+                        tableOverflow: false,
+                        defaultColAlign: "left"
+                        //tableWidth: "auto",
+                        //defaultColWidth: 100
+                        //columns: [
+                        //    { type: 'text', width: 300 },
+                        //    { type: 'text', width: 80 },
+                        //    { type: 'dropdown', width: 120, source: ['England', 'Wales', 'Northern Ireland', 'Scotland'] },
+                        //    { type: 'text', width: 120 },
+                        //    { type: 'text', width: 120 },
+                        //]
+                        });
+        </script>
+    </details>
+
+
+</div>
+

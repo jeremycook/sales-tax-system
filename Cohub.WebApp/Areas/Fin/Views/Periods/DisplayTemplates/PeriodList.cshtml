@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Cohub.Data.Fin.Period>
+
+@foreach (var yearGroup in Model.GroupBy(o => o.StartDate.Year).OrderByDescending(o => o.Key))
+{
+    <h2>@yearGroup.Key</h2>
+
+    <div class="card mb">
+
+        @foreach (var group in yearGroup.GroupBy(o => o.FrequencyId).OrderBy(o => o.Key))
+        {
+            <p>
+                <a asp-action="Details" asp-controller="Frequencies" asp-route-id="@group.Key">@group.Key</a>
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(m => m.Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.EndDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.DueDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.Created)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in group.OrderBy(o => o.StartDate))
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="Details" asp-controller="Periods" asp-route-id="@item.Id">@item.Id</a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(_ => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(_ => item.StartDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(_ => item.EndDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(_ => item.DueDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(_ => item.Created)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+}

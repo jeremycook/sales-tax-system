@@ -1,0 +1,46 @@
+﻿@* Called by SiteNav *@
+@inject CohubDbContext db
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-returns-dropdown">
+        Returns
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-returns-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Returns</a>
+                <a href="@Url.Action("Create")">New Return</a>
+                <a href="@Url.Action("Index", "ReturnReport")">Print Returns</a>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var idValue) && int.TryParse(idValue?.ToString(), out int id))
+{
+    var item = await db.Returns(id).SingleAsync();
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-return-dropdown">
+            Return
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-return-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id = id })">View Return</a>
+                    @if (item.StatusId == ReturnStatusId.Closed)
+                    {
+                        <a href="@Url.ActionWithReturnUrl("Open", new { id = id })">Open Return</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.ActionWithReturnUrl("Close", new { id = id })">Close Return</a>
+                        <a href="@Url.ActionWithReturnUrl("Edit", new { id = id })">Edit Return</a>
+                        <a href="@Url.ActionWithReturnUrl("Delete", new { id = id })">Delete Return</a>
+                        <hr />
+                        <a href="@Url.Action("Transfer", new { id = item.Id })">Transfer Return</a>
+                        <a href="@Url.Action("ManageMoney", "Batches", new { item.OrganizationId, item.CategoryId, item.PeriodId, SubcategoryId = SubcategoryId.Penalty, BucketId = BucketId.Due, DestinationBucketId = BucketId.Adjustment })">Waive Penalty</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<partial name="UI/SiteNavSearch" />

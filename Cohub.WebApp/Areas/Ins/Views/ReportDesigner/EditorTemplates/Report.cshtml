@@ -1,0 +1,19 @@
+﻿@model Cohub.Data.Ins.Report
+
+<input hidden asp-for="Id" />
+<span asp-validation-for="Id"></span>
+<div class="input-group">
+    <label asp-for="Name"></label>
+    @Html.EditorFor(m => m.Name)
+    <span asp-validation-for="Name"></span>
+</div>
+<div class="input-group">
+    <label asp-for="QueryDefinitionId"></label>
+    @Html.EditorFor(m => m.QueryDefinitionId)
+    <span asp-validation-for="QueryDefinitionId"></span>
+</div>
+<div class="input-group">
+    <label asp-for="Template"></label>
+    @Html.EditorFor(m => m.Template)
+    <span asp-validation-for="Template"></span>
+</div>

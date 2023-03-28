@@ -1,0 +1,84 @@
+﻿@model Statement
+
+<dl class="@ViewBag._Class">
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.Id)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.TypeId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.TypeId)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.StatusId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.StatusId)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.Organization)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.Organization)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.NoticeDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.NoticeDate)
+        </dd>
+    </div>
+    <div sk-if="Model.TypeId == StatementTypeId.Assessment">
+        <dt>
+            @Html.DisplayNameFor(m => m.AssessmentDueDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.AssessmentDueDate)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.OverpaymentBalance)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.OverpaymentBalance)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.GrandTotalDue)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.GrandTotalDue)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.Created)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.Created)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.Updated)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.Updated)
+        </dd>
+    </div>
+</dl>

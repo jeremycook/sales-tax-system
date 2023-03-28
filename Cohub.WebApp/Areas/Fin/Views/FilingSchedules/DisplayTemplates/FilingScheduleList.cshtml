@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Cohub.Data.Fin.FilingSchedule>
+
+<table class="card">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Organization)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.PaymentChart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Created)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Details", new { id = item.Id })">@SL["View"]</a>
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(_ => item.Organization)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.PaymentChart)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Created)
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tbody>
+        <tr>
+            <td class="text-center" colspan="7">
+                <partial name="UI/Paging" />
+            </td>
+        </tr>
+    </tbody>
+</table>

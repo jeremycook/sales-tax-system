@@ -1,0 +1,17 @@
+[Unit]
+Description=anywhereusa.cohub.us
+
+[Service]
+WorkingDirectory=/home/app-anywhereusa/websites/anywhereusa.cohub.us/wwwroot
+ExecStart=/usr/bin/dotnet /home/app-anywhereusa/websites/anywhereusa.cohub.us/wwwroot/Cohub.WebApp.dll --urls "http://localhost:5002"
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=app-anywhereusa.cohub.us
+User=app-anywhereusa
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target

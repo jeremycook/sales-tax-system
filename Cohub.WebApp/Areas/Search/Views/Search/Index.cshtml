@@ -1,0 +1,38 @@
+﻿@model string
+@inject CohubDbContext db
+
+<div class="pad">
+    <h1>Search</h1>
+
+    @if (!string.IsNullOrWhiteSpace(Model))
+    {
+        var results = await db.Set<Cohub.Data.Org.Organization>()
+            .Where(o =>
+                EF.Functions.ILike(o.Id, $"%{Model}") ||
+                EF.Functions.ILike(o.OrganizationName, $"%{Model}%") ||
+                EF.Functions.ILike(o.Dba, $"%{Model}%")
+            )
+            .OrderByDescending(o => o.Created)
+            .Select(o => new
+            {
+                Type = "Organization",
+                Title = o.ToString(),
+                Url = Url.Action("Details", "Organizations", new { area = "Org", id = o.Id }),
+                Description = (!string.IsNullOrWhiteSpace(o.Dba) ? o.Dba + " " : "") + o.OrganizationDescription
+            })
+            .ToArrayAsync();
+
+        <dl>
+            @foreach (var item in results)
+            {
+                <dt>
+                    <a href="@item.Url">@item.Title</a>
+                    <span class="badge-blue">@item.Type</span>
+                </dt>
+                <dd>
+                    @item.Description
+                </dd>
+            }
+        </dl>
+    }
+</div>

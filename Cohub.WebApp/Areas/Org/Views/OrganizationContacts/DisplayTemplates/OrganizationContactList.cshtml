@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Cohub.Data.Org.OrganizationContact>
+@inject IStringLocalizer<OrganizationContact> L
+
+<table class="card text-left">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => m.LegalName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Organization)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Relationship)
+            </th>
+            <th>
+                @L["Contact Info"]
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Created)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderByDescending(o => o.LegalName))
+        {
+            <tr>
+                <td>
+                    @if (User.CanReview())
+                    {
+                        <a href="@Url.Action("Details", "OrganizationContacts", new { area = "Org", id = item.Id })">@item</a>
+                    }
+                    else
+                    {
+                        @item
+                    }
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(_ => item.Organization)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Relationship)
+                </td>
+                <td>
+                    <div>
+                        @Html.DisplayFor(_ => item.Email)
+                    </div>
+                    <div>
+                        @Html.DisplayFor(_ => item.PhoneNumber)
+                    </div>
+                    <div>
+                        @Html.DisplayFor(_ => item.Address)
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Created)
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tbody>
+        <tr>
+            <td class="text-center" colspan="100">
+                <partial name="UI/Paging" />
+            </td>
+        </tr>
+    </tbody>
+</table>

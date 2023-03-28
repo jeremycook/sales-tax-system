@@ -1,0 +1,13 @@
+﻿@model int?
+@inject CohubDbContext db
+@{
+    int batchId = ViewBag.BatchId;
+    var items = await db.Set<Transaction>()
+        .Where(o => o.BatchId == batchId)
+        .OrderBy(o => o.Id)
+        .Select(o => new SelectListItem(o.ToString(), o.Id.ToString(), o.Id == Model))
+        .ToListAsync();
+}
+<select asp-for="@Model" asp-items="@items">
+    <option value="">New Deposit Transaction</option>
+</select>

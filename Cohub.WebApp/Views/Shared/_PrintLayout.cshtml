@@ -1,0 +1,8 @@
+﻿@{ Layout = "_BaseLayout";
+    ViewBag._LayoutClass ??= "print-layout"; }
+@section Head {
+    <link href="~/lib/site/print-layout.css" rel="stylesheet" asp-append-version="true" />
+    @await RenderSectionAsync("Head", required: false)
+}
+@RenderBody()
+@section Scripts {@await RenderSectionAsync("Scripts", required: false)}

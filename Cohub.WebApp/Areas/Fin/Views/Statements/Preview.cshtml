@@ -1,0 +1,115 @@
+﻿@model List<Cohub.Data.Fin.Statements.StatementReport>
+
+    <div class="pad">
+        <h1>Statements Preview</h1>
+    </div>
+
+    @foreach (var org in Model)
+    {
+        <div class="w-letter break-avoid-page mx-auto">
+            <div class="flex-right gap">
+                <div>
+                    <p>
+                        @(org.OrganizationName)<br />
+                        @if (org.Dba is not null)
+                        {
+                            @org.Dba<br />
+                        }
+                        @if (org.MulilineAddress is not null)
+                        {
+                            @Html.Raw(string.Join("<br />", System.Text.RegularExpressions.Regex.Split(org.MulilineAddress, "\r?\n").Select(Html.Encode)))
+                        }
+                    </p>
+                </div>
+                <div>
+                    Date of Notice: @org.NoticeDate.ToShortDateString()<br />
+                    Number: @org.OrganizationId
+                </div>
+            </div>
+
+            <p class="text-center">
+                <strong>Schedule</strong>
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Period Covered
+                        </th>
+                        <th>
+                            Net
+                        </th>
+                        <th>
+                            Penalty
+                        </th>
+                        <th>
+                            Interest
+                        </th>
+                        <th>
+                            Total
+                        </th>
+                        <th>
+                            Reason Code
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var line in org.Schedule)
+                    {
+                        <tr>
+                            <td>
+                                @if (line.PeriodCovered != PeriodId.None)
+                                {
+                                    @line.PeriodCovered
+                                }
+                                @line.Category
+                            </td>
+                            <td>
+                                <partial name="DisplayTemplates/Currency" model="line.Net" />
+                            </td>
+                            <td>
+                                <partial name="DisplayTemplates/Currency" model="line.Penalty" />
+                            </td>
+                            <td>
+                                <partial name="DisplayTemplates/Currency" model="line.Interest" />
+                            </td>
+                            <td>
+                                <partial name="DisplayTemplates/Currency" model="line.TotalDue" />
+                            </td>
+                            <td>
+                                <partial name="DisplayTemplates/Currency" model="line.TotalOverpayment" />
+                            </td>
+                            <td>
+                                @line.ReasonCode
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            Balance
+                        </th>
+                        <th>
+                            <partial name="DisplayTemplates/Currency" model="org.Schedule.Sum(o => o.Net)" />
+                        </th>
+                        <th>
+                            <partial name="DisplayTemplates/Currency" model="org.Schedule.Sum(o => o.Penalty)" />
+                        </th>
+                        <th>
+                            <partial name="DisplayTemplates/Currency" model="org.Schedule.Sum(o => o.Interest)" />
+                        </th>
+                        <th>
+                            <partial name="DisplayTemplates/Currency" model="org.Schedule.Sum(o => o.TotalDue)" />
+                        </th>
+                        <th>
+                            <partial name="DisplayTemplates/Currency" model="org.Schedule.Sum(o => o.TotalOverpayment)" />
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }

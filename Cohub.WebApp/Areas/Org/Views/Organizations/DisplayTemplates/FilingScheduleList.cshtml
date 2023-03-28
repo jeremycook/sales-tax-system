@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Cohub.Data.Fin.FilingSchedule>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.PaymentChart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Created)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderBy(o => o.StartDate))
+        {
+            <tr>
+                <td>
+                    <a href="@Url.ActionWithReturnUrl("Details", "FilingSchedules", new { area = "Fin", id = item.Id })">View</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.PaymentChart)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Created)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

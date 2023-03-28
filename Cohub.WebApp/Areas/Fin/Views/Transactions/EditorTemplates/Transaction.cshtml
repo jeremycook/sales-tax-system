@@ -1,0 +1,14 @@
+﻿@model Transaction
+
+<div class="w-xs">
+    <div class="input-group">
+        <label asp-for="BatchId"></label>
+        @Html.EditorFor(m => m.BatchId)
+        <span asp-validation-for="BatchId"></span>
+    </div>
+    <div class="input-group">
+        <label asp-for="Note"></label>
+        @Html.EditorFor(m => m.Note)
+        <span asp-validation-for="Note"></span>
+    </div>
+</div>

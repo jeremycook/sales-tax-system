@@ -1,0 +1,19 @@
+﻿@model Boolean?
+@{
+    SiteKit.ComponentModel.BooleanAttribute? booleanAttribute = null;
+    if (ViewData.ModelMetadata.PropertyName is string propertyName)
+    {
+        booleanAttribute = ViewData.ModelMetadata.ContainerType?.GetProperty(propertyName)?.GetCustomAttribute<SiteKit.ComponentModel.BooleanAttribute>();
+    }
+    var items = new List<SelectListItem>
+    {
+        new SelectListItem(SL[booleanAttribute?.TrueText ?? "Yes"], bool.TrueString, Model == true),
+        new SelectListItem(SL[booleanAttribute?.FalseText ?? "No"], bool.FalseString, Model == false),
+    };
+    if (!ViewData.ModelMetadata.IsRequired)
+    {
+        items.Add(new SelectListItem((booleanAttribute?.NullText).IsNullOrWhiteSpace() ? string.Empty : SL[booleanAttribute.NullText], "", Model == null));
+    }
+}
+<select asp-for="@Model" asp-items="@items">
+</select>

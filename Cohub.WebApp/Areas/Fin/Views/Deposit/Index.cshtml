@@ -1,0 +1,327 @@
+﻿@model DepositInfo
+@inject CohubDbContext db
+@using Cohub.Data.Fin.Deposits
+@{
+    bool isZero = ViewBag.IsZero ?? false;
+    bool showOptionToAllowMissingFilings = ViewBag.ShowOptionToAllowMissingFilings ?? false;
+    ViewBag._Title = isZero ? "Bulk Deposit Zero Returns" : "Bulk Deposit Returns";
+    var data = Json.SerializeToString(new
+    {
+        Model = new
+        {
+            Model.BatchId,
+            Model.DefaultDepositDate,
+            Deposits = Model.Deposits.Select(d => new
+            {
+                d.DepositorId,
+                d.DepositAmount,
+                d.DepositDate,
+                d.Payments,
+                NewPayment = new DepositPayment { OrganizationId = d.DepositorId },
+            }),
+            NewDeposit = new Deposit { },
+        },
+        IsZero = isZero,
+        New = new
+        {
+            Deposit = new Deposit { },
+            DepositPayment = new DepositPayment { },
+        },
+        Options = new
+        {
+            Categories = await db.Categories().OrderBy(o => o.Id).ToDictionaryAsync(o => o.Id, o => new { o.Id, TypeId = o.TypeId.ToString() }),
+        }
+    });
+    var batchOptions = await db.Set<Batch>()
+        .Where(o => !o.IsPosted)
+        .OrderBy(o => o.Name)
+        .Select(o => new SelectListItem(o.ToString(), o.Id.ToString(), o.Id == Model.BatchId))
+        .ToListAsync();
+}
+
+@section Scripts {
+<script defer src="~/lib/vue/vue.js" asp-append-version="true"></script>
+<script defer src="~/lib/apps/vue.js" asp-append-version="true"></script>
+<script defer src="~/lib/apps/fin/deposit.js" asp-append-version="true"></script>
+}
+
+<div id="fin-deposit" data="@data" class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <details open class="input-group">
+        <summary>
+            Properties
+        </summary>
+
+        @if (isZero)
+        {
+            <p>
+                When bulk depositing zero returns, this page will automatically fill in deposit amounts with 0.
+                It will also fill in payment amounts, and taxes/fees with 0 if the return is due.
+                Other than pre-filling amounts into the user interface, bulk depositing zero returns are processed
+                just like bulk depositing regular returns when this form is submitted.
+                This means you can also enter regular return information into this form if needed.
+            </p>
+        }
+        else
+        {
+            <p>
+                Rapidly enter one or more deposits from one or more organizations with the option to split out
+                individual deposits into payments for various returns that the deposit is paying for.
+            </p>
+            <p>
+                TIP: When working with large batches consider bulk depositing around 25 deposits at a time with this form.
+                You can bulk deposit returns with the same batch as many times as you need.
+                You can even have work with others on the same batch at the same time if that is helpful,
+                just coordinate with them on the deposits each individual is entering.
+            </p>
+        }
+
+        <form method="post">
+
+            <partial name="UI/ValidationSummary" />
+
+            <div style="min-height: 1.5em">
+                <div v-if="appAlert" class="badge-red">
+                    {{appAlert}}
+                    <button type="button" v-on:click="dismissAlert" class="button">Dismiss</button>
+                </div>
+            </div>
+
+            <div class="flex-right mb">
+
+                <div class="input-group">
+                    <label asp-for="BatchId"></label>
+                    <select v-model="model.batchId" name="BatchId" id="BatchId" asp-items="@batchOptions" style="min-width: 12em" required>
+                        <option value="0">New Batch</option>
+                    </select>
+                    <span asp-validation-for="BatchId"></span>
+                </div>
+
+                <div class="input-group">
+                    <label asp-for="DefaultDepositDate"></label>
+                    <input type="date" name="DefaultDepositDate" id="DefaultDepositDate" :value="Date.toISODateString(model.defaultDepositDate)" v-on:input="model.defaultDepositDate = Date.toISODateString($event.target.value)" />
+                    <span asp-validation-for="DefaultDepositDate"></span>
+                </div>
+
+            </div>
+
+            <table v-for="(deposit, iDeposit) in model.deposits" class="card">
+                <tbody>
+                    <tr>
+                        <th>
+                        </th>
+                        <th>
+                            Depositor
+                        </th>
+                        <th>
+                            Deposit
+                        </th>
+                        <th>
+                            Deposit Date
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td class="input-group">
+                            <input is="autocomplete" :name="'Deposits[' + iDeposit + '].DepositorId'" v-model="deposit.depositorId" v-select="true" v-on:change="refreshDeposit(deposit)" list="@Html.RequestPartial("UI/OrganizationDatalist")" required />
+                        </td>
+                        <td class="input-group">
+                            <input type="number" min="0" step="0.01" :name="'Deposits[' + iDeposit + '].DepositAmount'" v-model="deposit.depositAmount" required />
+                        </td>
+                        <td class="input-group">
+                            <input type="date" :name="'Deposits[' + iDeposit + '].DepositDate'" :value="Date.toISODateString(deposit.depositDate)" v-on:input="deposit.depositDate = Date.toISODateString($event.target.value)" required />
+                        </td>
+                        <td class="text-center">
+                            <button type="button" v-on:click="removeDeposit(iDeposit)" class="badge-red text-nowrap">Remove Deposit</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <th style="width: 25px">
+                            D{{iDeposit+1}}
+                        </th>
+                        <th style="width: 130px">
+                            Organization
+                        </th>
+                        <th style="width: 130px">
+                            Category
+                        </th>
+                        <th style="width: 130px">
+                            Period
+                        </th>
+                        <th style="width: 130px">
+                            Payment
+                        </th>
+                        <th style="width: 130px">
+                            Taxable
+                        </th>
+                        <th style="width: 130px">
+                            Excess
+                        </th>
+                        <th style="width: 130px">
+                            Fees
+                        </th>
+                        <th style="width: 130px">
+                            Assessment
+                        </th>
+                        <th>
+                            Ven
+                        </th>
+                        <th>
+                            Net
+                        </th>
+                        <th>
+                            Pen
+                        </th>
+                        <th>
+                            Int
+                        </th>
+                        <th>
+                            Tot
+                        </th>
+                    </tr>
+                    <tr v-for="(payment, iPayment) in deposit.payments">
+                        <td>
+                            P{{iPayment+1}}
+                        </td>
+                        <td class="input-group">
+                            <input is="autocomplete" :name="'Deposits[' + iDeposit + '].Payments[' + iPayment + '].OrganizationId'" v-model="payment.organizationId" v-on:change="refreshPaymentIfReady(payment, deposit)" list="@Html.RequestPartial("UI/OrganizationDatalist")" required />
+                        </td>
+                        <td class="input-group">
+                            <input is="autocomplete" :name="'Deposits[' + iDeposit + '].Payments[' + iPayment + '].CategoryId'" v-model="payment.categoryId" v-on:change="refreshPaymentIfReady(payment, deposit)" list="@Html.RequestPartial("UI/CategoryDatalist")" required />
+                        </td>
+                        <td class="input-group">
+                            <input is="autocomplete" :name="'Deposits[' + iDeposit + '].Payments[' + iPayment + '].PeriodId'" v-model="payment.periodId" v-on:change="refreshPaymentIfReady(payment, deposit)" list="@Html.RequestPartial("UI/PeriodDatalist")" required />
+                        </td>
+                        <td class="input-group">
+                            <input type="number" :name="'Deposits[' + iDeposit + '].Payments[' + iPayment + '].PaymentAmount'" v-model="payment.paymentAmount" v-on:change="refreshPaymentIfReady(payment, deposit)" min="0" step="0.01" required />
+                        </td>
+                        <td class="input-group">
+                            <input type="number" :name="'Deposits[' + iDeposit + '].Payments[' + iPayment + '].Taxable'" v-model="payment.taxable" v-on:change="refreshPaymentIfReady(payment, deposit)" min="0" step="0.01" />
+                        </td>
+                        <td class="input-group">
+                            <input type="number" :name="'Deposits[' + iDeposit + '].Payments[' + iPayment + '].Excess'" v-model="payment.excess" v-on:change="refreshPaymentIfReady(payment, deposit)" min="0" step="0.01" />
+                        </td>
+                        <td class="input-group">
+                            <input type="number" :name="'Deposits[' + iDeposit + '].Payments[' + iPayment + '].Fees'" v-model="payment.fees" v-on:change="refreshPaymentIfReady(payment, deposit)" min="0" step="0.01" />
+                        </td>
+                        <td class="input-group">
+                            <input type="number" :name="'Deposits[' + iDeposit + '].Payments[' + iPayment + '].Assessment'" v-model="payment.assessment" v-on:change="refreshPaymentIfReady(payment, deposit)" min="0" step="0.01" />
+                        </td>
+                        <td>
+                            {{ payment.snapshot.vendorFee }}
+                        </td>
+                        <td>
+                            {{ payment.snapshot.netDue }}
+                        </td>
+                        <td>
+                            {{ payment.snapshot.penaltyDue }}
+                        </td>
+                        <td>
+                            {{ payment.snapshot.interestDue }}
+                        </td>
+                        <td>
+                            <strong>{{ payment.snapshot.totalDue }}</strong>
+                        </td>
+                        <td v-if="payment.organizationId && payment.categoryId && payment.periodId" class="input-group w-auto">
+                            <button type="button" v-on:click="refreshPayment(payment, deposit)" title="This will create a return if it doesn't exist, apply changes to filing information and refresh the snapshot calculation" class="button w-100">Update</button>
+                        </td>
+                        <td v-if="payment.returnId" class="text-center">
+                            <a :href="'/fin/returns/' + payment.returnId" title="Open the return">Open</a>
+                        </td>
+                        <td class="text-center">
+                            <button type="button" v-on:click="removePayment(deposit, iPayment)" class="badge-red text-nowrap" title="Remove payment">Remove</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            *
+                        </td>
+                        <td class="input-group">
+                            <input is="autocomplete" v-model="deposit.newPayment.organizationId" list="@Html.RequestPartial("UI/OrganizationDatalist")" />
+                        </td>
+                        <td class="input-group">
+                            <input is="autocomplete" v-model="deposit.newPayment.categoryId" list="@Html.RequestPartial("UI/CategoryDatalist")" />
+                        </td>
+                        <td class="input-group">
+                            <input is="autocomplete" v-model="deposit.newPayment.periodId" list="@Html.RequestPartial("UI/PeriodDatalist")" />
+                        </td>
+                        <td class="input-group">
+                            <button type="button" v-on:click="addPayment(deposit)" class="button w-100">Add Payment</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <th>
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                            Balance
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            &Sigma;
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            {{ Number(deposit.depositAmount - depositPaymentSum[iDeposit]).toFixed(2) }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="card">
+                <tbody>
+                    <tr>
+                        <th>
+
+                        </th>
+                        <th>
+                            Depositor
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style="width: 25px">*</td>
+                        <td style="width: 130px" class="input-group">
+                            <input is="autocomplete" v-model="model.newDeposit.depositorId" v-on:change="addDeposit" list="@Html.RequestPartial("UI/OrganizationDatalist")" v-select="true" />
+                        </td>
+                        <td class="input-group">
+                            <button type="button" class="button">Add Deposit</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            @if (showOptionToAllowMissingFilings)
+            {
+                <div class="input-group">
+                    <label><input asp-for="AllowMissingFilings" /> Allow Missing Filings</label>
+                </div>
+            }
+
+            <div class="input-group">
+                <button type="submit" class="button">
+                    Submit
+                </button>
+                <a sk-if="Model.BatchId > 0" href="@Url.Action("Details", "Batches", new { id = Model.BatchId })" class="button">Cancel</a>
+            </div>
+
+        </form>
+    </details>
+
+</div>

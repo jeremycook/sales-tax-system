@@ -1,0 +1,10 @@
+﻿@{ 
+    ViewBag._Title ??= SL[ViewData.ModelMetadata.ElementMetadata!.UnderlyingOrModelType.Name.Titleize().Pluralize()];
+}
+<div class="m">
+
+    <h1>@ViewBag._Title</h1>
+
+    @Html.DisplayForModel(templateName: ViewData.ModelMetadata.ElementMetadata?.UnderlyingOrModelType.Name + "List")
+
+</div>

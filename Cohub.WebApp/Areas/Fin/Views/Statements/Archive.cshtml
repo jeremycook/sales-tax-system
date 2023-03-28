@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag._Title ??= SL["Archive " + ViewData.ModelMetadata.UnderlyingOrModelType.Name.Titleize()];
+}
+<div class="m">
+
+    <h1>@ViewBag._Title</h1>
+
+    <details open class="w-sm">
+
+        <summary>@SL["Properties"]</summary>
+
+        <form method="post">
+
+            <partial name="UI/ValidationSummary" />
+
+            <p>
+                @SL["Archive {0}?", Model]
+            </p>
+
+            <div class="input-group">
+                <button class="button">@SL["Yes"]</button>
+                <a class="button" href="@Url.ReturnUrlOrAction("Index")">@SL["No"]</a>
+            </div>
+
+        </form>
+
+    </details>
+
+</div>

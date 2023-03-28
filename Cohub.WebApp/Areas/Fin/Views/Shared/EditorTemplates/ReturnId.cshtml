@@ -1,0 +1,12 @@
+﻿@model int?
+@inject CohubDbContext db
+@{
+    var items = await db.Set<Return>()
+        .Where(o => o.StatusId != ReturnStatusId.Closed || (Model != null && o.Id == Model))
+        .Select(o => new SelectListItem(o.ToString(), o.Id.ToString(), o.Id == Model))
+        .ToListAsync();
+    items.Sort((l, r) => StringComparer.CurrentCultureIgnoreCase.Compare(l.Text, r.Text));
+}
+<select asp-for="@Model" asp-items="@items">
+    <option></option>
+</select>

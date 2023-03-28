@@ -1,0 +1,12 @@
+﻿@model int?
+@inject CohubDbContext db
+@{
+    var items = await db.PaymentCharts()
+        .Where(o => o.IsActive || (Model != null && o.Id == Model))
+        .OrderBy(o => o.Name)
+        .Select(o => new SelectListItem(o.ToString(), o.Id.ToString(), o.Id == Model))
+        .ToListAsync();
+}
+<select asp-for="@Model" asp-items="@items">
+    <option></option>
+</select>

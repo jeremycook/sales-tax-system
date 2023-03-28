@@ -1,0 +1,32 @@
+﻿@* Called by SiteNav *@
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-comments-dropdown">
+        Comments
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-comments-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Comments</a>
+                <a href="@Url.Action("Create")">New Comment</a>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var idValue) && int.TryParse(idValue?.ToString(), out int commentId))
+{
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-comment-dropdown">
+            Comment
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-comment-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id = commentId })">View Comment</a>
+                    <a href="@Url.Action("Edit", new { id = commentId })">Edit Comment</a>
+                    <a href="@Url.Action("Delete", new { id = commentId })">Delete Comment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<partial name="UI/SiteNavSearch" />

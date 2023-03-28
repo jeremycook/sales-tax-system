@@ -1,0 +1,160 @@
+﻿@model Details
+@inject IStringLocalizer<Details> L
+@{
+    ViewBag._Title = $"{Model}";
+}
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <details>
+        <summary>Tips</summary>
+        <ul>
+            <li>
+                Wrap the name of a column in double quotes:<br />
+                <code>"organization_id"</code><br />
+                <code>"due_date"</code>
+            </li>
+            <li>
+                Wrap string and date values in single quotes:<br />
+                <code>'some text'</code><br />
+                <code>'@DateTime.Today.ToShortDateString()'</code>
+            </li>
+            <li>
+                Numbers do not need to be surrounded by single quotes:<br />
+                <code>42</code><br />
+                <code>-123.45</code>
+            </li>
+            <li>
+                Search for text with <code>ILIKE</code> operator and the <code>%</code> symbol. The percent-sign acts as a wildcard and will match anything. This example searches the "text_column" column for values that start with "Starts with example".<br />
+                <code>"text_column" ILIKE 'Starts with example %'</code>
+            </li>
+            <li>
+                Use <code>IS NULL</code> to search a field for missing values:<br />
+                <code>"some_column" IS NULL</code><br />
+                <code>("text_column" IS NULL OR "text_column" = '')</code>
+            </li>
+            <li>
+                Use <code>IS NOT NULL</code> to search a field for values:<br />
+                <code>"some_column" IS NOT NULL</code><br />
+                <code>("text_column" IS NOT NULL AND "text_column" <> '')</code>
+            </li>
+            <li>
+                Use <code>BETWEEN</code> to find dates or numbers within a range of dates or numbers:<br />
+                <code>"number_column" BETWEEN -100 AND 100</code>
+            </li>
+            <li>
+                Use parenthesis to control precedence, combine conditions with the <code>AND</code> and <code>OR</code> operators:<br />
+                <code>("text_column" IS NULL OR "text_column" = '') AND "number_column" BETWEEN -100 AND 100</code>
+            </li>
+        </ul>
+    </details>
+
+    <form method="get">
+
+        <details open>
+
+            <summary>
+                Options
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <span class="badge-red">Errors</span>
+                }
+                @if (Model.Filters?.Any() == true)
+                {
+                    <span class="badge-blue">Filtered</span>
+                }
+            </summary>
+
+            <div asp-validation-summary="All" class="mb"></div>
+
+            <div class="input-group">
+                <label asp-for="Filters"></label>
+                <span asp-validation-for="Filters"></span>
+                <textarea asp-for="Filters" class="text-mono w-100"></textarea>
+                <div>
+                    @foreach (var col in Model.Columns!)
+                    {
+                        foreach (var template in Model.GenerateColumnTemplates(col))
+                        {
+                            <button type="button" inject-module="apps/dataExplorer.js" inject-member="addFilter" data-column-template="@template.Value" data-where-filter-id="Filters" class="badge-blue">
+                                @template.Key
+                            </button>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="flex-right">
+                <div class="input-group">
+                    <label asp-for="OrderBy"></label>
+                    <select asp-for="OrderBy" asp-items="@Model.OrderBy.Union(Model.Columns!.Select(o => o.ColumnName).Concat(Model.Columns!.Select(o => o.ColumnName + " DESC")).OrderBy(o => o)).Select(o => new SelectListItem(o, o))" select2='"prependSelection": true' multiple style="width: 300px; max-width: 100%">
+                    </select>
+                </div>
+                <div class="input-group" style="width: 100px">
+                    <label asp-for="Offset"></label>
+                    <input asp-for="Offset" />
+                </div>
+                <div class="input-group" style="width: 100px">
+                    <label asp-for="Limit"></label>
+                    <input asp-for="Limit" />
+                </div>
+            </div>
+
+            <div class="input-group">
+                <button class="button">Search</button>
+                <a class="button" href="@Url.Action("Details", new { Model.TableSchema, Model.TableName })">Reset</a>
+                &nbsp;
+                <a class="button" href="@Url.ActionMergedWithCurrentUrl("Export", values: new { extension = "csv" })">Export CSV</a>
+                <a class="button" href="@Url.ActionMergedWithCurrentUrl("Export", values: new { extension = "xlsx" })">Export XLSX</a>
+                <a class="button" href="@Url.ActionMergedWithCurrentUrl("Export", values: new { extension = "xls" })">Export XLS</a>
+                <a sk-if="Model.ReportExists" class="button" href="@Url.ActionMergedWithCurrentUrl("Export", values: new { extension = "html" })">Export HTML</a>
+            </div>
+
+        </details>
+
+    </form>
+
+    <table class="card">
+        <thead>
+            <tr>
+                @foreach (DataColumn col in Model.DataTable!.Columns)
+                {
+                    <th>
+                        @col.ColumnName
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody class="text-right text-nowrap">
+            @foreach (DataRow row in Model.DataTable!.Rows)
+            {
+                <tr>
+                    @foreach (DataColumn col in Model.DataTable!.Columns)
+                    {
+                        var column = Model.Columns!.Single(o => o.ColumnName == col.ColumnName);
+                        var value = row[col.Ordinal];
+                        var template = Model.GenerateColumnTemplates(column, value).First();
+                        <td class="@(col.DataType == typeof(string) ? "text-left" : "text-right")">
+                            <button sk-if="col.DataType != typeof(string)" type="button" inject-module="apps/dataExplorer.js" inject-member="addFilter" data-column-template="@template.Value" data-where-filter-id="Filters" class="float-left">
+                                <img src="~/lib/bootstrap-icons/icons/funnel.svg" height="10" />
+                            </button>
+                            @if (column.DataType == "date" && value is DateTime date)
+                            {
+                                @date.ToShortDateString()
+                            }
+                            else
+                            {
+                                @value
+                            }
+                            <button sk-if="col.DataType == typeof(string)" type="button" inject-module="apps/dataExplorer.js" inject-member="addFilter" data-column-template="@template.Value" data-where-filter-id="Filters" class="float-right">
+                                <img src="~/lib/bootstrap-icons/icons/funnel.svg" height="10" />
+                            </button>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

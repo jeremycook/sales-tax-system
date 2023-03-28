@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Cohub.Data.Pg.Table>
+@{
+    ViewBag._Title = "Data Explorer";
+}
+<div class="m">
+
+    <h1>@ViewBag._Title</h1>
+
+    @foreach (var group in Model.GroupBy(o => o.TableSchema).OrderBy(o => o.Key))
+    {
+        <details open>
+            <summary>@group.Key.Titleize()</summary>
+            <ul>
+                @foreach (var item in group.OrderBy(o => o.TableName))
+                {
+                    <li>
+                        <a href="@Url.Action("Details", new { item.TableSchema, item.TableName })">
+                            @item.TableName
+                        </a>
+                    </li>
+                }
+            </ul>
+        </details>
+    }
+
+</div>

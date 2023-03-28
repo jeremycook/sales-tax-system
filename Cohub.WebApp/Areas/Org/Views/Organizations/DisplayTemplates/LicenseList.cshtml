@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Cohub.Data.Lic.License>
+<table>
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.IssuedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.ExpirationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Created)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderByDescending(o => o.ExpirationDate))
+        {
+            <tr>
+                <td class="text-nowrap">
+                    <a href="@Url.Action("Details", "Licenses", new { area = "Lic", id = item.Id })" title="@item.Description">View</a>
+                    <a href="@Url.Action("Print", "Licenses", new { area = "Lic", id = item.Id })">Print</a>
+                    @if (User.CanProcess() && item.TypeId == Cohub.Data.Lic.LicenseTypeId.Business)
+                    {
+                        <a href="@Url.ActionWithReturnUrl("RenewBusinessLicense", "Licenses", new { area = "Lic", id = item.Id })">Renew</a>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.IssuedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.ExpirationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Created)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

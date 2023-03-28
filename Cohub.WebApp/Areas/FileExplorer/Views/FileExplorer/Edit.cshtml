@@ -1,0 +1,26 @@
+﻿@model Edit
+@inject IStringLocalizer<Edit> L
+@{ ViewBag._Title = $"{Model.Id}"; }
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card">
+        <form method="post">
+
+            <div asp-validation-summary="All"></div>
+
+            <div class="input-group">
+                <label asp-for="Content"></label>
+                @Html.EditorFor(m => m.Content, templateName: "Code")
+            </div>
+
+            <div class="input-group">
+                <button class="button">@SL["Save Changes"]</button>
+                <a class="button" href="@Url.Action("Details", new { Model.Id })">@SL["Cancel"]</a>
+            </div>
+
+        </form>
+    </div>
+
+</div>

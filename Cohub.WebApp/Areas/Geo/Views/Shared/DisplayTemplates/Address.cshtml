@@ -1,0 +1,3 @@
+﻿@model Address
+@if (Model?.IsEmpty == false)
+{<a href="https://www.google.com/maps/place/@Model">@Html.Br(Model.MultilineAddress)</a>}

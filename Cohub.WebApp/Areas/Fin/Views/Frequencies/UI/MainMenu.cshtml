@@ -1,0 +1,34 @@
+﻿@* Called by SiteNav *@
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-frequencies-dropdown">
+        Frequencies
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-frequencies-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Frequencies</a>
+                <a href="@Url.Action("Create")">New Frequency</a>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var id))
+{
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-frequency-dropdown">
+            Frequency
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-frequency-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id })">View Frequency</a>
+                    <a href="@Url.Action("Edit", new { id })">Edit Frequency</a>
+                    <a href="@Url.Action("Delete", new { id })">Delete Frequency</a>
+                    <hr />
+                    <a href="@Url.Action("Create", "Periods", new { frequencyId = id })">Add Period</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<partial name="UI/SiteNavSearch" />

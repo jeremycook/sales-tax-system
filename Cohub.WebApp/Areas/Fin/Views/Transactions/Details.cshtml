@@ -1,0 +1,70 @@
+﻿@model Transaction
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Batch> LB
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Transaction> LT
+@inject Microsoft.Extensions.Localization.IStringLocalizer<TransactionDetail> LTD
+@{
+    ViewBag._Title = $"Transaction {Model}";
+}
+<div class="pad">
+    <p class="flex-right">
+        <a href="@Url.Action("Index", "Batches")">Batches</a>
+        <img src="~/lib/bootstrap-icons/icons/chevron-right.svg" aria-hidden="true" />
+        <a href="@Url.Action("Details", "Batches", new { id = Model.BatchId })">@Model.Batch</a>
+    </p>
+
+    <h1>@ViewBag._Title</h1>
+
+    @if (Model.Batch!.CanModify())
+    {
+        <form method="post">
+
+            <partial name="UI/ValidationSummary" />
+
+            <div class="flex-right gap">
+
+                <div>
+                    <details open class="input-group">
+                        <summary>
+                            Properties
+                        </summary>
+
+                        <div class="input-group">
+                            @Html.EditorForModel()
+                        </div>
+
+                        <div class="input-group">
+                            <button class="button">
+                                Save Changes
+                            </button>
+                            <a class="button" href="@Url.Action("Delete", new { id = Model.Id })">Delete</a>
+                        </div>
+                    </details>
+                </div>
+
+                <div>
+                    <details open>
+                        <summary>
+                            Transaction Details
+                        </summary>
+                        @if (Model.Details.Any())
+                        {
+                            @Html.EditorFor(m => m.Details, additionalViewData: new { _Parent = Model })
+
+                            <p>
+                                <button class="button">
+                                    Save Changes
+                                </button>
+                            </p>
+                        }
+                    </details>
+                </div>
+
+            </div>
+
+        </form>
+    }
+    else
+    {
+        @Html.DisplayForModel()
+    }
+</div>

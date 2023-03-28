@@ -1,0 +1,24 @@
+﻿@{ ViewBag._Title = $"Upload One or More Files"; }
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card">
+        <form method="post" enctype="multipart/form-data">
+
+            <div asp-validation-summary="All"></div>
+
+            <div class="input-group">
+                <label for="Files">Files</label>
+                <input type="file" name="Files" id="Files" multiple required />
+            </div>
+
+            <div class="input-group">
+                <button class="button">@SL["Upload"]</button>
+                <a class="button" href="@Url.Action("Index")">@SL["Cancel"]</a>
+            </div>
+
+        </form>
+    </div>
+
+</div>

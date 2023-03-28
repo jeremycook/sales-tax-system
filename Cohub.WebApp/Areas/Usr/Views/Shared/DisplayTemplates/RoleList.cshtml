@@ -1,0 +1,2 @@
+﻿@model IEnumerable<Role>
+@string.Join(", ", Model.OrderBy(o => o.Id))

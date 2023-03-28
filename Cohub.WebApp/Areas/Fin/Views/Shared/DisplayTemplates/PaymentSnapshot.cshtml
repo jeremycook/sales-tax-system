@@ -1,0 +1,77 @@
+﻿@model PaymentSnapshot
+@using Cohub.Data.Fin.Deposits
+
+<dl class="flex-right gap wrap">
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.PaymentDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.PaymentDate)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.DueDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.DueDate)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.PaidOnTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.PaidOnTime)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.VendorFee)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.VendorFee)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.NetAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.NetAmount)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.NetDue)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.NetDue)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.PenaltyDue)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.PenaltyDue)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.InterestDue)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.InterestDue)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.TotalDue)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.TotalDue)
+        </dd>
+    </div>
+</dl>

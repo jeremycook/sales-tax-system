@@ -1,0 +1,46 @@
+﻿@model FilingSchedule
+
+@if (ViewContext.RouteData.Values.CreateAction())
+{
+    <div class="input-group">
+        <label asp-for="OrganizationId"></label>
+        <input asp-for="OrganizationId" autofocus />
+        <span asp-validation-for="OrganizationId"></span>
+        @if (Html.MetadataFor(m => m.OrganizationId).Description is string OrganizationIdDescription)
+        {<span class="text-muted">@OrganizationIdDescription</span>}
+    </div>
+}
+else
+{
+    <div class="input-group">
+        <label asp-for="OrganizationId"></label>
+        <input readonly asp-for="OrganizationId" />
+        <span asp-validation-for="OrganizationId"></span>
+        @if (Html.MetadataFor(m => m.OrganizationId).Description is string OrganizationIdDescription)
+        {<span class="text-muted">@OrganizationIdDescription</span>}
+    </div>
+}
+
+<div class="input-group">
+    <label asp-for="PaymentChartId"></label>
+    @Html.EditorFor(m => m.PaymentChartId)
+    <span asp-validation-for="PaymentChartId"></span>
+    @if (Html.MetadataFor(m => m.PaymentChartId).Description is string PaymentChartIdDescription)
+    {<span class="text-muted">@PaymentChartIdDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="StartDate"></label>
+    @Html.EditorFor(m => m.StartDate)
+    <span asp-validation-for="StartDate"></span>
+    @if (Html.MetadataFor(m => m.StartDate).Description is string StartDateDescription)
+    {<span class="text-muted">@StartDateDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="EndDate"></label>
+    @Html.EditorFor(m => m.EndDate)
+    <span asp-validation-for="EndDate"></span>
+    @if (Html.MetadataFor(m => m.EndDate).Description is string EndDateDescription)
+    {<span class="text-muted">@EndDateDescription</span>}
+</div>

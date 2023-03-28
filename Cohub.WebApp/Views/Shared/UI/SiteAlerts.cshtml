@@ -1,0 +1,12 @@
+﻿@{
+    var alerts = TempData.Alerts().Union(ViewData.Alerts()).ToList();
+}
+@if (alerts.Any())
+{
+    <div class="pad stack">
+        @foreach (var item in alerts)
+        {
+            <div class="paint-@item.Category border rounded pad-xs">@Html.Raw(item.Message)</div>
+        }
+    </div>
+}

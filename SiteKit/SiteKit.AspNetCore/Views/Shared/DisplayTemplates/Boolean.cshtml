@@ -1,0 +1,14 @@
+﻿@model bool?
+@{
+    SiteKit.ComponentModel.BooleanAttribute? booleanAttribute = null;
+    if (ViewData.ModelMetadata.PropertyName is string propertyName)
+    {
+        booleanAttribute = ViewData.ModelMetadata.ContainerType?.GetProperty(propertyName)?.GetCustomAttribute<SiteKit.ComponentModel.BooleanAttribute>();
+    }
+}
+@if (Model is null && ViewData.ModelMetadata.IsRequired)
+{<span class="badge-gray">@VL[booleanAttribute?.NullText ?? "Unset"]</span>}
+else if (Model == true)
+{<span class="badge-green">@VL[booleanAttribute?.TrueText ?? "Yes"]</span>}
+else if (Model == false)
+{<span class="badge-black">@VL[booleanAttribute?.FalseText ?? "No"]</span>}

@@ -1,0 +1,9 @@
+﻿@model ImportInput
+
+<div class="input-group">
+    <label asp-for="STOXMLFile"></label>
+    @Html.EditorFor(m => m.STOXMLFile)
+    <span asp-validation-for="STOXMLFile"></span>
+    @if (Html.MetadataFor(m => m.STOXMLFile).Description is string salesTaxOnlineXMLFileDescription)
+    {<span class="text-muted">@salesTaxOnlineXMLFileDescription</span>}
+</div>

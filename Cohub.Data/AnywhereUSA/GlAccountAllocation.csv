@@ -1,0 +1,49 @@
+CategoryId,SubcategoryId,GlAccountNumber,Percent
+Lodging Tax,Net,27-11-9954-03523,100
+Lodging Tax,Net,27-00-0000-01000,-100
+Lodging Tax,Penalty,10-12-5134-68191,100
+Lodging Tax,Penalty,10-00-0000-01000,-100
+Lodging Tax,Interest,10-12-5134-68191,100
+Lodging Tax,Interest,10-00-0000-01000,-100
+Sales Tax,Net,10-11-9954-03011,4.00
+Sales Tax,Net,30-11-9954-10237,26.70
+Sales Tax,Net,10-11-9954-10237,56.00
+Sales Tax,Net,32-11-9954-10237,13.30
+Sales Tax,Net,10-00-0000-01000,-60.00
+Sales Tax,Net,30-00-0000-01000,-26.70
+Sales Tax,Net,32-00-0000-01000,-13.30
+Sales Tax,Penalty,10-12-5134-68191,100
+Sales Tax,Penalty,10-00-0000-01000,-100
+Sales Tax,Interest,10-12-5134-68191,100
+Sales Tax,Interest,10-00-0000-01000,-100
+Anywhere Public Investment Fund Sales Tax,Net,10-11-9954-10237,84.00
+Anywhere Public Investment Fund Sales Tax,Net,32-11-9954-10237,10.00
+Anywhere Public Investment Fund Sales Tax,Net,10-11-9954-03011,6.00
+Anywhere Public Investment Fund Sales Tax,Net,10-00-0000-01000,-90.00
+Anywhere Public Investment Fund Sales Tax,Net,32-00-0000-01000,-10.00
+Anywhere Public Investment Fund Sales Tax,Penalty,10-12-5134-68191,100
+Anywhere Public Investment Fund Sales Tax,Penalty,10-00-0000-01000,-100
+Anywhere Public Investment Fund Sales Tax,Interest,10-12-5134-68191,100
+Anywhere Public Investment Fund Sales Tax,Interest,10-00-0000-01000,-100
+Audit,Net,10-11-9954-03545,60.00
+Audit,Net,30-11-9954-03545,26.70
+Audit,Net,32-11-9954-03545,13.30
+Audit,Net,10-00-0000-01000,-60.00
+Audit,Net,30-00-0000-01000,-26.70
+Audit,Net,32-00-0000-01000,-13.30
+Audit,Penalty,10-12-5134-68191,100
+Audit,Penalty,10-00-0000-01000,-100
+Audit,Interest,10-12-5134-68191,100
+Audit,Interest,10-00-0000-01000,-100
+License Fee,Net,10-11-3200-03031,100
+License Fee,Net,10-00-0000-01000,-100
+License Fee,Penalty,10-12-5134-68191,100
+License Fee,Penalty,10-00-0000-01000,-100
+License Fee,Interest,10-12-5134-68191,100
+License Fee,Interest,10-00-0000-01000,-100
+NSF Fee,Net,10-12-5134-68191,100
+NSF Fee,Net,10-00-0000-01000,-100
+NSF Fee,Penalty,10-12-5134-68191,100
+NSF Fee,Penalty,10-00-0000-01000,-100
+NSF Fee,Interest,10-12-5134-68191,100
+NSF Fee,Interest,10-00-0000-01000,-100

@@ -1,0 +1,16 @@
+﻿@model Microsoft.Extensions.FileProviders.PhysicalFileProvider
+@{
+    ViewBag._Title = "File Explorer";
+}
+<div class="m">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card">
+        @{
+            var directoryContents = Model.GetDirectoryContents("/");
+            @Html.DisplayFor(_ => directoryContents, additionalViewData: new { Prefix = "/", PhysicalFileProvider = Model })
+        }
+    </div>
+
+</div>

@@ -1,0 +1,27 @@
+﻿<h2>@(ViewData.ModelMetadata.UnderlyingOrModelType.Name).cshtml</h2>
+<textarea>
+@($"@model {ViewData.ModelMetadata.UnderlyingOrModelType.FullName}")
+
+@foreach (var prop in ViewData.ModelMetadata.Properties.OrderBy(o => o.Order))
+{
+    if (prop.IsComplexType || prop.IsCollectionType)
+    {@($@"<fieldset>
+    <legend>@Html.DisplayNameFor(m => m.{prop.Name})</legend>
+    <span asp-validation-for=""{prop.Name}""></span>
+    @Html.EditorFor(m => m.{prop.Name})
+    @if (Html.MetadataFor(m => m.{prop.Name}).Description is string {prop.Name}Description)
+    {{<span class=""text-muted"">@{prop.Name}Description</span>}}
+</fieldset>
+
+")}
+    else
+    {@($@"<div class=""input-group"">
+    <label asp-for=""{prop.Name}""></label>
+    @Html.EditorFor(m => m.{prop.Name})
+    <span asp-validation-for=""{prop.Name}""></span>
+    @if (Html.MetadataFor(m => m.{prop.Name}).Description is string {prop.Name}Description)
+    {{<span class=""text-muted"">@{prop.Name}Description</span>}}
+</div>
+
+")}
+}</textarea>

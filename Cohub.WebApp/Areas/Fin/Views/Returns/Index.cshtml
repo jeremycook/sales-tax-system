@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Cohub.Data.Fin.Returns.ReturnSummary>
+@inject IStringLocalizer<Cohub.Data.Fin.Return> L
+@{
+    ViewBag._Title = L["Returns"];
+    ViewBag._SearchUrl = Url.Action("Index");
+    IDictionary<ReturnStatusId, object> stats = ViewBag._Stats; 
+}
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <dl class="flex-right">
+        @foreach (var item in stats)
+        {
+            <div>
+                <dt>
+                    @item.Key
+                </dt>
+                <dd>
+                    @item.Value
+                </dd>
+            </div>
+        }
+    </dl>
+
+    <table class="card">
+        <thead>
+            <tr>
+                <th>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Return.StatusId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Period.DueDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Organization)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Period)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Return.HasFiled)
+                </th>
+                <th>
+                    Net Rev
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.NetDue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.PenaltyDue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.InterestDue)
+                </th>
+                <th title="Balance of the NSF Fee category for the organization and period">
+                    @Html.DisplayNameFor(m => m.NSFFee)
+                </th>
+                <th title="Balance of the Ovr bucket for the organization, period and category">
+                    @Html.DisplayNameFor(m => m.Ovr)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Return.Created)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Return.Updated)
+                </th>
+            </tr>
+        </thead>
+        <tbody class="text-nowrap">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Details", new { id = item.Return.Id })">View</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Return.StatusId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Period.DueDate)
+                    </td>
+                    <td class="text-left">
+                        @Html.DisplayFor(_ => item.Organization)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Period)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Category)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Return.HasFiled)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.NetRevenue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.NetDue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.PenaltyDue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.InterestDue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.NSFFee)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Ovr)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Return.Created)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Return.Updated)
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tbody>
+            <tr>
+                <td class="text-center" colspan="100">
+                    <partial name="UI/Paging" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

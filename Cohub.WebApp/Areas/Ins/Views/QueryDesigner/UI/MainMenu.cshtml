@@ -1,0 +1,33 @@
+﻿@* Called by SiteNav *@
+@inject CohubDbContext db
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-query-definitions-dropdown">
+        Query Definitions
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-query-definitions-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List</a>
+                <a href="@Url.Action("Create")">New Query Definition</a>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var id))
+{
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-query-definition-dropdown">
+        Query Definition
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-query-definition-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Details", new { id = id })">View Query Definition</a>
+                <a href="@Url.Action("Create", new { id = id })">Clone Query Definition</a>
+                <a href="@Url.Action("ExportCsv", new { id = id })">Export CSV</a>
+                <a href="@Url.Action("Delete", new { id = id })">TODO: Delete Query Definition</a>
+            </div>
+        </div>
+    </div>
+</div>}
+<partial name="UI/SiteNavSearch" />

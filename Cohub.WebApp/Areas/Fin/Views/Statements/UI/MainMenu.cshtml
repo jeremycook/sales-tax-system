@@ -1,0 +1,37 @@
+﻿@* Called by SiteNav *@
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-statements-dropdown">
+        Statements
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-statements-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Statements and Assessments</a>
+                <hr />
+                <a href="@Url.Action("GenerateStatements")">Generate Statements</a>
+                <a href="@Url.Action("DeleteDrafts")">Delete Drafts</a>
+                <a href="@Url.Action("PublishDrafts")">Publish Drafts</a>
+                <a href="@Url.Action("PrintPublished")">Print Published</a>
+                <a href="@Url.Action("ArchivePublishedStatements")">Archive Published Statements</a>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var id))
+{
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-statement-dropdown">
+        Statement/Assessment
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-statement-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Details", new { id })">View</a>
+                <a href="@Url.Action("Edit", new { id })">Edit</a>
+                <a href="@Url.Action("Archive", new { id })">Archive</a>
+                <a href="@Url.Action("Delete", new { id })">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>}
+<partial name="UI/SiteNavSearch" />

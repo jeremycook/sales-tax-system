@@ -1,0 +1,3 @@
+﻿@model Label
+@if (Model != null)
+{<span title="@((Model.Title != Model.Value ? Model.Title + (Model.Description.IsNullOrWhiteSpace() ? string.Empty : " - ") : string.Empty) + Model.Description)">@Model.Id</span>}

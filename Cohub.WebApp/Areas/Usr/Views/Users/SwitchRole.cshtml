@@ -1,0 +1,26 @@
+@model SwitchRoleModel
+@inject IStringLocalizer<User> L
+@{
+    ViewBag._Title = L["Switch Role"];
+}
+
+<div class="m">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card w-sm">
+
+        <form method="post">
+
+            <partial name="UI/ValidationSummary" />
+
+            @Html.EditorForModel("Complex")
+
+            <div class="input-group">
+                <button class="button">@L["Switch Role"]</button>
+            </div>
+
+        </form>
+    </div>
+
+</div>

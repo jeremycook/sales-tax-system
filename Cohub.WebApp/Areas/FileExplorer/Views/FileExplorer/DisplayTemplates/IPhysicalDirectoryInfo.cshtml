@@ -1,0 +1,10 @@
+﻿@model IDirectoryContents
+
+<ul>
+    @foreach (var item in Model.OrderBy(o => o.Name))
+    {
+        <li>
+            @Html.DisplayFor(_ => item)
+        </li>
+    }
+</ul>

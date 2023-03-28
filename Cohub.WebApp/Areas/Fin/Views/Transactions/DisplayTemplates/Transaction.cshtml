@@ -1,0 +1,58 @@
+﻿@model Transaction
+
+<dl class="flex-right gap wrap">
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.Id)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.BatchId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.BatchId)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.Created)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.Created)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.Deposited)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.Deposited)
+        </dd>
+    </div>
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.Batch)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.Batch)
+        </dd>
+    </div>
+</dl>
+
+<dl sk-if="Model.Note is not null">
+    <dt>
+        @Html.DisplayNameFor(m => m.Note)
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.Note)
+    </dd>
+</dl>
+
+<details open>
+    <summary>@Html.DisplayNameFor(m => m.Details)</summary>
+    @Html.DisplayFor(m => m.Details)
+</details>

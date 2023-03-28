@@ -1,0 +1,215 @@
+﻿dl {
+    margin: 0 0 1em;
+}
+
+    dl dt {
+        font-weight: bold;
+        display: inline-block;
+        text-decoration: underline;
+        text-decoration-color: #ccc;
+    }
+
+    dl dd {
+        margin: 0 0 .25rem;
+        padding: .5rem 0;
+        min-height: 1rem;
+    }
+
+details {
+    background: #fff;
+    border: var(--border);
+    border-radius: var(--b-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 1rem;
+    padding: .5rem;
+}
+
+
+    details > summary {
+        cursor: pointer;
+    }
+
+    details[open] > summary {
+        padding-bottom: .5rem;
+        margin-bottom: .5rem;
+        border-bottom: 1px solid #ccc;
+    }
+
+    details :last-child {
+        margin-bottom: 0;
+    }
+
+hr {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    margin: 0 0 1rem;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+/* Input */
+
+label {
+    cursor: pointer;
+}
+
+input, textarea, .input {
+    border: var(--input-border);
+    box-sizing: border-box;
+    line-height: initial;
+    padding: .25rem;
+    text-align: inherit;
+}
+
+    input + input {
+        border-left: none;
+    }
+
+    input:required, select:required, textarea:required,
+    input[data-val-required], select[data-val-required], textarea[data-val-required],
+    .required {
+        background-image: url('required.svg');
+        background-repeat: no-repeat;
+        background-position: left top;
+    }
+
+    input[readonly] {
+        background: none;
+        border-color: transparent;
+        box-shadow: none;
+    }
+
+:required:focus,
+[data-val-required]:focus {
+    background-image: none;
+}
+
+select {
+    border: var(--input-border);
+    box-sizing: border-box;
+    padding: .2rem .25rem .15rem;
+}
+
+    select > option {
+        padding: .25rem;
+    }
+
+input[type=checkbox], input[type=radio] {
+    box-shadow: none;
+    cursor: pointer;
+    min-width: unset;
+}
+
+input[type=date] {
+    padding-top: 0;
+    padding: .25rem .25rem .15rem;
+}
+
+fieldset {
+    border: var(--border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-sm);
+    margin: 0 0 1rem 0;
+    min-width: 0;
+    padding: 0 .5rem .5rem;
+}
+
+    fieldset legend {
+        background: rgba(255, 255, 255, 0.5);
+        border: none;
+        border-radius: var(--border-radius);
+        display: inline-block;
+        font-size: 1em;
+        font-weight: bold;
+        line-height: inherit;
+        margin-bottom: .5rem;
+        margin-left: -.4rem;
+        padding: .1rem .4rem .2rem;
+        white-space: normal;
+        width: auto;
+    }
+
+    fieldset > :last-child,
+    fieldset > :last-child :last-child {
+        margin-bottom: 0;
+    }
+
+/* Table */
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 1rem;
+    text-align: right;
+}
+
+    table.table-fixed {
+        table-layout: fixed;
+    }
+
+th {
+    padding: .25rem .5rem;
+    vertical-align: top;
+}
+
+    th > :last-child {
+        margin-bottom: 0;
+    }
+
+td {
+    padding: .25rem .5rem;
+    vertical-align: top;
+    border: 1px solid #ccc;
+}
+
+    td > :last-child {
+        margin-bottom: 0;
+    }
+
+thead {
+    text-align: center;
+}
+
+    thead th {
+        vertical-align: bottom;
+    }
+
+tbody {
+}
+
+    tbody > tr:first-of-type td {
+        border-top-color: var(--border-color);
+    }
+
+    tbody > tr:last-of-type td {
+        border-bottom-color: var(--border-color);
+    }
+
+tfoot {
+}
+
+    tfoot th {
+        text-align: right;
+    }
+
+    tfoot > tr:first-of-type th {
+        border-top-color: var(--border-color);
+    }
+
+    tfoot > tr:last-of-type th {
+        border-bottom-color: var(--border-color);
+    }
+
+table.border th {
+    border: 1px solid #ccc;
+}
+
+table.card th {
+    border: 1px solid #ccc;
+}
+
+table.border-0 td {
+    border-width: 0;
+}

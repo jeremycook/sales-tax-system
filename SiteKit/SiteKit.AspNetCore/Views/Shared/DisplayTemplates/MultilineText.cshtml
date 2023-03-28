@@ -1,0 +1,3 @@
+﻿@model string
+@if (Model != null)
+{@Html.Raw(string.Join("<br/>", System.Text.RegularExpressions.Regex.Split(Model, "\r?\n").Select(Html.Encode)))}

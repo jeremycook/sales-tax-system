@@ -1,0 +1,32 @@
+﻿@model Transaction
+@{
+    ViewBag._Title = "New Transaction";
+}
+
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <form method="post">
+
+        <partial name="UI/ValidationSummary" />
+
+        @Html.HiddenFor(m => m.BatchId)
+        <span asp-validation-for="BatchId"></span>
+
+        <div class="w-xs">
+            <div class="input-group">
+                <label asp-for="Note"></label>
+                @Html.EditorFor(m => m.Note)
+                <span asp-validation-for="Note"></span>
+            </div>
+        </div>
+
+        <div>
+            <button class="button">Start Transaction</button>
+            <a class="button" href="@Url.Action("Details", "Batches", new { id = Model.BatchId })">Cancel</a>
+        </div>
+
+    </form>
+
+</div>

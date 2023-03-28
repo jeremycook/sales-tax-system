@@ -1,0 +1,33 @@
+﻿@* Called by SiteNav *@
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-filings-dropdown">
+        Filings
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-filings-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Filings</a>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var id))
+{
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-filing-dropdown">
+            Filing
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-filing-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id = id })">View Filing</a>
+                    @if (User.CanProcess())
+                    {
+                        <a href="@Url.Action("Edit", new { id = id })">Edit Filing</a>
+                        <a href="@Url.Action("Delete", new { id = id })">Delete Filing</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

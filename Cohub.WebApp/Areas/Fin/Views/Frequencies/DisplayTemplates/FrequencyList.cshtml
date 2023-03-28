@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Cohub.Data.Fin.Frequency>
+
+<table class="card">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => m.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Created)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">@item.Id</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.IsActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Created)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

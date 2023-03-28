@@ -1,0 +1,3 @@
+﻿@model OrganizationStatus
+@if (Model != null)
+{<span class="badge-@(Model.Id.Underscore().Hyphenate())">@Model</span>}

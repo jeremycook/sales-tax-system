@@ -1,0 +1,31 @@
+﻿@model Edit
+@inject IStringLocalizer<Edit> L
+@{ ViewBag._Title = $"Create a File"; }
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card">
+        <form method="post">
+
+            <div asp-validation-summary="All"></div>
+
+            <div class="input-group">
+                <label asp-for="Id"></label>
+                <input asp-for="Id" />
+            </div>
+
+            <div class="input-group">
+                <label asp-for="Content"></label>
+                @Html.EditorFor(m => m.Content, templateName: "Code")
+            </div>
+
+            <div class="input-group">
+                <button class="button">@SL["Create"]</button>
+                <a class="button" href="@Url.Action("Index")">@SL["Cancel"]</a>
+            </div>
+
+        </form>
+    </div>
+
+</div>

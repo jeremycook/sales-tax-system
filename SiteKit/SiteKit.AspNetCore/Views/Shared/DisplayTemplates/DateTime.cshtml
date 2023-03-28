@@ -1,0 +1,12 @@
+﻿@model DateTime?
+@if (Model != null)
+{
+    if (Model < DateTime.Today)
+    {
+        <span title="@Model">@Model.Value.ToLocalTime().ToShortDateString()</span>
+    }
+    else
+    {
+        <span title="@Model">@Model.Value.ToLocalTime().Humanize()</span>
+    }
+}

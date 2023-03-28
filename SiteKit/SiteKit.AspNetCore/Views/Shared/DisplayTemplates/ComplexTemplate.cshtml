@@ -1,0 +1,47 @@
+﻿<h2>@(ViewData.ModelMetadata.UnderlyingOrModelType.Name).cshtml</h2>
+<textarea>@($@"@model {ViewData.ModelMetadata.UnderlyingOrModelType.Name}
+
+<dl>")@foreach (var prop in ViewData.ModelExplorer.Properties.OrderBy(o => o.Metadata.Order))
+{
+    if (!prop.Metadata.ShowForDisplay ||
+       prop.Metadata.Name == null ||
+       prop.Model == null ||
+       (prop.Model as SiteKit.Data.IEmptiable)?.IsEmpty == true ||
+       (prop.Model is string text && string.IsNullOrWhiteSpace(text)) ||
+       (prop.Model as IEnumerable<object>)?.Any() == false)
+    {
+        continue;
+    }
+    var name = prop.Metadata.Name;
+        var referenceName = name.EndsWith("Id") ? name.Substring(0, name.Length - 2) : null;
+    if (prop.Metadata.IsCollectionType && this.ViewData.ModelMetadata.UnderlyingOrModelType.GetProperty(name)?.GetSetMethod() == null)
+    {
+        continue;
+    }
+    if (prop.Metadata.IsComplexType && this.ViewData.ModelMetadata.UnderlyingOrModelType.GetProperty(name)?.GetSetMethod() == null)
+    {
+        continue;
+    }
+                @if (referenceName != null && this.ViewData.ModelExplorer.Properties.Any(p => p.Metadata.Name == referenceName && p.Model != null))
+                {@($@"
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.{referenceName})
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.{referenceName})
+        </dd>
+    </div>")}
+                else
+                {@($@"
+    <div>
+        <dt>
+            @Html.DisplayNameFor(m => m.{name})
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.{name})
+        </dd>
+    </div>")}
+}
+@($@"
+</dl>")</textarea>

@@ -1,0 +1,31 @@
+﻿@* Called by SiteNav *@
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-filing-schedules-dropdown">
+        Filing Schedules
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-filing-schedules-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Filing Schedules</a>
+                <a href="@Url.Action("Create")">New Filing Schedule</a>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var idValue) && int.TryParse(idValue?.ToString(), out int filingScheduleId))
+{
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-filing-schedule-dropdown">
+            Filing Schedule
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-filing-schedule-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id = filingScheduleId })">View Filing Schedule</a>
+                    <a href="@Url.Action("Edit", new { id = filingScheduleId })">Edit Filing Schedule</a>
+                    <a href="@Url.Action("Delete", new { id = filingScheduleId })">Delete Filing Schedule</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,28 @@
+﻿@model IDirectoryContents
+@{
+    string Prefix = ViewBag.Prefix;
+    PhysicalFileProvider PhysicalFileProvider = ViewBag.PhysicalFileProvider;
+}
+<ul>
+    @foreach (var item in Model.OrderBy(o => o.Name))
+    {
+        var path = Prefix + "/" + item.Name;
+        <li>
+            @if (item.IsDirectory)
+            {
+                var directoryContents = PhysicalFileProvider.GetDirectoryContents(path);
+                @item.Name
+                <a href="@Url.Action("Upload", new { Id = path.TrimStart('/') })">
+                    [Upload]
+                </a>
+                @Html.DisplayFor(_ => directoryContents, additionalViewData: new { Prefix = path, PhysicalFileProvider })
+            }
+            else
+            {
+                <a href="@Url.Action("Details", new { Id = path.TrimStart('/') })">
+                    @item.Name
+                </a>
+            }
+        </li>
+    }
+</ul>

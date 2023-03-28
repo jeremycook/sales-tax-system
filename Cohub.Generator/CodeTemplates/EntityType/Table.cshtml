@@ -1,0 +1,64 @@
+﻿@model IEntityType
+@using Humanizer
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.EntityFrameworkCore.Metadata
+@{
+    var properties = Model.ClrType.GetProperties()
+        .Select(p => Model.FindProperty(p.Name))
+        .Where(p => p?.PropertyInfo?.GetGetMethod() != null)
+        .Select(p => new
+        {
+            Property = p,
+            Navigation = Model.GetNavigations().FirstOrDefault(n => n.ForeignKey.Properties.Count == 1 && n.ForeignKey.Properties[0] == p),
+        })
+        .Select(p => new
+        {
+            p.Property,
+            p.Navigation,
+            Name = p.Navigation?.Name ?? p.Property.Name
+        })
+        .ToArray();
+}
+<table>
+    <thead>
+        <tr>
+            @foreach (var prop in properties)
+            {
+                @if (prop.Property.IsPrimaryKey())
+                {
+                    <th>
+                    </th>
+                }
+                else
+                {
+                    <th>
+                        @@Html.DisplayNameFor(m => m.@(prop.Navigation?.Name ?? prop.Property.Name))
+                    </th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @@foreach(var item in Model)
+        {
+            <tr>
+            @foreach (var prop in properties)
+            {
+                if (prop.Property.IsPrimaryKey())
+                {
+                <td>
+                    <a href="@@Url.Action("Details", new { id = item.Id })">@@item</a>
+                    <a href="@@Url.Action("Edit", new { id = item.Id })">Edit</a>
+                </td>
+                }
+                else
+                {
+                <td>
+                    @@Html.DisplayFor(_ => item.@(prop.Navigation?.Name ?? prop.Property.Name))
+                </td>
+                }
+            }
+            </tr>
+        }
+    </tbody>
+</table>

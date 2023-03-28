@@ -1,0 +1,50 @@
+﻿@using System.Text.RegularExpressions
+<dl class="@ViewBag._Class">
+    @foreach (var prop in this.ViewData.ModelExplorer.Properties.OrderBy(o => o.Metadata.Order))
+    {
+        if (!prop.Metadata.ShowForDisplay ||
+            prop.Metadata.Name == null ||
+            prop.Model == null ||
+            prop.Model == ViewBag._Parent ||
+            (prop.Model as SiteKit.Data.IEmptiable)?.IsEmpty == true ||
+            (prop.Model is string text && string.IsNullOrWhiteSpace(text)) ||
+            (prop.Model as IEnumerable<object>)?.Any() == false)
+        {
+            continue;
+        }
+        var name = prop.Metadata.Name!;
+        if (prop.Metadata.IsCollectionType && this.ViewData.ModelMetadata.UnderlyingOrModelType.GetProperty(name)?.GetSetMethod() == null)
+        {
+            continue;
+        }
+        if (prop.Metadata.IsComplexType && this.ViewData.ModelMetadata.UnderlyingOrModelType.GetProperty(name)?.GetSetMethod() == null)
+        {
+            continue;
+        }
+        var displayName = Html.DisplayName(name);
+        var referenceName = name.EndsWith("Id") ? name.Substring(0, name.Length - 2) : null;
+        <div>
+            <dt>
+                @displayName@(System.Text.RegularExpressions.Regex.IsMatch(displayName, "[A-Za-z0-9]$") ? ":" : "")
+            </dt>
+            <dd>
+                @if (referenceName != null && this.ViewData.ModelExplorer.Properties.Any(p => p.Metadata.Name == referenceName && p.Model != null))
+                {
+                    @Html.Display(referenceName)
+                }
+                else if (prop.Metadata.IsCollectionType)
+                {
+                    @Html.Display(name, prop.Metadata.ElementType?.Name + "List")
+                }
+                else if (prop.Metadata.IsComplexType)
+                {
+                    @Html.Display(name)
+                }
+                else
+                {
+                    @Html.Display(name)
+                }
+            </dd>
+        </div>
+    }
+</dl>

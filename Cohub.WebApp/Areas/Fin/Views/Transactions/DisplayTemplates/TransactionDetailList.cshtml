@@ -1,0 +1,65 @@
+﻿@model IList<TransactionDetail>
+@inject Microsoft.Extensions.Localization.IStringLocalizer<TransactionDetail> L
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                @L["Organization"]
+            </th>
+            <th>
+                @L["Period"]
+            </th>
+            <th>
+                @L["Category"]
+            </th>
+            <th>
+                @L["Subcategory"]
+            </th>
+            <th>
+                @L["Bucket"]
+            </th>
+            <th>
+                @L["Effective Date"]
+            </th>
+            <th>
+                @L["Amount"]
+            </th>
+            <th>
+                @L["Notes"]
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int index = 0; index < Model.Count; index++)
+        {
+            var item = Model[index];
+        <tr data-role="data-item">
+            <td class="text-left">
+                @Html.DisplayFor(m => m[index].Organization)
+            </td>
+            <td>
+                @Html.DisplayFor(m => m[index].PeriodId)
+            </td>
+            <td>
+                @Html.DisplayFor(m => m[index].CategoryId)
+            </td>
+            <td>
+                @Html.DisplayFor(m => m[index].SubcategoryId)
+            </td>
+            <td>
+                @Html.DisplayFor(m => m[index].BucketId)
+            </td>
+            <td>
+                @Html.DisplayFor(m => m[index].EffectiveDate)
+            </td>
+            <td>
+                @Html.DisplayFor(m => m[index].Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(m => m[index].Note)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

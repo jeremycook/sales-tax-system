@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Organization>
+@inject IStringLocalizer<Organization> L
+@{
+    ViewBag._Title = L["Organizations"];
+    ViewBag._SearchUrl = Url.Action("Index");
+}
+<div class="m">
+    <h1>@ViewBag._Title</h1>
+
+    <table class="card">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(m => m.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.OrganizationName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Dba)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.PhysicalAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Classification)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Labels)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Created)
+                </th>
+            </tr>
+        </thead>
+        <tbody class="text-left">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Details", new { id = item.Id })">
+                            @item.Id
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Status)
+                    </td>
+                    <td>
+                        @item.OrganizationName
+                    </td>
+                    <td>
+                        @item.Dba
+                    </td>
+                    <td title="@item.PhysicalAddress.FullAddress">
+                        @item.PhysicalAddress.GetSingleLineAddessLines()
+                    </td>
+                    <td>
+                        @item.Classification
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Labels)
+                    </td>
+                    <td class="text-right">
+                        @Html.DisplayFor(_ => item.Created)
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tbody>
+            <tr>
+                <td class="text-center" colspan="100">
+                    <partial name="UI/Paging" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

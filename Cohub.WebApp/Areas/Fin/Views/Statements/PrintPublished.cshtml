@@ -1,0 +1,263 @@
+﻿@model IEnumerable<Cohub.Data.Fin.Statements.StatementReport>
+@{
+    Layout = "_PrintLayout";
+    ViewBag._Title = "Published Statements and Assessments Print Out";
+    bool autoprint = ViewBag._Autoprint == true;
+}
+
+<script sk-if="autoprint">print()</script>
+
+<div class="d-print-none card">
+    <p>
+        <strong>Heads up:</strong> Make sure headers and footers are turned <strong>off</strong> when printing.
+    </p>
+    <p>
+        <img src="~/lib/site/chrome-print-settings.png" />
+    </p>
+    <p class="mb-0">
+        <button type="button" onclick="print()" class="button">Print</button>
+    </p>
+</div>
+
+<div class="print">
+
+    @foreach (var org in Model)
+    {
+        <div class="page page-letter">
+
+            <div style="height: 2in; padding: 0 .5in">
+                <div class="flex-right" style="align-items: center">
+                    <img src="~/lib/anywhereusa/anywhereusa-statement-logo.jpg" alt="City of AnywhereUSA Logo" style="height: .9in" />
+                    <div style="flex-grow: 1; text-transform: uppercase; text-align: center">
+                        <strong>Sales Tax @org.TypeId</strong><br />
+                        Please Respond Immediately
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-right" style="justify-content: space-between; height: 1in; padding: 0 .5in">
+                <div style="font-size: 10pt">
+                    @(org.OrganizationName)<br />
+                    @if (org.Dba is not null && org.OrganizationName != org.Dba)
+                    {
+                        @org.Dba
+
+                        <br />
+                    }
+                    @if (org.MulilineAddress is not null)
+                    {
+                        @Html.Raw(string.Join("<br />", System.Text.RegularExpressions.Regex.Split(org.MulilineAddress, "\r?\n").Select(Html.Encode)))
+                    }
+                </div>
+                <div class="text-right">
+                    Date of Notice: @org.NoticeDate.ToString("MMMM d, yyyy")<br />
+                    Account Number: @org.OrganizationId
+                    @if (@org.TypeId == StatementTypeId.Assessment)
+                    {
+                        <div>Assessment Due Date: @org.AssessmentDueDate?.ToString("MMMM d, yyyy")</div>
+                    }
+                </div>
+            </div>
+
+            @if (org.TypeId == StatementTypeId.Assessment)
+            {
+                <p>
+                    The following amounts are based on actual filing for this period or are estimated based on reporting
+                    history or industry average and are assessed in accordance with section 3-28-95 of the AnywhereUSA
+                    Municipal Code. Please note the minimum estimate is $600.00 per period covered. An
+                    estimate can be cleared once a return is filed by the due date.
+                </p>
+            }
+            else
+            {
+                <p>
+                    This statement shows the outstanding balance for the City of AnywhereUSA. This is NOT an assessment. The
+                    amounts are based on actual filing or are estimated. <strong>
+                        The minimum estimate is $600.00 per period
+                        and can be cleared if and when a return is filed
+                    </strong>. The City may have issued, or may later
+                    issue, an assessment in accordance with section 3-28-95 of the AnywhereUSA Municipal Code.
+                </p>
+            }
+
+            <p class="text-center">
+                <strong>Schedule</strong>
+            </p>
+
+            <table class="w-100">
+                <thead class="text-right">
+                    <tr>
+                        <th>
+                            Period Covered
+                        </th>
+                        <th>
+                            Tax or Fee
+                        </th>
+                        <th>
+                            Penalty
+                        </th>
+                        <th>
+                            Interest
+                        </th>
+                        <th>
+                            Total Due
+                        </th>
+                        <th>
+                            Overpayment
+                        </th>
+                        <th>
+                            Code
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var line in org.Schedule)
+                    {
+                        <tr>
+                            <td>
+                                @if (line.PeriodCovered != PeriodId.None)
+                                {
+                                    @line.PeriodCovered
+                                }
+                                @line.Category
+                            </td>
+                            <td>
+                                <partial name="DisplayTemplates/Currency" model="line.Net" />
+                            </td>
+                            <td>
+                                <partial name="DisplayTemplates/Currency" model="line.Penalty" />
+                            </td>
+                            <td>
+                                <partial name="DisplayTemplates/Currency" model="line.Interest" />
+                            </td>
+                            <td>
+                                <partial name="DisplayTemplates/Currency" model="line.TotalDue" />
+                            </td>
+                            <td>
+                                <partial name="DisplayTemplates/Currency" model="line.TotalOverpayment" />
+                            </td>
+                            <td>
+                                @line.ReasonCode
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            Balance (Credit)
+                        </th>
+                        <th>
+                            <partial name="DisplayTemplates/Currency" model="org.Schedule.Sum(o => o.Net)" />
+                        </th>
+                        <th>
+                            <partial name="DisplayTemplates/Currency" model="org.Schedule.Sum(o => o.Penalty)" />
+                        </th>
+                        <th>
+                            <partial name="DisplayTemplates/Currency" model="org.Schedule.Sum(o => o.Interest)" />
+                        </th>
+                        <th>
+                            <partial name="DisplayTemplates/Currency" model="org.Schedule.Sum(o => o.TotalDue)" />
+                        </th>
+                        <th>
+                            <partial name="DisplayTemplates/Currency" model="org.Schedule.Sum(o => o.TotalOverpayment)" />
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <table class="text-left" style="font-size: .9rem">
+                <tr>
+                    <th>
+                        Code
+                    </th>
+                    <th>
+                        Comment
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        FTF
+                    </td>
+                    <td>
+                        <strong>Failure To File:</strong>
+                        The City did not receive the tax return which must be filed even if no liability exists.
+                        Please file a return with payment for the "period covered" indicated above. If a return is not filed the
+                        City may require the estimated amounts be paid in lieu of filing.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        U
+                    </td>
+                    <td>
+                        <strong>Underpayment:</strong>
+                        Full payment was not received. This is typically due to an error in calculation and/or
+                        the return being filed late. Please remit the outstanding balance shown on the notice.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        O
+                    </td>
+                    <td>
+                        <strong>Overpayment:</strong>
+                        The tax was overpaid. Please verify calculation and amount paid. If this is a valid credit
+                        please either file a claim for refund or take credit on your next return.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        N
+                    </td>
+                    <td>
+                        <strong>NSF + NSF Fee:</strong>
+                        Your bank did not honor your payment. Payment may now considered late. If payment
+                        is late vendor fee is disallowed and penalty and interest apply. In addition, there is an NSF fee.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        L
+                    </td>
+                    <td>
+                        <strong>License Fee:</strong>
+                        The City of AnywhereUSA has not received payment of your license fee.
+                    </td>
+                </tr>
+            </table>
+
+            @if (org.TypeId == StatementTypeId.Assessment)
+            {
+                <p class="text-upper">
+                    <strong>THIS ASSESSMENT MAY BE PROTESTED!</strong>
+                </p>
+
+                <p>
+                    Section 3-28-110 of the AnywhereUSA Municipal Code specifies that any Final Notice of Assessment or
+                    denial of a claim for refund may be protested by the taxpayer to whom it is issued in accordance
+                    with that section. The protest must be submitted in writing within twenty (20) days of the date of
+                    THIS notice. A due date is provided for your convenience. A decision made by the City of
+                    AnywhereUSA Finance Director as a result of this procedure may be further appealed to The Adams
+                    County District Court in accordance with CRS 29-2-106.1.
+                </p>
+            }
+
+            <p class="text-center">
+                If the return is zero please email a copy of the zero return to <a href="mailto:salestax@anywhereusa.gov?subject=@($"{org.OrganizationId} {org.NoticeDate.ToShortDateString()} Statement")">SalesTax@anywhereusa.gov</a>.
+                Be sure the return includes the account number indicated on this notice.
+                <br /><br />
+                A return with payment can be mailed to City of AnywhereUSA, 500 S. 4th Ave., AnywhereUSA, CO 80601.
+                For proper posting please include a copy of this notice with your remittance.
+                <br /><br />
+                Online filing is also available at <a href="https://secure.salestaxonline.com">Secure.SalesTaxOnline.com</a>.
+                <br /><br />
+                For questions regarding this notice please contact us at <a href="mailto:salestax@anywhereusa.gov?subject=@($"{org.OrganizationId} {org.NoticeDate.ToShortDateString()} Statement")">SalesTax@anywhereusa.gov</a> or (303) 655-2041.
+            </p>
+
+        </div>
+    }
+
+</div>

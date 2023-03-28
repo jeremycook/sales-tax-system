@@ -1,0 +1,27 @@
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<div class="m">
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card">
+        <p>
+            Create a batch from an STO XML file.
+        </p>
+
+        <form method="post" enctype="multipart/form-data">
+            <partial name="UI/ValidationSummary" />
+
+            <div class="w-sm input-group">
+                @Html.EditorForModel()
+            </div>
+
+            <div class="input-group">
+                <button type="submit" class="button">@SL["Import"]</button>
+                @if (Url.ReturnUrl() is string returnUrl)
+                {
+                <a href="@returnUrl" class="button">@SL["Cancel"]</a>}
+            </div>
+        </form>
+    </div>
+</div>

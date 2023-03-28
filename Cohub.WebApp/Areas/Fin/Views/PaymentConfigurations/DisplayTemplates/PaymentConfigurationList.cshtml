@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Cohub.Data.Fin.PaymentConfiguration>
+
+<table class="card">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => m.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.PaymentChart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.VendorFeePercentage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.VendorFeeMax)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.PenaltyPercentage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.InterestPercentage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.TaxPercentage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.EstimatedNetAmountDuePercentage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.MinimumEstimatedNetAmountDue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Updated)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+<tr>
+    <td class="text-nowrap">
+        <a asp-action="Details" asp-route-id="@item.Id">View #@item.Id</a>
+    </td>
+    <td class="text-nowrap text-center">
+        @Html.DisplayFor(_ => item.PaymentChart)
+    </td>
+    <td>
+        @Html.DisplayFor(_ => item.StartDate)
+    </td>
+    <td>
+        @Html.DisplayFor(_ => item.EndDate)
+    </td>
+    <td>
+        @Html.DisplayFor(_ => item.VendorFeePercentage)
+    </td>
+    <td>
+        @Html.DisplayFor(_ => item.VendorFeeMax)
+    </td>
+    <td>
+        @Html.DisplayFor(_ => item.PenaltyPercentage)
+    </td>
+    <td>
+        @Html.DisplayFor(_ => item.InterestPercentage)
+    </td>
+    <td>
+        @Html.DisplayFor(_ => item.TaxPercentage)
+    </td>
+    <td>
+        @Html.DisplayFor(_ => item.EstimatedNetAmountDuePercentage)
+    </td>
+    <td>
+        @Html.DisplayFor(_ => item.MinimumEstimatedNetAmountDue)
+    </td>
+    <td>
+        @Html.DisplayFor(_ => item.Created)
+    </td>
+    <td>
+        @Html.DisplayFor(_ => item.Updated)
+    </td>
+</tr>            }
+    </tbody>
+</table>

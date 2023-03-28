@@ -1,0 +1,41 @@
+﻿@model IEnumerable<QueryDefinition>
+@inject IStringLocalizer<QueryDefinition> L
+@{ ViewBag._Title = L["Queries"];
+    ViewBag._SearchUrl = Url.Action("Index"); }
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <p sk-if="!Model.Any()">
+        No queries found.
+    </p>
+
+    <table sk-if="Model.Any()" class="card">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(m => m.Id)
+                </th>
+            </tr>
+        </thead>
+        <tbody class="text-left">
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Details", new { id = item.Id })" data-target="modal">
+                        @item.Id
+                    </a>
+                </td>
+            </tr>
+            }
+        </tbody>
+        <tbody>
+            <tr>
+                <td colspan="100">
+                    <partial name="UI/Paging" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

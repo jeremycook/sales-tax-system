@@ -1,0 +1,65 @@
+﻿@* Called by SiteNav *@
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-batches-dropdown">
+        Batches
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-batches-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Batches</a>
+                @if (User.CanProcess())
+                {
+                    <hr />
+                    <a href="@Url.Action("Create", "Batches")">New Batch</a>
+                    <a href="@Url.Action("Create", "Batches", new { forwardUrl = Url.Action("Index", "Deposit", new { batchId = "--batchId--" }) })">Bulk Deposit Returns Batch</a>
+                    <a href="@Url.Action("Create", "Batches", new { forwardUrl = Url.Action("Index", "Deposit", new { batchId = "--batchId--", isZero = true }) })">Bulk Deposit Zero Returns Batch</a>
+                    <a href="@Url.ActionWithReturnUrl("Import", "Sto", new { area = "Sto" })">STO Import Batch</a>
+                    <hr />
+                    <a href="@Url.Action("GenerateDues", "Batches")">Generate Dues</a>
+                    <a href="@Url.Action("ManageMoney", "Batches")">Manage Money</a>
+                    <a href="@Url.Action("RefreshReturns", "Batches")">Refresh Returns</a>
+                    <a href="@Url.Action("Refund", "Batches")">Refund</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@if (User.CanProcess() && ViewContext.RouteData.Values.TryGetValue("id", out var idValue) && int.TryParse(idValue?.ToString(), out int batchId))
+{
+    Batch? batch = Model as Batch;
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-batch-dropdown">
+            Batch
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-batch-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id = batchId })">View Batch</a>
+                    @if (batch is not null)
+                    {
+                        if (batch.IsPosted)
+                        {
+                            @if (User.CanManage())
+                            {
+                                <a href="@Url.ActionWithReturnUrl("Unpost", new { id = batchId })">Unpost Batch</a>
+                            }
+                        }
+                        else
+                        {
+                            <a href="@Url.ActionWithReturnUrl("Post", new { id = batchId })">Post Batch</a>
+                            @if (User.CanManage())
+                            {
+                                <a href="@Url.ActionWithReturnUrl("Delete", new { id = batchId })">Delete Batch</a>
+                            }
+                            <hr />
+                            <a href="@Url.ActionWithReturnUrl("Index", "Deposit", new { batchId })">Bulk Deposit Returns</a>
+                            <a href="@Url.ActionWithReturnUrl("Index", "Deposit", new { batchId, isZero = true })">Bulk Deposit Zero Returns</a>
+                            <a href="@Url.ActionWithReturnUrl("Create", "Transactions", new { batchId })">Add Transaction</a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<partial name="UI/SiteNavSearch" />

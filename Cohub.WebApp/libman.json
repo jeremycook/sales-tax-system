@@ -1,0 +1,44 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "ace@1.4.12",
+      "destination": "wwwroot/lib/ace/"
+    },
+    {
+      "library": "autosize.js@4.0.2",
+      "destination": "wwwroot/lib/autosize/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "bootstrap-icons@1.0.0",
+      "destination": "wwwroot/lib/bootstrap-icons/"
+    },
+    {
+      "library": "jquery@3.5.1",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "jquery-validate@1.19.2",
+      "destination": "wwwroot/lib/jquery-validate/"
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.11",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "normalize.css@8.0.1",
+      "destination": "wwwroot/lib/normalize.css/"
+    },
+    {
+      "library": "vue@2.6.12",
+      "destination": "wwwroot/lib/vue/"
+    },
+    {
+      "library": "vue-select@3.10.8",
+      "destination": "wwwroot/lib/vue-select/"
+    }
+  ]
+}

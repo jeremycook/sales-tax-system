@@ -1,0 +1,18 @@
+﻿@model User
+@inject IStringLocalizer<User> L
+@inject CohubDbContext db
+@{
+    ViewBag._Title = $"{Model}";
+}
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <details open>
+        <summary>
+            Properties
+        </summary>
+        @Html.DisplayForModel("UserProperties")
+    </details>
+
+</div>

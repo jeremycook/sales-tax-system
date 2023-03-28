@@ -1,0 +1,82 @@
+﻿@model Report
+@inject IStringLocalizer<Report> L
+@{
+    ViewBag._Title = $"{Model}";
+}
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="grid-2 gap">
+
+        <div>
+            <details open>
+                <summary>Properties</summary>
+
+                <form method="post">
+
+                    <partial name="UI/ValidationSummary" />
+
+                    <div class="input-group">
+                        @Html.EditorForModel()
+                    </div>
+
+                    <div class="input-group">
+                        <button class="button">@L["Save Changes"]</button>
+                        <a class="button" href="@Url.Action("Archive", new { id = Model.Id })" data-target="modal">
+                            @L["Archive"]
+                        </a>
+                    </div>
+                </form>
+            </details>
+        </div>
+
+        <div>
+            <dl>
+                <div>
+                    <dt>
+                        @Html.DisplayNameFor(m => m.Name)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(m => m.Name)
+                    </dd>
+                </div>
+                <div>
+                    <dt>
+                        @Html.DisplayNameFor(m => m.QueryDefinition)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(m => m.QueryDefinition)
+                    </dd>
+                </div>
+                <div>
+                    <dt>
+                        @Html.DisplayNameFor(m => m.Template)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(m => m.Template)
+                    </dd>
+                </div>
+                <div>
+                    <dt>
+                        @Html.DisplayNameFor(m => m.Created)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(m => m.Created)
+                    </dd>
+                </div>
+                <div>
+                    <dt>
+                        @Html.DisplayNameFor(m => m.CreatedBy)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(m => m.CreatedBy)
+                    </dd>
+                </div>
+            </dl>
+        </div>
+
+    </div>
+
+</div>
+

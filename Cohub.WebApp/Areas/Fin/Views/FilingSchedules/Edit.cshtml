@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag._Title ??= Model?.ToString();
+}
+<div class="m">
+
+    <h1>@ViewBag._Title</h1>
+
+    <details open class="w-sm">
+
+        <summary>@SL["Properties"]</summary>
+
+        <p>
+            Edit a filing schedule.
+            Any payable and unfiled returns that no longer have a corresponding filing schedule will be deleted.
+            New returns will be generated when appropriate.
+        </p>
+
+        <form method="post">
+
+            <partial name="UI/ValidationSummary" />
+
+            @Html.EditorForModel()
+
+            <div class="input-group">
+                <button class="button">@SL["Save Changes"]</button>
+                <a class="button" href="@Url.ReturnUrlOrAction("Index")">@SL["Cancel"]</a>
+            </div>
+
+        </form>
+
+    </details>
+
+</div>

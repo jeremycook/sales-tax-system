@@ -1,0 +1,24 @@
+﻿@inject CohubDbContext db
+@inject EntityUrlHelper entityUrl
+@{
+    ViewBag._Title = VL["Overview"];
+    var data = new
+    {
+        dueReturns = await db.Set<Return>().CountAsync(o => o.StatusId == ReturnStatusId.Due),
+    };
+}
+
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="grid-6">
+
+        <a class="card pad text-center" href="@Url.Action("Index", "Returns", new { where = $"return.status_id = '{ReturnStatusId.Due}'" })">
+            <h2>@data.dueReturns</h2>
+            @VL["Due Returns"]
+        </a>
+
+    </div>
+
+</div>

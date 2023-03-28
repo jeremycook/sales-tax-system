@@ -1,0 +1,4 @@
+﻿@model PaymentChart
+@inject EntityUrlHelper entityUrl
+@if (Model != null)
+{<a href="@entityUrl.Item(Model)">@Model</a>}

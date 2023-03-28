@@ -1,0 +1,41 @@
+﻿@model Batch
+
+<div class="pad">
+    @if (Model.IsPosted)
+    {
+        ViewBag._Title = $"Unpost Batch";
+
+        <h1>@ViewBag._Title</h1>
+
+        <div class="card w-sm">
+            <partial name="UI/ValidationSummary" />
+
+            <p>
+                FYI: Please be aware that unposting the batch will not undo any side-effects
+                that results from when it was posted. Returns that were closed will not
+                reset to due or payable, for example, they will remain closed.
+            </p>
+
+            <p>
+                Unpost batch @Model?
+            </p>
+
+            <form method="post">
+                <button class="button">Yes</button>
+                <a class="button" href="@Url.Action("Details", new { id = Model.Id })">No</a>
+            </form>
+        </div>
+    }
+    else
+    {
+        ViewBag._Title = $"Unpost Batch";
+
+        <h1>@ViewBag._Title</h1>
+
+        <div class="card w-sm">
+            <partial name="UI/ValidationSummary" />
+
+            <a class="button" href="@Url.Action("Details", new { id = Model.Id })">OK</a>
+        </div>
+    }
+</div>

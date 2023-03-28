@@ -1,0 +1,48 @@
+﻿@model TransactionDetail
+
+<input type="hidden" asp-for="Id" />
+<span asp-validation-for="Id"></span>
+
+<input type="hidden" asp-for="TransactionId" />
+<span asp-validation-for="TransactionId"></span>
+
+<div class="input-group">
+    <label asp-for="OrganizationId"></label>
+    <input asp-for="OrganizationId" list="@Html.RequestPartial("UI/OrganizationDatalist")" autocomplete="off" autofocus />
+    <span asp-validation-for="OrganizationId"></span>
+</div>
+<div class="input-group">
+    <label asp-for="PeriodId"></label>
+    @Html.EditorFor(m => m.PeriodId)
+    <span asp-validation-for="PeriodId"></span>
+</div>
+<div class="input-group">
+    <label asp-for="BucketId"></label>
+    @Html.EditorFor(m => m.BucketId)
+    <span asp-validation-for="BucketId"></span>
+</div>
+<div class="input-group">
+    <label asp-for="CategoryId"></label>
+    @Html.EditorFor(m => m.CategoryId)
+    <span asp-validation-for="CategoryId"></span>
+</div>
+<div class="input-group">
+    <label asp-for="SubcategoryId"></label>
+    @Html.EditorFor(m => m.SubcategoryId)
+    <span asp-validation-for="SubcategoryId"></span>
+</div>
+<div class="input-group">
+    <label asp-for="EffectiveDate"></label>
+    @Html.EditorFor(m => m.EffectiveDate)
+    <span asp-validation-for="EffectiveDate"></span>
+</div>
+<div class="input-group">
+    <label asp-for="Amount"></label>
+    @Html.EditorFor(m => m.Amount)
+    <span asp-validation-for="Amount"></span>
+</div>
+<div class="input-group">
+    <label asp-for="Note"></label>
+    @Html.EditorFor(m => m.Note)
+    <span asp-validation-for="Note"></span>
+</div>

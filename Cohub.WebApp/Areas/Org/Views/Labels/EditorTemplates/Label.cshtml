@@ -1,0 +1,35 @@
+﻿@model Label
+
+@if (ViewContext.RouteData.Values.CreateAction())
+{
+    <div class="input-group">
+        <label asp-for="Id"></label>
+        @Html.EditorFor(m => m.Id, additionalViewData: new { autofocus = true })
+        <span asp-validation-for="Id"></span>
+        @if (Html.MetadataFor(m => m.Id).Description is string idDescription)
+        {<span class="text-muted">@idDescription</span>}
+    </div>
+}
+else
+{
+    <input hidden asp-for="Id" />
+    <span asp-validation-for="Id"></span>
+}
+
+<div class="input-group">
+    <label asp-for="IsActive"></label>
+    @Html.EditorFor(m => m.IsActive)
+    <span asp-validation-for="IsActive"></span>
+</div>
+
+<div class="input-group">
+    <label asp-for="Title"></label>
+    @Html.EditorFor(m => m.Title)
+    <span asp-validation-for="Title"></span>
+</div>
+
+<div class="input-group">
+    <label asp-for="Description"></label>
+    @Html.EditorFor(m => m.Description)
+    <span asp-validation-for="Description"></span>
+</div>

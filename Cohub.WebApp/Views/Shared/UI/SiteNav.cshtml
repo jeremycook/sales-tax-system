@@ -1,0 +1,73 @@
+﻿@inject IOptions<AboutOptions> aboutOptions
+@inject Actor actor
+@{ var about = aboutOptions.Value; }
+<nav class="site-nav flex-right gap-0 menu d-print-none">
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="site-navbar-main-menu-dropdown">
+            Menu
+        </button>
+        <div class="dropdown-content" aria-labelledby="site-navbar-fin-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="~/org/organizations">Organizations</a>
+                    @if (User.CanReview())
+                    {
+                        <hr />
+                        <a href="~/fin/batches">Batches</a>
+                        <a href="~/fin/returns">Returns</a>
+                        <a href="~/fin/statements">Statements</a>
+                        <hr />
+                        <a href="~/rpt/data-explorer">Data Explorer</a>
+                        @*TODO:<a href="~/fin">Finance Overview</a>*@
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <partial name="UI/MainMenu" />
+    @if (User.Identity!.IsAuthenticated)
+    {<div class="ml-auto dropdown dropdown-right">
+            <button class="dropdown-button" type="button" id="site-navbar-user-dropdown">
+                @User.Identity.Name
+            </button>
+            <div class="dropdown-content" aria-labelledby="site-navbar-user-dropdown">
+                <div class="card menu">
+                    <a href="@Url.Action("Index", "Comments", new { area = "Usr", userId = actor.UserId })">Your Comments</a>
+                    <a href="~/session/logout">Logout</a>
+                </div>
+            </div>
+        </div>}
+    else
+    {<a class="ml-auto" href="~/session/login">Login</a>}
+    <div sk-if="@User.CanManage()" class="dropdown dropdown-right">
+        <button class="dropdown-button" type="button" id="site-navbar-fin-dropdown">
+            Settings
+        </button>
+        <div class="dropdown-content" aria-labelledby="site-navbar-fin-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    @*<a href="~/ins/query-designer">Query Designer</a>*@
+                    @*<a href="~/ins/report-designer">Report Designer</a>*@
+                    @*<hr />*@
+                    @*<a href="~/fin/buckets">Buckets</a>*@
+                    <a href="~/fin/categories">Categories</a>
+                    <a href="~/usr/comments">Comments</a>
+                    <a href="~/fin/frequencies">Frequencies</a>
+                    <a href="~/org/labels">Labels</a>
+                    <a href="~/lic/license-settings">License Settings</a>
+                    <a href="~/fin/payment-charts">Payment Charts</a>
+                    <a href="~/fin/payment-configurations">Payment Configurations</a>
+                    <a href="~/fin/periods">Periods</a>
+                    @*<a href="~/fin/subcategories">Subcategories</a>*@
+                    @if (User.IsSuper())
+                    {
+                        <hr />
+                        <a href="~/file-explorer">File Explorer</a>
+                        <a href="~/hangfire/recurring">Recurring Jobs</a>
+                        <a href="~/usr/users">Users</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,25 @@
+﻿@model Statement
+@{ ViewBag._Title ??= Model?.ToString(); }
+<div class="m">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="flex-right wrap-0">
+
+        <div>
+            <details open class="w-sm">
+                <summary>@SL["Properties"]</summary>
+                @Html.DisplayForModel(templateName: ViewData.ModelMetadata.UnderlyingOrModelType.Name + "Properties")
+            </details>
+        </div>
+
+        <div>
+            <details open>
+                <summary>Dues</summary>
+                @Html.DisplayFor(m => m.Dues)
+            </details>
+        </div>
+
+    </div>
+
+</div>

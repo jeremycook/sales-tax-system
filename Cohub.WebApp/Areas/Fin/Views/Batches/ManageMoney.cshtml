@@ -1,0 +1,172 @@
+﻿@model TransferMoneyInput
+@using Cohub.Data.Fin.Batches
+@{
+    ViewBag._Title = "Manage Money";
+}
+
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card w-sm">
+
+        <p>
+            Creates a new batch or updates the selected unposted batch,
+            moving or reducing amounts based on the criteria entered below.
+        </p>
+
+        <details open>
+            <summary>More Info</summary>
+
+            <ul>
+                <li>Leave filters empty to not filter on that criteria except as noted below.
+                <li>Apply Overpayments: If the Filing Status is not set then only filed returns will be considered. If the New Effective Date is left empty today's date will be used.
+            </ul>
+
+        </details>
+
+        <form method="post">
+            <partial name="UI/ValidationSummary" />
+
+            <fieldset>
+
+                <legend>Options</legend>
+
+                <div class="input-group">
+                    <label asp-for="Action"></label>
+                    @Html.EditorFor(m => m.Action, additionalViewData: new { NewOption = true })
+                    <span asp-validation-for="Action"></span>
+                    @if (Html.MetadataFor(m => m.Action).Description is string ActionDescription)
+                    {
+                        <span class="text-muted">@ActionDescription</span>
+                    }
+                </div>
+
+                <div class="input-group">
+                    <label asp-for="BatchId"></label>
+                    @Html.EditorFor(m => m.BatchId, additionalViewData: new { NewOption = true })
+                    <span asp-validation-for="BatchId"></span>
+                    @if (Html.MetadataFor(m => m.BatchId).Description is string BatchIdDescription)
+                    {
+                        <span class="text-muted">@BatchIdDescription</span>
+                    }
+                </div>
+
+                <div class="input-group">
+                    <label asp-for="NewEffectiveDate"></label>
+                    @Html.EditorFor(m => m.NewEffectiveDate, additionalViewData: new { NewOption = true })
+                    <span asp-validation-for="NewEffectiveDate"></span>
+                    @if (Html.MetadataFor(m => m.NewEffectiveDate).Description is string NewEffectiveDateDescription)
+                    {
+                        <span class="text-muted">@NewEffectiveDateDescription</span>
+                    }
+                </div>
+
+            </fieldset>
+
+            <fieldset>
+
+                <legend>Filters</legend>
+
+                <div class="input-group">
+                    <label asp-for="OrganizationId"></label>
+                    @Html.EditorFor(m => m.OrganizationId)
+                    <span asp-validation-for="OrganizationId"></span>
+                    @if (Html.MetadataFor(m => m.OrganizationId).Description is string OrganizationIdDescription)
+                    {
+                        <span class="text-muted">@OrganizationIdDescription</span>
+                    }
+                </div>
+
+                <div class="grid-2">
+
+                    <div class="input-group">
+                        <label asp-for="CategoryId"></label>
+                        @Html.EditorFor(m => m.CategoryId)
+                        <span asp-validation-for="CategoryId"></span>
+                        @if (Html.MetadataFor(m => m.CategoryId).Description is string CategoryIdDescription)
+                        {
+                            <span class="text-muted">@CategoryIdDescription</span>
+                        }
+                    </div>
+
+                    <div class="input-group">
+                        <label asp-for="PeriodId"></label>
+                        @Html.EditorFor(m => m.PeriodId)
+                        <span asp-validation-for="PeriodId"></span>
+                        @if (Html.MetadataFor(m => m.PeriodId).Description is string PeriodIdDescription)
+                        {
+                            <span class="text-muted">@PeriodIdDescription</span>
+                        }
+                    </div>
+
+                </div>
+
+                <div class="input-group">
+                    <label asp-for="SubcategoryId"></label>
+                    @Html.EditorFor(m => m.SubcategoryId)
+                    <span asp-validation-for="SubcategoryId"></span>
+                    @if (Html.MetadataFor(m => m.SubcategoryId).Description is string SubcategoryIdDescription)
+                    {
+                        <span class="text-muted">@SubcategoryIdDescription</span>
+                    }
+                </div>
+
+                <div class="grid-2">
+
+                    <div class="input-group">
+                        <label asp-for="ReturnStatusId"></label>
+                        @Html.EditorFor(m => m.ReturnStatusId)
+                        <span asp-validation-for="ReturnStatusId"></span>
+                        @if (Html.MetadataFor(m => m.ReturnStatusId).Description is string ReturnStatusIdDescription)
+                        {
+                            <span class="text-muted">@ReturnStatusIdDescription</span>
+                        }
+                    </div>
+
+                    <div class="input-group">
+                        <label asp-for="HasFiled"></label>
+                        @Html.EditorFor(m => m.HasFiled, templateName: "BooleanDropdown")
+                        <span asp-validation-for="HasFiled"></span>
+                        @if (Html.MetadataFor(m => m.HasFiled).Description is string HasFiledDescription)
+                        {
+                            <span class="text-muted">@HasFiledDescription</span>
+                        }
+                    </div>
+
+                </div>
+
+                <div class="grid-2">
+
+                    <div class="input-group">
+                        <label asp-for="MinimumAmount"></label>
+                        @Html.EditorFor(m => m.MinimumAmount)
+                        <span asp-validation-for="MinimumAmount"></span>
+                        @if (Html.MetadataFor(m => m.MinimumAmount).Description is string MinimumAmountDescription)
+                        {
+                            <span class="text-muted">@MinimumAmountDescription</span>
+                        }
+                    </div>
+
+                    <div class="input-group">
+                        <label asp-for="MaximumAmount"></label>
+                        @Html.EditorFor(m => m.MaximumAmount)
+                        <span asp-validation-for="MaximumAmount"></span>
+                        @if (Html.MetadataFor(m => m.MaximumAmount).Description is string MaximumAmountDescription)
+                        {
+                            <span class="text-muted">@MaximumAmountDescription</span>
+                        }
+                    </div>
+
+                </div>
+
+            </fieldset>
+
+            <div class="input-group">
+                <button class="button">Submit</button>
+            </div>
+        </form>
+
+    </div>
+
+</div>

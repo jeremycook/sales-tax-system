@@ -1,0 +1,3 @@
+﻿#: Views/Home/Index.cshtml
+msgid "Welcome"
+msgstr "Hello!"

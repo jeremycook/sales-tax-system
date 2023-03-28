@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Cohub.Data.Usr.Comment>
+@inject IStringLocalizer<Cohub.Data.Usr.Comment> L
+@{
+    var parent = ViewBag._Parent;
+}
+<table class="w-100">
+    <thead>
+        <tr>
+            <th class="w-100">
+                @Html.DisplayNameFor(m => m.Html)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Posted)
+            </th>
+            <th>
+                @L["References"]
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left">
+                    @Html.DisplayFor(_ => item.Html)
+                </td>
+                <td class="text-nowrap">
+                    @Html.DisplayFor(_ => item.Author)
+                </td>
+                <td class="text-nowrap">
+                    @if (item.Posted > DateTime.Today)
+                    {
+                        <span title="@item.Posted.LocalDateTime">@item.Posted.Humanize()</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(_ => item.Posted)
+                    }
+                </td>
+                <td class="text-center">
+                    @foreach (var c in item.BatchComments.OrEmptyEnumerable())
+                    {
+                        if (c.Batch?.Equals(parent) == true) continue;
+                        <a href="@Url.Action("Details", "Batches", new { area = "Fin", Id = c.BatchId })" class="badge text-nowrap" style="display: inline-block; overflow: hidden; text-overflow: ellipses; max-width: 200px">@c</a>
+                    }
+                    @foreach (var c in item.OrganizationComments.OrEmptyEnumerable())
+                    {
+                        if (c.Organization?.Equals(parent) == true) continue;
+                        <a href="@Url.Action("Details", "Organizations", new { area = "Org", Id = c.OrganizationId })" class="badge text-nowrap" style="display: inline-block; overflow: hidden; text-overflow: ellipses; max-width: 200px">@c</a>
+                    }
+                    @foreach (var c in item.StatementComments.OrEmptyEnumerable())
+                    {
+                        if (c.Statement?.Equals(parent) == true) continue;
+                        <a href="@Url.Action("Details", "Statements", new { area = "Fin", Id = c.StatementId })" class="badge text-nowrap" style="display: inline-block; overflow: hidden; text-overflow: ellipses; max-width: 200px">@c</a>
+                    }
+                    @foreach (var c in item.ReturnComments.OrEmptyEnumerable())
+                    {
+                        if (c.Return?.Equals(parent) == true) continue;
+                        <a href="@Url.Action("Details", "Returns", new { area = "Fin", Id = c.ReturnId })" class="badge text-nowrap" style="display: inline-block; overflow: hidden; text-overflow: ellipses; max-width: 200px">@c</a>
+                    }
+                    @foreach (var c in item.UserMentions.OrEmptyEnumerable())
+                    {
+                        if (c.User?.Equals(parent) == true) continue;
+                        <a href="@Url.Action("Details", "Users", new { area = "Usr", Id = c.UserId })" class="badge text-nowrap" style="display: inline-block; overflow: hidden; text-overflow: ellipses; max-width: 200px">@c</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

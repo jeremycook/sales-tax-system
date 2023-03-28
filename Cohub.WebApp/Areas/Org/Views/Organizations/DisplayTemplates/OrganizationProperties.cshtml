@@ -1,0 +1,28 @@
+﻿@model Organization
+
+<div style="overflow: hidden; text-overflow: ellipsis">
+    <partial name="DisplayTemplates/Complex">
+</div>
+
+<details>
+    <summary>IDs</summary>
+
+    <dl class="flex-right">
+        <div>
+            <dt>
+                @Html.DisplayNameFor(m => m.StateID)
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.StateID)
+            </dd>
+        </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(m => m.FederalID)
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.FederalID)
+            </dd>
+        </div>
+    </dl>
+</details>

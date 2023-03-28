@@ -1,0 +1,11 @@
+﻿@model FileModel
+@{ ViewBag._Title = $"{Model}"; }
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card">
+        <iframe src="@Url.Action("Preview", new { Id = Model.Id })" style="height: calc(100vh - 200px)"></iframe>
+    </div>
+
+</div>

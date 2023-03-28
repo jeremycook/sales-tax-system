@@ -1,0 +1,25 @@
+﻿:root {
+    /* Colors */
+    --blue: rgb(0, 121, 208);
+    --blue-80: rgba(0, 121, 208, .8);
+    --gray: rgb(105, 105, 105);
+    --green: rgb(14, 190, 0);
+    --orange: rgb(209, 108, 0);
+    --red: rgb(209, 0, 0);
+    --white: white;
+    /* Borders */
+    --border-color: #ddd;
+    --border-radius: 2px;
+    --border-width: 1px;
+    --border: var(--border-width) solid var(--border-color);
+    /* Shadow */
+    --box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    --box-shadow-sm: 0 1px 2px rgba(0,0,0,0.15);
+    /* Widths */
+    --w-xs: 320px;
+    --w-sm: 640px;
+    --w-md: 960px;
+    --w-lg: 1280px;
+    /* Inputs */
+    --input-border: 1px solid var(--border-color);
+}

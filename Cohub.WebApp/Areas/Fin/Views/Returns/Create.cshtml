@@ -1,0 +1,25 @@
+﻿@model Cohub.Data.Fin.Return
+@inject IStringLocalizer<Cohub.Data.Fin.Return> L
+@{ ViewBag._Title = L["New Return"]; }
+
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <details open class="w-xs">
+        <summary>Properties</summary>
+        <form method="post">
+
+            <partial name="UI/ValidationSummary" />
+
+            @Html.EditorForModel()
+
+            <div class="input-group">
+                <button class="button">@SL["Create"]</button>
+                <a class="button" href="@Url.Action("Index")">@SL["Cancel"]</a>
+            </div>
+
+        </form>
+    </details>
+
+</div>

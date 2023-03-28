@@ -1,0 +1,53 @@
+﻿@using Cohub.WebApp.Areas.Org.Views.Organizations 
+@model CloseOrganization
+
+<div class="pad">
+    @if (Model.Organization.StatusId != OrganizationStatusId.Closed)
+    {
+        ViewBag._Title = "Close Organization";
+
+        <h1>@ViewBag._Title</h1>
+
+        <div class="card w-sm">
+            <partial name="UI/ValidationSummary" />
+
+            <form method="post">
+                <ul>
+                    <li>Set the expiration date of the organization's licenses to the closed date.
+                    <li>Set the end date of filing schedules to the closed date.
+                    <li>Delete unfiled, payable and due returns that have Rev+Ovr balance of $0.
+                    <li>Change the organization's status to Closed.
+                </ul>
+
+                <div class="input-group">
+                    <label asp-for="ClosedDate"></label>
+                    @Html.EditorFor(o => o.ClosedDate, additionalViewData: new { autofocus = true })
+                    <span asp-validation-for="ClosedDate"></span>
+                </div>
+
+                <p>
+                    Close organization @Model.Organization?
+                </p>
+
+                <button class="button">Yes</button>
+                <a class="button" href="@Url.Action("Details", new { id = Model.Organization.Id })">No</a>
+            </form>
+        </div>
+    }
+    else
+    {
+        ViewBag._Title = "Closed Organization";
+
+        <h1>@ViewBag._Title</h1>
+
+        <div class="card">
+            <partial name="UI/ValidationSummary" />
+
+            <p>
+                The @Model.Organization organization is closed.
+            </p>
+
+            <a class="button" href="@Url.Action("Details", new { id = Model.Organization.Id })">OK</a>
+        </div>
+    }
+</div>

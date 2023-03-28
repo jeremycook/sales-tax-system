@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Label>
+<table class="text-left">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.GroupId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Value)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Created)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Details", new { id = item.Id })" data-target="modal">@item</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.IsActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Title)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(_ => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.GroupId)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Value)
+                </td>
+                <td class="text-right text-nowrap">
+                    @Html.DisplayFor(_ => item.Created)
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tbody sk-if="@ViewData.ContainsKey("_Paging")">
+        <tr>
+            <td class="text-center" colspan="100">
+                <partial name="UI/Paging" />
+            </td>
+        </tr>
+    </tbody>
+</table>

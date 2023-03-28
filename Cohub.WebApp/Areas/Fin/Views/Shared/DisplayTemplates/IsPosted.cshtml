@@ -1,0 +1,5 @@
+﻿@model bool?
+@if (Model == true)
+{<span class="badge-green">@VL["Posted"]</span>}
+else if (Model == false)
+{<span class="badge-red" title="The batch has not been posted">@VL["Unposted"]</span>}

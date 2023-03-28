@@ -1,0 +1,68 @@
+﻿body, pre {
+    font: 16px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.15;
+    margin: 0;
+}
+
+tbody > tr > * {
+    vertical-align: top;
+}
+
+hr {
+    border: none;
+    border-bottom: 1px solid gray;
+}
+
+.page {
+    position: relative;
+}
+
+@media not print {
+    body {
+        padding: 1rem;
+    }
+
+    .page {
+        position: relative;
+        border-bottom: 1px dashed black;
+    }
+
+    .page-letter {
+        min-height: 10in;
+        width: 7.5in;
+    }
+}
+
+@media only print {
+    .page {
+        page-break-after: always;
+    }
+}
+
+@page {
+    size: letter;
+    margin: .5in;
+
+    @top-left {
+        content: "left";
+    }
+
+    @top-center {
+        color: #fff;
+        content: 'center ' counter(page);
+    }
+
+    @top-right {
+        content: "right";
+    }
+
+    @bottom-center {
+        content: "";
+    }
+}
+
+* {
+    /* Print backgrounds */
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact !important;
+}

@@ -1,0 +1,168 @@
+﻿@model Organization
+@inject IStringLocalizer<Organization> L
+@inject CohubDbContext db
+@using Cohub.Data.Fin
+@{
+    ViewBag._Title = $"{Model}";
+    var alerts = Model.Labels.Where(o => o.GroupId == LabelGroupId.Alert).OrderBy(o => o.Id);
+    var dues = await db.TransactionDetails()
+        .Where(o => o.OrganizationId == Model.Id && new[] { BucketId.Due, BucketId.Overpayment }.Contains(o.BucketId))
+        .GroupBy(o => new { o.PeriodId, o.CategoryId })
+        .Select(g => new
+        {
+            g.Key.PeriodId,
+            g.Key.CategoryId,
+            TotalDue = g.Where(o => o.BucketId == BucketId.Due).Sum(o => o.Amount),
+            TotalOverpayment = g.Where(o => o.BucketId == BucketId.Overpayment).Sum(o => o.Amount),
+        })
+        .Where(o => o.TotalDue != 0 || o.TotalOverpayment != 0)
+        .OrderBy(o => o.PeriodId).ThenBy(o => o.CategoryId)
+        .ToListAsync();
+}
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="grid-md-12">
+
+        <div class="col-md-3 col-xl-2">
+
+            <details open>
+                <summary>
+                    Properties
+                </summary>
+                @Html.DisplayForModel("OrganizationProperties")
+            </details>
+
+        </div>
+
+        <div class="col-md-9 col-xl-10">
+
+            <details sk-if="alerts.Any()" open>
+                <summary>
+                    Organization Alerts
+                </summary>
+                <ul>
+                    @foreach (var alert in alerts)
+                    {
+                        <li><strong class="text-red">@alert.Title@(alert.Description.IsNullOrWhiteSpace() ? "" : ":")</strong> @alert.Description</li>
+                    }
+                </ul>
+            </details>
+
+            <details sk-if="User.CanReview() && dues.Any()" open>
+                <summary>
+                    Due and Overpayment Balances
+                </summary>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Period</th>
+                            <th>Category</th>
+                            <th>Due</th>
+                            <th>Overpayment</th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in dues)
+                    {
+                        <tr>
+                            <td>
+                                @item.PeriodId
+                            </td>
+                            <td>
+                                @item.CategoryId
+                            </td>
+                            <td class="text-right">
+                                @item.TotalDue.ToString("C")
+                            </td>
+                            <td class="text-right">
+                                @item.TotalOverpayment.ToString("C")
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </details>
+
+            <details open sk-if="User.CanReview()">
+                <summary>
+                    @Html.DisplayNameFor(m => m.Returns)
+                </summary>
+                <vc:return-summary-table organization-id="@Model.Id"></vc:return-summary-table>
+                <p>
+                    <a href="@Url.Action("Index", "Returns", new { area = "Fin", organizationId = Model.Id })">View Returns</a>
+                </p>
+            </details>
+
+            <details sk-attr-open="@Model.Comments.Any()">
+                <summary>
+                    @Html.DisplayNameFor(m => m.Comments)
+                </summary>
+                <div class="mb">
+                    @Html.DisplayFor(m => m.Comments, additionalViewData: new { _Parent = Model })
+                </div>
+                <form class="flex-right gap-0 mb" asp-action="AddComment" asp-route-id="@Model.Id">
+                    <textarea name="CommentText" rows="2" class="grow">@Html.Value("CommentText")</textarea>
+                    <button class="button">Add Comment</button>
+                </form>
+                @if (User.CanReviewLicenses())
+                {
+                    <a href="@Url.Action("Index", "Comments", new { area = "Usr", organizationId = Model.Id })">View All Comments</a>
+                }
+            </details>
+
+            <details sk-attr-open="@Model.Labels.Any()">
+                <summary>
+                    @Html.DisplayNameFor(m => m.Labels)
+                </summary>
+                @if (User.CanProcess())
+                {
+                    @Html.EditorFor(m => m.Labels, additionalViewData: new { _Parent = Model })
+                    <form class="flex-right gap-0" asp-action="AddLabel" asp-route-id="@Model.Id">
+                        <input name="LabelId" list="@Html.RequestPartial("UI/LabelDatalist")" autocomplete="off" />
+                        <button class="button">Add Label</button>
+                    </form>
+                }
+                else
+                {
+                    @Html.DisplayFor(m => m.Labels, additionalViewData: new { _Parent = Model })
+                }
+            </details>
+
+            <details open>
+                <summary>
+                    @Html.DisplayNameFor(m => m.Licenses)
+                </summary>
+                @Html.DisplayFor(m => m.Licenses, additionalViewData: new { _Parent = Model })
+                @if (User.CanProcess())
+                {
+                    <a class="button" href="@Url.ActionWithReturnUrl("Create", "Licenses", new { area = "Lic", organizationId = Model.Id })">New License</a>
+                }
+            </details>
+
+            <details sk-if="User.CanReview()" sk-attr-open="@Model.FilingSchedules.Any()">
+                <summary>
+                    @Html.DisplayNameFor(m => m.FilingSchedules)
+                </summary>
+                @Html.DisplayFor(m => m.FilingSchedules, additionalViewData: new { _Parent = Model })
+                <div>
+                    <a class="button" href="@Url.ActionWithReturnUrl("Create", "FilingSchedules", new { area = "Fin", organizationId = Model.Id })">New Filing Schedule</a>
+                </div>
+            </details>
+
+            <details sk-attr-open="@Model.Contacts.Any()">
+                <summary>
+                    @Html.DisplayNameFor(m => m.Contacts)
+                </summary>
+                @Html.DisplayFor(m => m.Contacts, additionalViewData: new { _Parent = Model })
+                @if (User.CanProcess())
+                {
+                    <a class="button" href="@Url.ActionWithReturnUrl("Create", "OrganizationContacts", new { area = "Org", organizationId = Model.Id })">New Contact</a>
+                }
+            </details>
+
+        </div>
+
+    </div>
+
+</div>
+

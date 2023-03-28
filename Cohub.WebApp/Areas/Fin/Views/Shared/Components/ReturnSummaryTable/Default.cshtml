@@ -1,0 +1,93 @@
+﻿@model IEnumerable<ReturnSummary>
+@using Cohub.Data.Fin.Returns
+
+<table sk-if="Model != null && Model.Any()">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Due Date
+            </th>
+            <th>
+                Period
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Has Filed
+            </th>
+            <th>
+                Net Rev
+            </th>
+            <th>
+                Net Due
+            </th>
+            <th>
+                Penalty Due
+            </th>
+            <th>
+                Interest Due
+            </th>
+            <th title="Balance of the NSF Fee category for the organization and period">
+                NSF Fees
+            </th>
+            <th title="Balance of the Ovr bucket for the organization, period and category">
+                Ovr
+            </th>
+            <th>
+                Updated
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.ActionWithReturnUrl("Details", "Returns", new { area = "Fin", id = item.Return.Id })">View</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Period.DueDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Period)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Return.HasFiled)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.NetRevenue)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.NetDue)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.PenaltyDue)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.InterestDue)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.NSFFee)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Ovr)
+                </td>
+                <td title="Created @item.Return.Created.ToLocalTime()">
+                    @Html.DisplayFor(_ => item.Return.Updated)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

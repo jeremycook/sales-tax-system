@@ -1,0 +1,19 @@
+﻿@{
+    bool autoprint = ViewBag._Autoprint == true;
+}
+
+<script sk-if="autoprint">
+    print()
+</script>
+
+<div class="d-print-none card">
+    <p>
+        <strong>Heads up:</strong> Make sure headers and footers are turned <strong>off</strong> when printing.
+    </p>
+    <p>
+        <img src="~/lib/site/chrome-print-settings.png" />
+    </p>
+    <p class="mb-0">
+        <button type="button" onclick="print()" class="button">Print</button>
+    </p>
+</div>

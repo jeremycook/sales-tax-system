@@ -1,0 +1,50 @@
+﻿@model Batch
+
+<div class="pad">
+    @if (!Model.IsPosted)
+    {
+        ViewBag._Title = $"Post Batch";
+        bool DisplaySkipDepositEqualityCheck = ViewBag.DisplaySkipDepositEqualityCheck ?? false;
+
+        <h1>@ViewBag._Title</h1>
+
+        <div class="card w-sm">
+            <partial name="UI/ValidationSummary" />
+
+            <p>
+                Post batch @Model?
+            </p>
+
+            <form method="post">
+                @if (DisplaySkipDepositEqualityCheck)
+                {
+                    <p>
+                        <label class="button">
+                            <input type="checkbox" name="SkipDepositEqualityCheck" value="True" />
+                            Skip Deposit Equality Check
+                        </label>
+                    </p>
+                }
+
+                <button class="button">Yes</button>
+                <a class="button" href="@Url.Action("Details", new { id = Model.Id })">No</a>
+            </form>
+        </div>
+    }
+    else
+    {
+        ViewBag._Title = $"Batch Posted";
+
+        <h1>@ViewBag._Title</h1>
+
+        <div class="card w-sm">
+            <partial name="UI/ValidationSummary" />
+
+            <p>
+                The @Model batch has been posted.
+            </p>
+
+            <a class="button" href="@Url.Action("Details", new { id = Model.Id })">OK</a>
+        </div>
+    }
+</div>

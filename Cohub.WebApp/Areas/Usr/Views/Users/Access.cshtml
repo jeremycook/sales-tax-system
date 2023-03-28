@@ -1,0 +1,109 @@
+﻿@model IEnumerable<AccessModel>
+@{
+    ViewBag._Title = "Access";
+}
+
+<div class="pad">
+    <h1>Access</h1>
+
+    <h2>By Role</h2>
+
+    @foreach (var role in Model.SelectMany(o => o.Roles).Distinct().OrderBy(o => o))
+    {
+        <h3>@role</h3>
+        <table class="card">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Area)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Controller)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Action)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Method)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.AllowAnonymous)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Where(o => o.Roles.Contains(role)))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(_ => item.Area)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => item.Controller)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => item.Action)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => item.Method)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => item.AllowAnonymous)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <h2>By Controller Action Method</h2>
+    <table class="card">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(m => m.Area)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Controller)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Action)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Method)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Roles)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.AllowAnonymous)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(_ => item.Area)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Controller)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Action)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Method)
+                    </td>
+                    <td>
+                        @string.Join(",", item.Roles)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.AllowAnonymous)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

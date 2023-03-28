@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Cohub.Data.Fin.Statement>
+
+<table class="card">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => m.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.TypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.StatusId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Organization)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.NoticeDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.AssessmentDueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.OverpaymentBalance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.GrandTotalDue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Updated)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">@item.Id</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.TypeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.StatusId)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(_ => item.Organization)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.NoticeDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.AssessmentDueDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.OverpaymentBalance)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.GrandTotalDue)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Updated)
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tbody>
+        <tr>
+            <td colspan="100" class="text-center">
+                <partial name="UI/Paging" />
+            </td>
+        </tr>
+    </tbody>
+</table>

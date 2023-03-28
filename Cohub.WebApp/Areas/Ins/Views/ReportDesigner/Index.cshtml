@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Report>
+@inject IStringLocalizer<Report> L
+@{
+    ViewBag._Title = L["Reports"];
+    ViewBag._SearchUrl = Url.Action("Index");
+}
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <p>
+        <a class="button" asp-action="Create">New Report</a>
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.QueryDefinition)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Template)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Created)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.CreatedBy)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Details", new { id = item.Id })">@item</a>
+                        <a href="@Url.Action("Edit", new { id = item.Id })">Edit</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.QueryDefinition)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Template)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.Created)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => item.CreatedBy)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <partial name="UI/Paging" />
+
+</div>

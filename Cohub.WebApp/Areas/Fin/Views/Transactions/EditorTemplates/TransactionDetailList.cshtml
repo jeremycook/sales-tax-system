@@ -1,0 +1,92 @@
+﻿@model IList<TransactionDetail>
+@inject Microsoft.Extensions.Localization.IStringLocalizer<TransactionDetail> L
+@{
+    Transaction parent = ViewBag._Parent;
+    var indexMap = Model.Select((o, i) => new { o, i })
+        .OrderBy(o => o.o.OrganizationId)
+        .ThenBy(o => o.o.PeriodId)
+        .ThenBy(o => o.o.CategoryId)
+        .Select(o => o.i)
+        .ToArray();
+}
+<table data-role="data-list">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                @L["Organization"]
+            </th>
+            <th>
+                @L["Period"]
+            </th>
+            <th>
+                @L["Category"]
+            </th>
+            <th>
+                @L["Subcategory"]
+            </th>
+            <th>
+                @L["Bucket"]
+            </th>
+            <th>
+                @L["Effective Date"]
+            </th>
+            <th>
+                @L["Amount"]
+            </th>
+            <th>
+                @L["Note"]
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (int index in indexMap)
+        {
+            var item = Model[index];
+            <tr>
+                <td class="input-group">
+                    <a class="button" href="@Url.Action("Delete", "TransactionDetails", new { id = item.Id })" data-role="data-item-remove-button" data-target="modal">
+                        Remove
+                    </a>
+                    @Html.HiddenFor(m => m[index].Id)
+                    @Html.ValidationMessageFor(m => m[index].Id)
+                    @Html.HiddenFor(m => m[index].TransactionId)
+                    @Html.ValidationMessageFor(m => m[index].TransactionId)
+                </td>
+                <td class="input-group">
+                    @Html.EditorFor(m => m[index].OrganizationId)
+                    @Html.ValidationMessageFor(m => m[index].OrganizationId)
+                </td>
+                <td class="input-group">
+                    @Html.EditorFor(m => m[index].PeriodId)
+                    @Html.ValidationMessageFor(m => m[index].PeriodId)
+                </td>
+                <td class="input-group">
+                    @Html.EditorFor(m => m[index].CategoryId)
+                    @Html.ValidationMessageFor(m => m[index].CategoryId)
+                </td>
+                <td class="input-group">
+                    @Html.EditorFor(m => m[index].SubcategoryId)
+                    @Html.ValidationMessageFor(m => m[index].SubcategoryId)
+                </td>
+                <td class="input-group">
+                    @Html.EditorFor(m => m[index].BucketId)
+                    @Html.ValidationMessageFor(m => m[index].BucketId)
+                </td>
+                <td class="input-group">
+                    @Html.EditorFor(m => m[index].EffectiveDate)
+                    @Html.ValidationMessageFor(m => m[index].EffectiveDate)
+                </td>
+                <td class="input-group">
+                    @Html.EditorFor(m => m[index].Amount)
+                    @Html.ValidationMessageFor(m => m[index].Amount)
+                </td>
+                <td class="input-group">
+                    @Html.EditorFor(m => m[index].Note, "SingleMultilineText")
+                    @Html.ValidationMessageFor(m => m[index].Note)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

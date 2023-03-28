@@ -1,0 +1,210 @@
+﻿@model Cohub.Data.Fin.Return
+@inject CohubDbContext db
+@inject DepositService depositService
+@inject IStringLocalizer<Cohub.Data.Fin.Return> L
+@using Cohub.Data.Fin.Deposits
+@{
+    ViewBag._Title = $"Return {Model}";
+
+    var transactionDetails = await db.TransactionDetails()
+        .Include(o => o.Transaction).ThenInclude(o => o.Batch)
+        .Where(o => o.OrganizationId == Model.OrganizationId && o.CategoryId == Model.CategoryId && o.PeriodId == Model.PeriodId)
+        .OrderByDescending(o => o.Transaction.Batch.Created)
+        .ThenByDescending(o => o.Transaction.Created)
+        .ThenByDescending(o => o.EffectiveDate)
+        .ThenByDescending(o => o.Created)
+        .ToArrayAsync();
+
+    var buckets = transactionDetails
+        .GroupBy(o => new { o.BucketId, o.SubcategoryId })
+        .Select(g => new
+        {
+            g.Key.BucketId,
+            g.Key.SubcategoryId,
+            Sum = g.Sum(o => o.Amount),
+            Since = g.Max(o => o.EffectiveDate),
+        })
+        .ToArray();
+    var subcategoryIds = new[] { SubcategoryId.Net, SubcategoryId.Penalty, SubcategoryId.Interest }.Intersect(buckets.Select(o => o.SubcategoryId).Distinct().OrderBy(o => o)).ToArray();
+    var bucketIds = buckets.Select(o => o.BucketId).Distinct().OrderBy(o => o).ToArray();
+}
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <div class="flex-right">
+
+        <div>
+
+            <details open>
+                <summary>Properties</summary>
+                @Html.DisplayForModel(templateName: "ReturnProperties", additionalViewData: new{ _Class = "flex-right" })
+            </details>
+
+            <details sk-attr-open="@Model.Comments.Any()">
+                <summary>
+                    @Html.DisplayNameFor(m => m.Comments)
+                </summary>
+                @Html.DisplayFor(m => m.Comments, additionalViewData: new { _Parent = Model })
+                <form class="flex-right gap-0" asp-action="AddComment" asp-route-id="@Model.Id">
+                    <textarea name="CommentText" rows="2" class="grow">@Html.Value("CommentText")</textarea>
+                    <button class="button">Add Comment</button>
+                </form>
+            </details>
+
+            <details open>
+                <summary>Filings</summary>
+
+                <ol sk-if="Model.Filings.Any()">
+                    @foreach (var item in Model.Filings.OrderBy(o => o.Created).ThenBy(o => o.Id))
+                    {
+                        <li>
+                            <div class="flex-right">
+                                <a href="@Url.ActionWithReturnUrl("Details", "Filings", new { id = item.Id })">View</a>
+                                @Html.DisplayFor(_ => item, templateName: "Complex", additionalViewData: new { _Class = "flex-right", _Parent = Model })
+                            </div>
+                        </li>
+                    }
+                </ol>
+
+                <p>
+                    <a href="@Url.ActionWithReturnUrl("Create", "Filings", new { returnId = Model.Id })">Add Filing</a>
+                </p>
+            </details>
+
+            <details open sk-if="transactionDetails.Any()">
+                <summary>Transactions</summary>
+
+                <table style="margin-left: auto; margin-right: auto;">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            @foreach (var subcategoryId in subcategoryIds)
+                            {
+                                <th>
+                                    @subcategoryId
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var bucketId in bucketIds)
+                        {
+                            <tr>
+                                <th>
+                                    @bucketId
+                                </th>
+                                @foreach (var subcategoryId in subcategoryIds)
+                                {
+                                    var stat = buckets.SingleOrDefault(o => o.BucketId == bucketId && o.SubcategoryId == subcategoryId);
+                                    <td>
+                                        @if (stat is not null)
+                                        {
+                                            <span title="@($"Since {stat.Since:d}")">@($"{stat.Sum:C2}")</span>
+                                        }
+                                    </td>
+                                }
+                                @{
+                                    var stats = buckets.Where(o => o.BucketId == bucketId);
+                                    var sum = stats.Sum(o => o.Sum);
+                                    var since = stats.Max(o => o.Since);
+                                    <th>
+                                        @if (stats.Any())
+                                        {
+                                            <span title="@($"Since {since:d}")">@($"{sum:C2}")</span>
+                                        }
+                                    </th>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            @foreach (var subcategoryId in subcategoryIds)
+                            {
+                                var stats = buckets.Where(o => o.SubcategoryId == subcategoryId);
+                                var sum = stats.Sum(o => o.Sum);
+                                var since = stats.Max(o => o.Since);
+                                <th>
+                                    @if (stats.Any())
+                                    {
+                                        <span title="@($"Since {since:d}")">@($"{sum:C2}")</span>
+                                    }
+                                </th>
+                            }
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Batch</th>
+                            <th>TX</th>
+                            <th>TXD</th>
+                            <th>Effective Date</th>
+                            <th>Bucket</th>
+                            <th>Subcategory</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    @{
+                        <tbody>
+                            @foreach (var batchGroup in transactionDetails.GroupBy(o => o.Transaction.Batch))
+                            {
+                                var batch = batchGroup.Key;
+                                var firstBatchRow = true;
+                                @foreach (var txGroup in batchGroup.GroupBy(o => o.Transaction))
+                                {
+                                    var tx = txGroup.Key;
+                                    var firstTxRow = true;
+                                    @foreach (var detail in txGroup)
+                                    {
+                                        <tr>
+                                            @if (firstBatchRow)
+                                            {
+                                                firstBatchRow = false;
+                                                <td rowspan="@txGroup.Count()" class="text-left">
+                                                    <a href="@Url.Action("Details", "Batches", new { area = "Fin", id = batch.Id })" title="@batch.Note">@(batch.IsPosted ? "Posted" : "Unposted") @batch</a>
+                                                </td>
+                                            }
+                                            @if (firstTxRow)
+                                            {
+                                                firstTxRow = false;
+                                                <td rowspan="@txGroup.Count()" class="text-left">
+                                                    <a href="@Url.Action("Details", "Transactions", new { area = "Fin", id = tx.Id })" title="@tx.Note">@tx</a>
+                                                </td>
+                                            }
+                                            <td>
+                                                <a href="@Url.Action("Details", "TransactionDetails", new { area = "Fin", id = detail.Id })" title="@detail.Note">@detail.Id</a>
+                                            </td>
+                                            <td><partial name="DisplayTemplates/Date" model="detail.EffectiveDate" /></td>
+                                            <td>@(detail.BucketId)</td>
+                                            <td>@(detail.SubcategoryId)</td>
+                                            <td><partial name="DisplayTemplates/Currency" model="detail.Amount" /></td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    }
+                </table>
+            </details>
+
+            <details open>
+                <summary>
+                    @Html.DisplayNameFor(m => m.Labels)
+                </summary>
+                @Html.EditorFor(m => m.Labels, additionalViewData: new { _Parent = Model })
+                <form class="flex-right gap-0" asp-action="AddLabel" asp-route-id="@Model.Id">
+                    <input name="LabelId" list="@Html.RequestPartial("UI/LabelDatalist")" autocomplete="off" />
+                    <button class="button">Add Label</button>
+                </form>
+            </details>
+
+        </div>
+
+    </div>
+
+</div>

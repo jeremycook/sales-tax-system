@@ -1,0 +1,11 @@
+﻿@model IEnumerable<string>
+@inject CohubDbContext db
+@{
+    var items = await db.Categories()
+        .Where(o => o.IsActive || (Model != null && Model.Contains(o.Id)))
+        .OrderBy(o => o.Id)
+        .Select(o => new SelectListItem(o.ToString(), o.Id, Model != null && Model.Contains(o.Id)))
+        .ToListAsync();
+}
+<select asp-for="@Model" asp-items="@items" select2='{ "width": "100%" }' multiple>
+</select>

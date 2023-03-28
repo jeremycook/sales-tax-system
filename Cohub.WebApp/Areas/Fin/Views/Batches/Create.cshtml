@@ -1,0 +1,24 @@
+﻿@model Batch
+@inject IStringLocalizer<Batch> L
+@{ ViewBag._Title = L["New Batch"]; }
+
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card w-sm">
+        <form method="post">
+
+            <partial name="UI/ValidationSummary" />
+
+            <div class="input-group">
+                @Html.EditorForModel()
+            </div>
+
+            <div class="input-group">
+                <button class="button">@L["Create Batch"]</button>
+                <a class="button" href="@Url.Action("Index", "Batches")">@SL["Cancel"]</a>
+            </div>
+
+        </form>
+    </div>
+</div>

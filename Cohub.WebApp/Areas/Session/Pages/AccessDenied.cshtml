@@ -1,0 +1,25 @@
+﻿@page
+@model SiteKit.Session.UI.Areas.Session.Pages.AccessDeniedModel
+@{ ViewBag._ChromeOff = true;
+    ViewBag._Title = "Access Denied";
+    string returnUrl = ViewBag.ReturnUrl; }
+
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card">
+        <p>
+            Your user account (@User.Identity!.Name) does not have permission to access the requested resource.
+        </p>
+        @if (returnUrl != null)
+        {<p>
+                You were trying to access <a href="@(Url.IsLocalUrl(returnUrl) ? returnUrl : "")">@returnUrl</a>.
+            </p>}
+        <p>
+            @if (User.Identity!.IsAuthenticated)
+            {<a class="button" href="~/session/logout">Logout</a>}
+            else
+            {<a class="button" href="~/session/login">Login</a>}
+        </p>
+    </div>
+</div>

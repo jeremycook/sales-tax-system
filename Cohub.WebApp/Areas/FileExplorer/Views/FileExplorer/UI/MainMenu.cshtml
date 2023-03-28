@@ -1,0 +1,32 @@
+﻿@* Called by SiteNav *@
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-file-explorer-list-dropdown">
+        File Explorer
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-file-explorer-list-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu" style="max-height: 50vh; overflow: auto">
+                <a href="@Url.Action("Index")">File Explorer</a>
+                <a href="@Url.Action("Create")">Create</a>
+                <a href="@Url.Action("Upload")">Upload</a>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out object? id))
+{
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-file-explorer-item-dropdown">
+            File
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-file-explorer-item-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id })">View File</a>
+                    <a href="@Url.Action("Edit", new { id })">Edit File</a>
+                    <a href="@Url.Action("Delete", new { id })">Delete File</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

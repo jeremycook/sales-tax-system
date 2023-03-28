@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+	<Nullable>enable</Nullable>
+	<UserSecretsId>966695f5-1f4b-4ab4-a741-73bddb04af42</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fluid.Core" Version="1.0.0-beta-9693" />
+    <PackageReference Include="Fluid.MvcViewEngine" Version="1.0.0-alpha-9693" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.0-rc.2.20475.17" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.0-rc.2.20516.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cohub.Data\Cohub.Data.csproj" />
+    <ProjectReference Include="..\SiteKit\SiteKit.AspNetCore\SiteKit.AspNetCore.csproj" />
+  </ItemGroup>
+
+</Project>

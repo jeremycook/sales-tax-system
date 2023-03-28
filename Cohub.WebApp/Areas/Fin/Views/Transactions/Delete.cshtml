@@ -1,0 +1,21 @@
+﻿@model Transaction
+@{
+    ViewBag._Title = "Delete Transaction";
+}
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+
+    <form method="post">
+        <partial name="UI/ValidationSummary" />
+
+        <p>
+            Delete the @Model transaction?
+        </p>
+
+        <div>
+            <button class="button">Yes</button>
+            <a class="button" href="@Url.Action("Details", "Transactions", new { id = Model.Id })">No</a>
+        </div>
+    </form>
+</div>

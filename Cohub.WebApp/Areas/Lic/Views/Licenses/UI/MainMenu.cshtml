@@ -1,0 +1,44 @@
+﻿@* Called by SiteNav *@
+@inject CohubDbContext db
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-licenses-dropdown">
+        Licenses
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-licenses-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Licenses</a>
+                @if (User.CanProcess())
+                {
+                    <a href="@Url.Action("Create")">New License</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var idValue) && int.TryParse(idValue?.ToString(), out int licenseId))
+{
+    var license = await db.Licenses(licenseId).SingleOrDefaultAsync();
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-license-dropdown">
+            License
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-license-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id = licenseId })">View License</a>
+                    @if (User.CanProcess())
+                    {
+                        <a href="@Url.Action("Edit", new { id = licenseId })">Edit License</a>
+                        <a href="@Url.Action("Delete", new { id = licenseId })">Delete License</a>
+                        <a href="@Url.Action("Print", new { id = licenseId })">Print License</a>
+                        @if (license?.TypeId == LicenseTypeId.Business)
+                        {
+                            <a href="@Url.Action("RenewBusinessLicense", "Licenses", new { id = licenseId })">Renew License</a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

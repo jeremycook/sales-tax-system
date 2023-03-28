@@ -1,0 +1,22 @@
+﻿@page
+@model SiteKit.Session.UI.Areas.Session.Pages.LoginErrorModel
+@{ ViewBag._ChromeOff = true;
+    ViewBag._Title = "Login Error";
+    string returnUrl = ViewBag.ReturnUrl; }
+
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card">
+        <p>
+            Something went wrong while trying to log you in.
+        </p>
+        @if (returnUrl != null)
+        {<p>
+                You were trying to access <a href="@returnUrl">@returnUrl</a>.
+            </p>}
+        <p>
+            <a class="button" href="@(returnUrl ?? Url.Page("Login"))">Try Again</a>
+        </p>
+    </div>
+</div>

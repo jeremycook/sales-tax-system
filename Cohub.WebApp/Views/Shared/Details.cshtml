@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag._Title ??= Model?.ToString();
+}
+<div class="m">
+
+    <h1>@ViewBag._Title</h1>
+
+    <details open class="w-sm">
+
+        <summary>@SL["Properties"]</summary>
+
+        @Html.DisplayForModel(templateName: ViewData.ModelMetadata.UnderlyingOrModelType.Name + "Properties")
+
+    </details>
+
+</div>

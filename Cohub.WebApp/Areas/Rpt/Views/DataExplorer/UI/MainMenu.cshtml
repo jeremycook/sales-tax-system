@@ -1,0 +1,47 @@
+﻿@inject Cohub.Data.CohubReadDbContext db
+@inject IOptions<Cohub.Data.Configuration.CohubDataOptions> options
+@{ 
+    var tables = await (
+        from t in db.Tables
+        join p in db.TablePrivileges.Where(o => o.Grantee == options.Value.ReadRole) on new { t.TableCatalog, t.TableSchema, t.TableName } equals new { p.TableCatalog, p.TableSchema, p.TableName }
+        where t.TableType == TableTypeId.View
+        orderby t.TableSchema, t.TableName
+        select t
+    ).ToListAsync();
+}
+@* Called by SiteNav *@
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-data-explorer-dropdown">
+        Data Explorer
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-data-explorer-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu" style="max-height: 50vh; overflow: auto">
+                <a href="@Url.Action("Index")">Data Explorer</a>
+                @if (tables.Any())
+                {
+                    <hr />
+                }
+                @foreach (var item in tables)
+                {
+                    <a href="@Url.Action("Details", new { item.TableSchema, item.TableName })">@item.TableSchema.@item.TableName</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("tableSchema", out var tableSchema) && ViewContext.RouteData.Values.TryGetValue("tableName", out var tableName))
+{
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-data-explorer-table-dropdown">
+            @tableSchema.@tableName
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-data-explorer-table-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.ActionMergedWithCurrentUrl("ExportCsv")">Export CSV</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

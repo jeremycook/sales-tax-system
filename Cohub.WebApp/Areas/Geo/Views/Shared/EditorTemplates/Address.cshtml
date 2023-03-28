@@ -1,0 +1,58 @@
+﻿@model Cohub.Data.Geo.Address
+@inject CohubDbContext db
+@inject IOptions<Cohub.Data.Geo.Configuration.GeoOptions> geoOptions
+@{
+    string? stateId = Model?.StateId;
+    if (stateId == null &&
+        ViewData.ModelMetadata.IsRequired &&
+        !geoOptions.Value.DefaultStateId.IsNullOrWhiteSpace())
+    {
+        stateId = geoOptions.Value.DefaultStateId;
+    }
+    var states = await db.Set<Cohub.Data.Geo.State>()
+        .OrderBy(o => o.Id)
+        .Select(o => new SelectListItem
+        {
+            Value = o.Id,
+            Text = o.Id,
+            Selected = stateId != null && o.Id == stateId
+        })
+        .ToArrayAsync();
+}
+<div class="input-group">
+    <label asp-for="AddressLines"></label>
+    <textarea asp-for="AddressLines" required="@ViewData.ModelMetadata.IsRequired" rows="2"></textarea>
+    <span asp-validation-for="AddressLines"></span>
+    @if (Html.MetadataFor(m => m.AddressLines).Description is string AddressLinesDescription)
+    {<span class="text-muted">@AddressLinesDescription</span>}
+</div>
+
+<div class="flex-right input-group">
+
+    <div class="input-group mb-0">
+        <label asp-for="City"></label>
+        <input asp-for="City" required="@ViewData.ModelMetadata.IsRequired" />
+        <span asp-validation-for="City"></span>
+        @if (Html.MetadataFor(m => m.City).Description is string CityDescription)
+        {<span class="text-muted">@CityDescription</span>}
+    </div>
+
+    <div class="input-group mb-0">
+        <label asp-for="StateId"></label>
+        <select asp-for="StateId" asp-items="states" required="@ViewData.ModelMetadata.IsRequired">
+            <option></option>
+        </select>
+        <span asp-validation-for="StateId"></span>
+        @if (Html.MetadataFor(m => m.StateId).Description is string StateIdDescription)
+        {<span class="text-muted">@StateIdDescription</span>}
+    </div>
+
+    <div class="input-group mb-0">
+        <label asp-for="Zip"></label>
+        <input asp-for="Zip" required="@ViewData.ModelMetadata.IsRequired" />
+        <span asp-validation-for="Zip"></span>
+        @if (Html.MetadataFor(m => m.Zip).Description is string ZipDescription)
+        {<span class="text-muted">@ZipDescription</span>}
+    </div>
+
+</div>

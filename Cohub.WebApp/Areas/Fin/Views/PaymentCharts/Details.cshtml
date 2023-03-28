@@ -1,0 +1,27 @@
+﻿@model Cohub.Data.Fin.PaymentChart
+@inject IStringLocalizer<Cohub.Data.Fin.PaymentChart> L
+@{ ViewBag._Title = $"{Model}"; }
+
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <div class="flex-right gap">
+        <div>
+
+            <details open class="w-xs">
+                <summary>Properties</summary>
+                @Html.DisplayForModel("Complex")
+            </details>
+
+        </div>
+        <div>
+
+            <details open>
+                <summary>@Html.DisplayNameFor(m => m.Configurations)</summary>
+                @Html.DisplayFor(m => m.Configurations)
+            </details>
+
+        </div>
+    </div>
+
+</div>

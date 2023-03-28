@@ -1,0 +1,29 @@
+﻿@{
+    SiteKit.Collections.Paging? paging = ViewBag._Paging;
+    string action = Context.Request.RouteValues["Action"] as string ??  "Index";
+}
+<nav sk-if="paging?.TotalPages > 0" class="paging" aria-label="Page through list">
+    @if (paging.PageNumber <= 1)
+    {
+        <a class="paging-first" href="#" tabindex="-1" aria-disabled="true">First</a>
+        <a class="paging-previous" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+    }
+    else
+    {
+        <a class="paging-first" href="@Url.ActionMergedWithCurrentUrl(action, values: new { pageNumber = 1, recordsPerPage = paging.RecordsPerPage })">First</a>
+        <a class="paging-previous" href="@Url.ActionMergedWithCurrentUrl(action, values: new { pageNumber = paging.PageNumber - 1, recordsPerPage = paging.RecordsPerPage })">Previous</a>
+    }
+    <strong class="paging-pages">
+        @paging.PageNumber of @paging.TotalPages
+    </strong>
+    @if (paging.PageNumber >= paging.TotalPages)
+    {
+        <a class="paging-next" href="#" tabindex="-1" aria-disabled="true">Next</a>
+        <a class="paging-last" href="#" tabindex="-1" aria-disabled="true">Last</a>
+    }
+    else
+    {
+        <a class="paging-next" href="@Url.ActionMergedWithCurrentUrl(action, values: new { pageNumber = paging.PageNumber + 1, recordsPerPage = paging.RecordsPerPage })">Next</a>
+        <a class="paging-last" href="@Url.ActionMergedWithCurrentUrl(action, values: new { pageNumber = paging.TotalPages, recordsPerPage = paging.RecordsPerPage })">Last</a>
+    }
+</nav>

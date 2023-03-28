@@ -1,0 +1,65 @@
+﻿@model IndexModel
+@{
+    ViewBag._Title ??= SL["Return Report"];
+}
+<div class="m">
+
+    <h1>@ViewBag._Title</h1>
+
+    <details open class="w-sm">
+
+        <summary>@SL["Options"]</summary>
+
+        <form method="get" asp-action="Print">
+
+            <partial name="UI/ValidationSummary" />
+
+            <div class="input-group">
+                <label asp-for="StartDate"></label>
+                @Html.EditorFor(m => m.StartDate)
+                <span asp-validation-for="StartDate"></span>
+                @if (Html.MetadataFor(m => m.StartDate).Description is string StartDateDescription)
+                {
+                    <span class="text-muted">@StartDateDescription</span>
+                }
+            </div>
+
+            <div class="input-group">
+                <label asp-for="EndDate"></label>
+                @Html.EditorFor(m => m.EndDate)
+                <span asp-validation-for="EndDate"></span>
+                @if (Html.MetadataFor(m => m.EndDate).Description is string EndDateDescription)
+                {
+                    <span class="text-muted">@EndDateDescription</span>
+                }
+            </div>
+
+            <div class="input-group">
+                <label asp-for="OrganizationIds"></label>
+                @Html.EditorFor(m => m.OrganizationIds)
+                <span asp-validation-for="OrganizationIds"></span>
+                @if (Html.MetadataFor(m => m.OrganizationIds).Description is string OrganizationIdsDescription)
+                {
+                    <span class="text-muted">@OrganizationIdsDescription</span>
+                }
+            </div>
+
+            <div class="input-group">
+                <label asp-for="CategoryIds"></label>
+                @Html.EditorFor(m => m.CategoryIds)
+                <span asp-validation-for="CategoryIds"></span>
+                @if (Html.MetadataFor(m => m.CategoryIds).Description is string CategoryIdsDescription)
+                {
+                    <span class="text-muted">@CategoryIdsDescription</span>
+                }
+            </div>
+
+            <div class="input-group">
+                <button class="button">@SL["Generate"]</button>
+            </div>
+
+        </form>
+
+    </details>
+
+</div>

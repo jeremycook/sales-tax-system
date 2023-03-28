@@ -1,0 +1,44 @@
+﻿@model Cohub.Data.Fin.PaymentChart
+
+<input hidden asp-for="Id" />
+<span asp-validation-for="Id"></span>
+
+<div class="input-group">
+    <label asp-for="IsActive"></label>
+    @Html.EditorFor(m => m.IsActive)
+    <span asp-validation-for="IsActive"></span>
+    @if (Html.MetadataFor(m => m.IsActive).Description is string isActiveDescription)
+    {<span class="text-muted">@isActiveDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="Name"></label>
+    <input asp-for="Name" autofocus />
+    <span asp-validation-for="Name"></span>
+    @if (Html.MetadataFor(m => m.Name).Description is string nameDescription)
+    {<span class="text-muted">@nameDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="CategoryId"></label>
+    @Html.EditorFor(m => m.CategoryId)
+    <span asp-validation-for="CategoryId"></span>
+    @if (Html.MetadataFor(m => m.CategoryId).Description is string categoryIdDescription)
+    {<span class="text-muted">@categoryIdDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="FrequencyId"></label>
+    @Html.EditorFor(m => m.FrequencyId)
+    <span asp-validation-for="FrequencyId"></span>
+    @if (Html.MetadataFor(m => m.FrequencyId).Description is string frequencyIdDescription)
+    {<span class="text-muted">@frequencyIdDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="Description"></label>
+    @Html.EditorFor(m => m.Description)
+    <span asp-validation-for="Description"></span>
+    @if (Html.MetadataFor(m => m.Description).Description is string DescriptionDescription)
+    {<span class="text-muted">@DescriptionDescription</span>}
+</div>

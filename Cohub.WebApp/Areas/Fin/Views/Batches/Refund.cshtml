@@ -1,0 +1,85 @@
+﻿@model RefundRequest
+@{
+    ViewBag._Title = SL["Refund"];
+}
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card w-md">
+        <p>
+            Refund revenue and/or overpayment.
+        </p>
+
+        <ul>
+            <li>First specify an organization and adjust the options and click Show Refundable Amounts.
+            <li>Next set the refund amounts and click Refund.
+            <li>A batch will be generated that reduces revenue, overpayment and deposit by the amounts you specified.
+        </ul>
+
+        <form method="post">
+            <partial name="UI/ValidationSummary" />
+
+            <fieldset>
+                <legend>Options</legend>
+
+                <div class="input-group">
+                    <label asp-for="OrganizationId"></label>
+                    @Html.EditorFor(m => m.OrganizationId)
+                    <span asp-validation-for="OrganizationId"></span>
+                    @if (Html.MetadataFor(m => m.OrganizationId).Description is string OrganizationIdDescription)
+                    {<span class="text-muted">@OrganizationIdDescription</span>}
+                </div>
+
+                <div class="flex-right gap wrap-0">
+                    <div class="input-group">
+                        <label asp-for="FromEffectiveDate"></label>
+                        @Html.EditorFor(m => m.FromEffectiveDate)
+                        <span asp-validation-for="FromEffectiveDate"></span>
+                        @if (Html.MetadataFor(m => m.FromEffectiveDate).Description is string StartDateDescription)
+                        {<span class="text-muted">@StartDateDescription</span>}
+                    </div>
+
+                    <div class="input-group">
+                        <label asp-for="ThroughEffectiveDate"></label>
+                        @Html.EditorFor(m => m.ThroughEffectiveDate)
+                        <span asp-validation-for="ThroughEffectiveDate"></span>
+                        @if (Html.MetadataFor(m => m.ThroughEffectiveDate).Description is string EndDateDescription)
+                        {<span class="text-muted">@EndDateDescription</span>}
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label asp-for="NewEffectiveDate"></label>
+                    @Html.EditorFor(m => m.NewEffectiveDate)
+                    <span asp-validation-for="NewEffectiveDate"></span>
+                    @if (Html.MetadataFor(m => m.NewEffectiveDate).Description is string EffectiveDateDescription)
+                    {<span class="text-muted">@EffectiveDateDescription</span>}
+                </div>
+            </fieldset>
+
+            <fieldset sk-if="Model.Refunds != null">
+                <legend>Refundable Amounts</legend>
+
+                <p>
+                    The sum of revenue and overpayment amounts must equal the sum of deposit amounts you specify.
+                </p>
+
+                @Html.ValidationMessageFor(m => m.Refunds)
+
+                @Html.EditorFor(m => m.Refunds)
+            </fieldset>
+
+            <div class="input-group">
+                @if (Model.Refunds == null)
+                {
+                    <button class="button" name="Command" value="@RefundRequestCommand.Reset">@SL["Show Refundable Amounts"]</button>
+                }
+                else
+                {
+                    <button class="button" name="Command" value="@RefundRequestCommand.Refund">@SL["Refund"]</button>
+                    <button class="button" name="Command" value="@RefundRequestCommand.Reset">@SL["Refresh Refundable Amounts"]</button>
+                }
+            </div>
+        </form>
+    </div>
+</div>

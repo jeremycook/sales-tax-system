@@ -1,0 +1,4 @@
+﻿@model string
+@inject EntityUrlHelper entityUrl
+@if (Model != null)
+{<a href="@entityUrl.Item(typeof(Organization), Model)">@Model</a>}

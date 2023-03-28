@@ -1,0 +1,21 @@
+﻿@model int?
+@inject CohubDbContext db
+@{
+    bool autofocus = ViewBag.Autofocus ?? false;
+    bool newoption = ViewBag.NewOption ?? false;
+    var items = await db.Set<Batch>()
+        .Where(o => !o.IsPosted || (Model != null && o.Id == Model))
+        .OrderBy(o => o.Name)
+        .Select(o => new SelectListItem(o.ToString(), o.Id.ToString(), o.Id == Model))
+        .ToListAsync();
+}
+<select asp-for="@Model" asp-items="@items" sk-attr-autofocus="autofocus">
+    @if (newoption)
+    {
+        <option value="">New Batch</option>
+    }
+    else
+    {
+        <option></option>
+    }
+</select>

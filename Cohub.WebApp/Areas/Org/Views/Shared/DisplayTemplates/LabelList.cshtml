@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Label>
+@if (Model?.Any() == true)
+{
+    var list = Model.OrderBy(o => o.Id);
+    foreach (var item in list.Take(1))
+    {
+        @Html.DisplayFor(_ => item)
+    }
+    foreach (var item in list.Skip(1))
+    {
+        @(", ")
+        @Html.DisplayFor(_ => item)
+    }
+}

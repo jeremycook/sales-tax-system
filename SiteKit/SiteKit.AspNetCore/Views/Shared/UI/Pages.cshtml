@@ -1,0 +1,10 @@
+﻿@{
+    SiteKit.Collections.Paging? paging = ViewBag._Paging;
+    string action = Context.Request.RouteValues["Action"] as string ??  "Index";
+}
+<nav sk-if="paging?.TotalPages > 0" class="paging" aria-label="Page through list">
+    @foreach(var pageNumber in Enumerable.Range(1, paging.TotalPages))
+    {
+        <a class="paging-first @(pageNumber == paging.PageNumber ? "text-bold" : "")" href="@Url.ActionMergedWithCurrentUrl(action, values: new { pageNumber, recordsPerPage = paging.RecordsPerPage })">@pageNumber</a>
+    }
+</nav>

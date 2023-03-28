@@ -1,0 +1,32 @@
+﻿@* Called by SiteNav *@
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-categories-dropdown">
+        Categories
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-categories-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Categories</a>
+                <a href="@Url.Action("Create")">New Category</a>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var id))
+{
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-category-dropdown">
+            Category
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-category-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id })">View Category</a>
+                    <a href="@Url.Action("Edit", new { id })">Edit Category</a>
+                    <a href="@Url.Action("Delete", new { id })">Delete Category</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<partial name="UI/SiteNavSearch" />

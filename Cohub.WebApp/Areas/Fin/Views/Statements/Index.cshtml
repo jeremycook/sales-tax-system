@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Statement>
+@{
+    ViewBag._Title ??= SL["Statements and Assessments"];
+    bool showDetails = ViewBag._ShowDetails ?? false;
+    StatementStatusId? statementStatusId = ViewBag._StatementStatusId ?? null;
+    SiteKit.Collections.Paging paging = ViewBag._Paging;
+}
+<div class="m">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card d-print-none">
+        <p>
+            <strong>Display:</strong>
+            <a sk-if="!showDetails" href="@Url.ActionMergedWithCurrentUrl("Index", values: new { showDetails = true })" class="button">Show Details</a>
+            <a sk-if="showDetails" href="@Url.ActionMergedWithCurrentUrl("Index", values: new { showDetails = false })" class="button">Hide Details</a>
+            <a sk-if="paging.RecordsPerPage != 10_000" href="@Url.ActionMergedWithCurrentUrl("Index", values: new { recordsPerPage = 10_000 })" class="button" title="Show up to the first 10,000 results instead of paging">Show All Results</a>
+            <a sk-if="paging.RecordsPerPage == 10_000" href="@Url.ActionMergedWithCurrentUrl("Index", values: new { recordsPerPage = SiteKit.Collections.Paging.DefaultRecordPerPage })" class="button" title="Page through results">Page Results</a>
+        </p>
+        <div>
+            <strong>Filters:</strong>
+            <a href="@Url.ActionMergedWithCurrentUrl("Index", values: new { statementStatusId = null as StatementStatusId? })" class="button">Any Status</a>
+            <a href="@Url.ActionMergedWithCurrentUrl("Index", values: new { statementStatusId = StatementStatusId.Draft })" class="button">Drafts</a>
+            <a href="@Url.ActionMergedWithCurrentUrl("Index", values: new { statementStatusId = StatementStatusId.Published })" class="button">Published</a>
+            <a href="@Url.ActionMergedWithCurrentUrl("Index", values: new { statementStatusId = StatementStatusId.Archived })" class="button">Archived</a>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card">
+            No matches found.
+        </div>
+    }
+    else if (showDetails)
+    {
+        @foreach (var item in Model)
+        {
+            <details open>
+                <summary>
+                    <a href="@Url.Action("Details", new { item.Id })">@item</a>
+                </summary>
+
+                @Html.DisplayFor(_ => item, templateName: "StatementProperties", new { _Class = "flex-right" })
+
+                @Html.DisplayFor(_ => item.Dues)
+            </details>
+        }
+
+        <div class="card">
+            <partial name="UI/Paging" />
+        </div>
+    }
+    else
+    {
+        @Html.DisplayForModel(templateName: "StatementList")
+    }
+
+</div>

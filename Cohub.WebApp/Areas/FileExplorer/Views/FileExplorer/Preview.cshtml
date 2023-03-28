@@ -1,0 +1,12 @@
+﻿@model FileModel
+@{ 
+    Layout = "_BaseLayout";
+}
+
+<p>
+    The @Model.Id file's content type (@Model.ContentType) is not trusted. Do you still want to access it?
+</p>
+
+<p>
+    <a href="@Url.Action("Preview", new { Model.Id, ForceTrust = true })" class="button">Yes, Access It</a>
+</p>

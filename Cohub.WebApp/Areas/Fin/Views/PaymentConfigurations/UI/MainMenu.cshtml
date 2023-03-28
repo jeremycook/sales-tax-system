@@ -1,0 +1,31 @@
+﻿@* Called by SiteNav *@
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-payment-configurations-dropdown">
+        Payment Configurations
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-payment-configurations-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Payment Configurations</a>
+                <a href="@Url.Action("Create")">New Payment Configuration</a>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var id))
+{
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-payment-configuration-dropdown">
+            Payment Configuration
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-payment-configuration-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id })">View Payment Configuration</a>
+                    <a href="@Url.Action("Edit", new { id })">Edit Payment Configuration</a>
+                    <a href="@Url.Action("Delete", new { id })">Delete Payment Configuration</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

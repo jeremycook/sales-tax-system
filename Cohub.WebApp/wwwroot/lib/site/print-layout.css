@@ -1,0 +1,56 @@
+﻿@media not print {
+    body {
+        padding: 1rem;
+    }
+
+    .page {
+        background-color: white;
+        box-shadow: rgba(0,0,0,.25) .1rem .1rem .5rem;
+        box-sizing: border-box;
+        padding: .5in;
+        margin-bottom: 1rem;
+    }
+
+    .page-letter {
+        width: 8.5in;
+        min-height: 11in;
+    }
+
+    .page-content {
+        position: relative;
+    }
+}
+
+@media only print {
+    .page {
+        page-break-after: always;
+    }
+}
+
+@page {
+    size: letter;
+    margin: .5in;
+
+    @top-left {
+        content: "left";
+    }
+
+    @top-center {
+        color: #fff;
+        content: 'center ' counter(page);
+    }
+
+    @top-right {
+        content: "right";
+    }
+
+    @bottom-center {
+        content: "";
+    }
+}
+
+* {
+    /* Print backgrounds */
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact !important;
+}

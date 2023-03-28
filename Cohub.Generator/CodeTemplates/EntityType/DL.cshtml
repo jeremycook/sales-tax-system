@@ -1,0 +1,38 @@
+﻿@model IEntityType
+@using Humanizer
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.EntityFrameworkCore.Metadata
+@{
+    var properties = Model.ClrType.GetProperties()
+        .Select(p => Model.FindProperty(p.Name))
+        .Where(p => p?.PropertyInfo?.GetGetMethod() != null)
+        .Select(p => new
+        {
+            Property = p,
+            Navigation = Model.GetNavigations().FirstOrDefault(n => n.ForeignKey.Properties.Count == 1 && n.ForeignKey.Properties[0] == p),
+        })
+        .Select(p => new
+        {
+            p.Property,
+            p.Navigation,
+            Name = p.Navigation?.Name ?? p.Property.Name
+        })
+        .ToArray();
+}
+<dl>
+    @foreach (var prop in properties)
+    {
+        if (prop.Property.IsPrimaryKey() && prop.Property.ClrType != typeof(string))
+        {
+            continue;
+        }
+        <div>
+            <dt>
+                @@Html.DisplayNameFor(m => m.@(prop.Name))
+            </dt>
+            <dd>
+                @@Html.DisplayFor(m => m.@(prop.Name))
+            </dd>
+        </div>
+    }
+</dl>

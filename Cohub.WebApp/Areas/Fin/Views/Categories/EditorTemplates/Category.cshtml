@@ -1,0 +1,33 @@
+﻿@model Category
+
+<div class="input-group">
+    <label asp-for="Id"></label>
+    <input asp-for="Id" required sk-attr-readonly="!ViewContext.RouteData.Values.CreateAction()" />
+    <span asp-validation-for="Id"></span>
+    @if (Html.MetadataFor(m => m.Id).Description is string IdDescription)
+    {<span class="text-muted">@IdDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="IsActive"></label>
+    @Html.EditorFor(m => m.IsActive)
+    <span asp-validation-for="IsActive"></span>
+    @if (Html.MetadataFor(m => m.IsActive).Description is string IsActiveDescription)
+    {<span class="text-muted">@IsActiveDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="TypeId"></label>
+    @Html.EditorFor(m => m.TypeId)
+    <span asp-validation-for="TypeId"></span>
+    @if (Html.MetadataFor(m => m.TypeId).Description is string TypeIdDescription)
+    {<span class="text-muted">@TypeIdDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="Description"></label>
+    @Html.EditorFor(m => m.Description)
+    <span asp-validation-for="Description"></span>
+    @if (Html.MetadataFor(m => m.Description).Description is string DescriptionDescription)
+    {<span class="text-muted">@DescriptionDescription</span>}
+</div>

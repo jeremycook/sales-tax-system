@@ -1,0 +1,28 @@
+﻿@model Enum
+@using System.Reflection
+@if (Model != null)
+{
+    var fi = ViewData.ModelMetadata.ModelType.GetField(Model.ToString());
+    var display = fi?.GetCustomAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>();
+
+    var label = VL[display?.Name ?? Model.ToString().Humanize(LetterCasing.Title)];
+
+    Microsoft.AspNetCore.Mvc.Localization.LocalizedHtmlString? description = null;
+    if (display?.Description is string desc)
+    {
+        description = VL[desc];
+    }
+
+    @switch ((int)(object)Model)
+    {
+        case 0:
+            <span class="badge badge-dark" title="@description">@label</span>
+            break;
+        case 1:
+            <span class="badge badge-success" title="@description">@label</span>
+            break;
+        default:
+            <span class="badge badge-info" title="@description">@label</span>
+            break;
+    }
+}

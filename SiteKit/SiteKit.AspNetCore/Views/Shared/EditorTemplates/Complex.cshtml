@@ -1,0 +1,37 @@
+﻿@{
+    bool first = true;
+}
+@foreach (var prop in this.ViewData.ModelExplorer.Properties.OrderBy(o => o.Metadata.Order))
+{
+    if (!prop.Metadata.ShowForEdit ||
+        prop.Metadata.Name == null)
+    {
+        continue;
+    }
+    var name = prop.Metadata.Name;
+    if (prop.Metadata.IsComplexType && this.ViewData.ModelExplorer.Properties.Any(p => p.Metadata.Name == name + "Id"))
+    {
+        continue;
+    }
+    @if (prop.Metadata.IsComplexType || prop.Metadata.IsCollectionType)
+    {
+        <fieldset>
+            <legend>@Html.DisplayName(name)</legend>
+            @if (prop.Metadata.Description is string Description)
+            {<p class="text-muted">@Description</p>}
+            @Html.ValidationMessage(name)
+            @Html.Editor(name)
+        </fieldset>
+    }
+    else
+    {
+        <div class="input-group">
+            <label for="@Html.Id(name)">@Html.DisplayName(name)</label>
+            @Html.Editor(name, additionalViewData: new { autofocus = first })
+            @Html.ValidationMessage(name)
+            @if (prop.Metadata.Description is string Description)
+            {<span class="text-muted">@Description</span>}
+        </div>
+    }
+    first = false;
+}

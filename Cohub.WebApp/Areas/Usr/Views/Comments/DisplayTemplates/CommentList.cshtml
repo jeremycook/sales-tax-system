@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Cohub.Data.Usr.Comment>
+
+<table class="card">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                Comment
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Posted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.IsUserComment)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-center">
+                    <a href="@Url.Action("Details", new { id = item.Id })">View</a>
+                </td>
+                <td class="text-left">
+                    @item.Text
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Author)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Posted)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.IsUserComment)
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tbody>
+        <tr>
+            <td class="text-center" colspan="7">
+                <partial name="UI/Paging" />
+            </td>
+        </tr>
+    </tbody>
+</table>

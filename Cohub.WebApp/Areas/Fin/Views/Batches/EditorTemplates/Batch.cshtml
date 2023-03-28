@@ -1,0 +1,29 @@
+﻿@model Batch
+
+<div class="w-xs">
+
+    <div class="input-group">
+        <label asp-for="Name">
+            @Html.DisplayNameFor(m => m.Name)
+        </label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <div class="input-group">
+        <label asp-for="DepositControlAmount">
+            @Html.DisplayNameFor(m => m.DepositControlAmount)
+        </label>
+        <input asp-for="DepositControlAmount" type="number" step="0.01" autofocus />
+        <span asp-validation-for="DepositControlAmount"></span>
+    </div>
+
+    <div class="input-group">
+        <label asp-for="Note">
+            @Html.DisplayNameFor(m => m.Note)
+        </label>
+        @Html.EditorFor(m => m.Note)
+        <span asp-validation-for="Note"></span>
+    </div>
+
+</div>

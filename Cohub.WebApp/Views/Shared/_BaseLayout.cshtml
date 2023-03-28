@@ -1,0 +1,41 @@
+﻿@using StackExchange.Profiling
+@addTagHelper *, MiniProfiler.AspNetCore.Mvc
+@{
+    var title = ViewBag._Title;
+    string layoutClass = ViewBag._LayoutClass ?? "base-layout";
+    bool chromeOn = ViewBag._ChromeOff != true;
+}
+<!DOCTYPE html>
+<html lang="@System.Globalization.CultureInfo.CurrentUICulture.Name" libpath="@Url.Content("~/lib")" buster="v=@Url.Buster()" http-method="@ViewContext.HttpContext.Request.Method">
+<head>
+    <meta charset="utf-8" />
+    <title>@title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @*<link type="application/opensearchdescription+xml" rel="search" href="~/search/osd.xml" />*@
+    <script type="module" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
+    <script defer src="~/lib/boot.js" asp-append-version="true"></script>
+    <script defer src="~/lib/apps/utils.js" asp-append-version="true"></script>
+    <script defer src="~/lib/site.js" asp-append-version="true"></script>
+    <script defer src="~/lib/inject_options.js" asp-append-version="true"></script>
+    <script defer src="~/lib/inject.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/lib/site.css" asp-append-version="true" />
+    <link rel="icon" type="image/png" href="~/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="~/favicon-16x16.png" sizes="16x16" />
+    @await RenderSectionAsync("Head", required: false)
+</head>
+<body class="@layoutClass">
+    @if (Program.Debug)
+    {
+        <mini-profiler position="RenderPosition.BottomRight" />
+    }
+    @RenderBody()
+    @foreach (var partialName in Context.RequestedPartials())
+    {
+        <partial name="@partialName" />
+    }
+    @await RenderSectionAsync("Scripts", required: false)
+    <!-- @Program.Started -->
+</body>
+</html>

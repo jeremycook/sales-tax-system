@@ -1,0 +1,50 @@
+﻿@model IEnumerable<RefundRequestAmount>
+@if (Model != null)
+{
+    var model = Model.ToArray();
+    int i = 0;
+    <table class="card">
+        <thead>
+            <tr>
+                <th>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.AvailableAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.RefundAmount)
+                </th>
+            </tr>
+        </thead>
+        @foreach (var group in model.GroupBy(o => new { o.PeriodId, o.CategoryId }))
+        {
+            <tbody>
+                <tr class="text-center">
+                    <th colspan="6">
+                        @group.Key.PeriodId @group.Key.CategoryId
+                    </th>
+                </tr>
+                @foreach (var item in group)
+                {
+                    <tr>
+                        <td>
+                            @item.SubcategoryId @item.BucketId
+                            @Html.HiddenFor(_ => model[i].PeriodId)
+                            @Html.HiddenFor(_ => model[i].CategoryId)
+                            @Html.HiddenFor(_ => model[i].SubcategoryId)
+                            @Html.HiddenFor(_ => model[i].BucketId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(_ => item.AvailableAmount)
+                            @Html.HiddenFor(_ => model[i].AvailableAmount)
+                        </td>
+                        <td class="pad-xs">
+                            @Html.TextBoxFor(_ => model[i].RefundAmount, htmlAttributes: new { type = "number", min = 0, max = item.AvailableAmount, step = 0.01, style = "width: 10em" })
+                        </td>
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        }
+    </table>
+}

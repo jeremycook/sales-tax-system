@@ -1,0 +1,52 @@
+﻿@model Enum
+@inject Microsoft.Extensions.Localization.IStringLocalizerFactory localizerFactory
+@using System.Reflection
+@using Microsoft.Extensions.Localization
+@{
+    var enumType = Nullable.GetUnderlyingType(ViewData.ModelMetadata.ModelType) ?? ViewData.ModelMetadata.ModelType;
+    var L = localizerFactory.Create(enumType);
+    var values = Enum.GetValues(enumType);
+}
+@if (values.Length > 2)
+{
+    <select name="@Html.NameForModel()" id="@Html.IdForModel()" class="form-control" required="@ViewData.ModelMetadata.IsRequired">
+        <option value=""></option>
+        @foreach (var item in Enum.GetValues(ViewData.ModelMetadata.ModelType))
+        {
+            var fi = ViewData.ModelMetadata.ModelType.GetField(item.ToString()!);
+            var display = fi?.GetCustomAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>();
+
+            var label = L[display?.Name ?? item.ToString().Humanize(LetterCasing.Title)];
+
+            LocalizedString? description = null;
+            if (display?.Description is string desc)
+            {
+                description = L[desc];
+            }
+
+            <option value="@item" selected="@(item.Equals(Model))" title="@description">@label</option>
+        }
+    </select>
+}
+else
+{
+    <div class="form-control @(ViewData.ModelMetadata.IsRequired ? "required" : "")" id="@Html.IdForModel()">
+        @foreach (var item in Enum.GetValues(ViewData.ModelMetadata.ModelType))
+        {
+            var fi = ViewData.ModelMetadata.ModelType.GetField(item.ToString()!);
+            var display = fi?.GetCustomAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>();
+
+            var label = L[display?.Name ?? item.ToString().Humanize(LetterCasing.Title)];
+
+            LocalizedString? description = null;
+            if (display?.Description is string desc)
+            {
+                description = L[desc];
+            }
+
+            <label class="text-nowrap" title="@description">
+                <input type="radio" name="@Html.NameForModel()" value="@item" checked="@(item.Equals(Model))"> @label
+            </label>
+        }
+    </div>
+}

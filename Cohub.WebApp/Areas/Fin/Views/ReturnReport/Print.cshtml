@@ -1,0 +1,122 @@
+﻿@model PrintModel
+@{
+    Layout = string.Empty;
+}
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Return Report</title>
+    <link rel="stylesheet" href="~/lib/site/page-letter.css" asp-append-version="true" />
+    <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        html {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            padding: 0;
+            /* width: 8in; */
+            /* margin: .25in; */
+            font-size: 10.5px;
+            overflow-x: hidden;
+        }
+
+        .border-bottom {
+            border-bottom: 1px solid #000;
+        }
+
+        table {
+            border-spacing: 0;
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 4px;
+        }
+
+            table.fixed {
+                table-layout: fixed;
+            }
+
+        td {
+            vertical-align: top;
+            padding: 0 2px;
+        }
+
+            td > :last-child {
+                margin-bottom: 0;
+            }
+
+            td.disabled {
+                background-color: lightgray;
+            }
+
+        table.border > * > * > td {
+            border: 1px solid #000;
+            padding: 3px;
+        }
+
+        table.border > tbody {
+            border: 2px solid #000;
+        }
+
+        table.border > * > * > td:last-child {
+            border-right-width: 2px;
+        }
+
+        h1 {
+            font-size: 25px;
+            color: #993333;
+            margin: 0;
+        }
+
+        h2 {
+            font-size: 13px;
+            text-decoration: underline;
+            margin: 0;
+        }
+
+        ol {
+            margin: 0 0 0 15px;
+            padding: 0;
+        }
+
+        hr {
+            height: 1em;
+            background: none;
+            border: none;
+            border-bottom: 1px solid #000;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+            .d-flex > * {
+                flex: 1;
+            }
+    </style>
+</head>
+
+<body>
+    <div class="d-print-none mb">
+        <partial name="UI/Pages" />
+    </div>
+    <p class="d-print-none">
+        <button class="button" onclick="print()">Print</button>
+    </p>
+    <div style="max-width: 8in">
+        @foreach (var record in Model.Records)
+        {
+            <div style="break-inside: avoid-page">
+                @Html.DisplayFor(_ => record, templateName: $"Categories/{record.CategoryId.Dehumanize()}")
+            </div>
+        }
+    </div>
+</body>
+
+</html>

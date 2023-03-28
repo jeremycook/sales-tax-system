@@ -1,0 +1,4 @@
+﻿@if (Model is DateTimeOffset dto)
+{<span title="@Model">@dto.LocalDateTime.ToShortDateString()</span>}
+else if (Model is DateTime dt)
+{@(dt >= DateTime.MaxValue.Date ? "∞" : dt.ToShortDateString())}

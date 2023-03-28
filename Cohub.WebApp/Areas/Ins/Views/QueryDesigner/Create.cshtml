@@ -1,0 +1,35 @@
+﻿@model QueryDefinition
+@inject IStringLocalizer<QueryDefinition> L
+@{ ViewBag._Title = L["New Query Definition"]; }
+
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <details open class="w-md">
+        <summary>Properties</summary>
+        <form method="post">
+
+            <partial name="UI/ValidationSummary" />
+
+            <div class="input-group w-xs">
+                <label asp-for="Id"></label>
+                @Html.EditorFor(m => m.Id, additionalViewData: new { autofocus = true })
+                <span asp-validation-for="Id"></span>
+            </div>
+
+            <div class="input-group">
+                <label asp-for="Sql"></label>
+                @Html.EditorFor(m => m.Sql)
+                <span asp-validation-for="Sql"></span>
+            </div>
+
+            <div class="input-group">
+                <button class="button">@L["Create Query"]</button>
+                <a class="button" href="@Url.ReturnUrlOrAction("Index")">@SL["Cancel"]</a>
+            </div>
+
+        </form>
+    </details>
+
+</div>

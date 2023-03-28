@@ -1,0 +1,10 @@
+﻿@model Cohub.Data.Usr.Comment
+<div class="grid-6">
+    <div class="col-4">
+        @Html.DisplayFor(m => m.Html)
+    </div>
+    <div class="col-2">
+        @Html.DisplayFor(m => m.Author)
+        <span class="text-nowrap">@Html.DisplayFor(m => m.Posted)</span>
+    </div>
+</div>

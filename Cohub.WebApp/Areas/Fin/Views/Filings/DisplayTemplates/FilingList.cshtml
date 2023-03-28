@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Cohub.Data.Fin.Filing>
+
+<table class="card">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => m.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.TypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.ReturnId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Return)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.FilingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Created)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">@item.Id</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.TypeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.ReturnId)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Return)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.FilingDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Created)
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tbody>
+        <tr>
+            <td colspan="100" class="text-center">
+                <partial name="UI/Paging" />
+            </td>
+        </tr>
+    </tbody>
+</table>

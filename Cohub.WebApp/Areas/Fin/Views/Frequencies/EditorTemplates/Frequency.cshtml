@@ -1,0 +1,41 @@
+﻿@model Frequency
+
+<div class="input-group">
+    <label asp-for="Id"></label>
+    <input asp-for="Id" required autofocus sk-attr-readonly="!ViewContext.RouteData.Values.CreateAction()" />
+    <span asp-validation-for="Id"></span>
+    @if (Html.MetadataFor(m => m.Id).Description is string IdDescription)
+    {<span class="text-muted">@IdDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="IsActive"></label>
+    @Html.EditorFor(m => m.IsActive)
+    <span asp-validation-for="IsActive"></span>
+    @if (Html.MetadataFor(m => m.IsActive).Description is string IsActiveDescription)
+    {<span class="text-muted">@IsActiveDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="Description"></label>
+    @Html.EditorFor(m => m.Description)
+    <span asp-validation-for="Description"></span>
+    @if (Html.MetadataFor(m => m.Description).Description is string DescriptionDescription)
+    {<span class="text-muted">@DescriptionDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="PeriodIdFormat"></label>
+    @Html.EditorFor(m => m.PeriodIdFormat)
+    <span asp-validation-for="PeriodIdFormat"></span>
+    @if (Html.MetadataFor(m => m.PeriodIdFormat).Description is string PeriodIdFormatDescription)
+    {<span class="text-muted">@PeriodIdFormatDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="PeriodNameFormat"></label>
+    @Html.EditorFor(m => m.PeriodNameFormat)
+    <span asp-validation-for="PeriodNameFormat"></span>
+    @if (Html.MetadataFor(m => m.PeriodNameFormat).Description is string PeriodNameFormatDescription)
+    {<span class="text-muted">@PeriodNameFormatDescription</span>}
+</div>

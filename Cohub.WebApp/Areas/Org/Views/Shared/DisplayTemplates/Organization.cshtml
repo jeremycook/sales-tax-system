@@ -1,0 +1,4 @@
+﻿@model Organization
+@inject EntityUrlHelper url
+@if (Model != null)
+{<a href="@url.Item(Model)" title="@(Model.Dba ?? Model.OrganizationName)">@Model.Id</a>}

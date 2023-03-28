@@ -1,0 +1,28 @@
+﻿@using Cohub.Data.Fin.Batches
+@{
+    ViewBag._Title = "Refresh Returns";
+}
+
+<div class="pad">
+
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card w-sm">
+
+        <ol>
+            <li>Changes payable returns into due if their due date has passed.
+            <li>Closes returns that were due 3 or more years ago.
+            <li>Closes paid off returns that have been filed.
+            <li>If needed, posts a batch that erases dues of closed returns.
+        </ol>
+
+        <form method="post">
+            <partial name="UI/ValidationSummary" />
+            <div class="input-group">
+                <button class="button">Refresh Returns</button>
+            </div>
+        </form>
+
+    </div>
+
+</div>

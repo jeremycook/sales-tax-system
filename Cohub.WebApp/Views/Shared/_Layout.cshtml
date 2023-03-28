@@ -1,0 +1,11 @@
+﻿@{ Layout = "_BaseLayout";
+    ViewBag._LayoutClass ??= "default-layout";
+    bool chromeOn = ViewBag._ChromeOff != true; }
+
+@section Head {
+    @await RenderSectionAsync("Head", required: false)
+}
+<partial sk-if="chromeOn" name="UI/SiteNav" />
+<partial name="UI/SiteAlerts" />
+@RenderBody()
+@section Scripts {@await RenderSectionAsync("Scripts", required: false)}

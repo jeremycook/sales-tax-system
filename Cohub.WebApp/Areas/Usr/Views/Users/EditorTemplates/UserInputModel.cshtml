@@ -1,0 +1,49 @@
+﻿@model UserInputModel
+
+<div class="input-group">
+    <label asp-for="IsActive"></label>
+    @Html.EditorFor(m => m.IsActive)
+    <span asp-validation-for="IsActive"></span>
+    @if (Html.MetadataFor(m => m.IsActive).Description is string IsActiveDescription)
+    {<span class="text-muted">@IsActiveDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="Username"></label>
+    @Html.EditorFor(m => m.Username)
+    <span asp-validation-for="Username"></span>
+    @if (Html.MetadataFor(m => m.Username).Description is string UsernameDescription)
+    {<span class="text-muted">@UsernameDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="Name"></label>
+    @Html.EditorFor(m => m.Name)
+    <span asp-validation-for="Name"></span>
+    @if (Html.MetadataFor(m => m.Name).Description is string NameDescription)
+    {<span class="text-muted">@NameDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="Initials"></label>
+    @Html.EditorFor(m => m.Initials)
+    <span asp-validation-for="Initials"></span>
+    @if (Html.MetadataFor(m => m.Initials).Description is string InitialsDescription)
+    {<span class="text-muted">@InitialsDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="Email"></label>
+    @Html.EditorFor(m => m.Email)
+    <span asp-validation-for="Email"></span>
+    @if (Html.MetadataFor(m => m.Email).Description is string EmailDescription)
+    {<span class="text-muted">@EmailDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="RoleId"></label>
+    @Html.EditorFor(m => m.RoleId)
+    <span asp-validation-for="RoleId"></span>
+    @if (Html.MetadataFor(m => m.RoleId).Description is string RoleIdDescription)
+    {<span class="text-muted">@RoleIdDescription</span>}
+</div>

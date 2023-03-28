@@ -1,0 +1,3 @@
+﻿@model Batch
+@if (Model is not null)
+{<a href="@Url.Action("Details", "Batches", new { area = "Fin", id = Model.Id })">@Model</a>}

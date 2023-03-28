@@ -1,0 +1,39 @@
+﻿@model Period
+
+<div class="input-group">
+    <label asp-for="FrequencyId"></label>
+    @Html.EditorFor(m => m.FrequencyId)
+    <span asp-validation-for="FrequencyId"></span>
+</div>
+
+<div class="input-group">
+    <label asp-for="Id"></label>
+    <input asp-for="Id" required sk-attr-readonly="!ViewContext.RouteData.Values.CreateAction()" />
+    <span asp-validation-for="Id"></span>
+    @if (Html.MetadataFor(m => m.Id).Description is string IdDescription)
+    {<span class="text-muted">@IdDescription</span>}
+</div>
+
+<div class="input-group">
+    <label asp-for="Name"></label>
+    @Html.EditorFor(m => m.Name)
+    <span asp-validation-for="Name"></span>
+</div>
+
+<div class="input-group">
+    <label asp-for="StartDate"></label>
+    @Html.EditorFor(m => m.StartDate)
+    <span asp-validation-for="StartDate"></span>
+</div>
+
+<div class="input-group">
+    <label asp-for="EndDate"></label>
+    @Html.EditorFor(m => m.EndDate)
+    <span asp-validation-for="EndDate"></span>
+</div>
+
+<div class="input-group">
+    <label asp-for="DueDate"></label>
+    @Html.EditorFor(m => m.DueDate)
+    <span asp-validation-for="DueDate"></span>
+</div>

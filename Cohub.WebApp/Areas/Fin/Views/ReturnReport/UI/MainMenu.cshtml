@@ -1,0 +1,16 @@
+﻿@* Called by SiteNav *@
+@inject CohubDbContext db
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-return-report-dropdown">
+        Returns
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-return-report-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index", "Returns")">List Returns</a>
+                <a href="@Url.Action("Create", "Returns")">New Return</a>
+                <a href="@Url.Action("Index", "ReturnReport")">Print Returns</a>
+            </div>
+        </div>
+    </div>
+</div>

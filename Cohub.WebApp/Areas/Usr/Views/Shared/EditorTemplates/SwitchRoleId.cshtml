@@ -1,0 +1,10 @@
+﻿@model string
+@inject CohubDbContext db
+@{
+    var options = await db.Roles()
+        .OrderBy(o => o.IsActive)
+        .ThenBy(o => o.Id)
+        .Select(o => new SelectListItem((o.IsActive ? "Active: " : "Inactive: ") + o.Id, o.Id, Model != null && Model == o.Id))
+        .ToListAsync();
+}
+<select asp-for="@Model" asp-items="options"></select>

@@ -1,0 +1,37 @@
+﻿@model ScaffoldByTypeInput
+@inject IRazorPartialToStringRenderer renderer
+@using SiteKit.AspNetCore.Views
+@{
+    ViewBag.Title = "Scaffold By Type";
+}
+
+<h1>Scaffold By Type</h1>
+
+<form>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="SourceTypeFullNamePattern">Source Type Full Name Pattern</label>
+        <input asp-for="SourceTypeFullNamePattern" class="form-control" data-autocomplete-source="/api/types" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DestinationDirectory">Destination Directory</label>
+        <input asp-for="DestinationDirectory" class="form-control" data-autocomplete-source="/api/directories" />
+    </div>
+    <div class="form-group">
+        <input asp-for="Preview" />
+        <label asp-for="Preview">Preview</label>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+@if (Model.EntityType != null)
+{
+    <h2>Table</h2>
+    <textarea onclick="this.select()">@Html.Raw(renderer.RenderPartialToStringAsync("~/CodeTemplates/EntityType/Table.cshtml", Model.EntityType).GetAwaiter().GetResult())</textarea>
+    <h2>DL</h2>
+    <textarea onclick="this.select()">@Html.Raw(renderer.RenderPartialToStringAsync("~/CodeTemplates/EntityType/DL.cshtml", Model.EntityType).GetAwaiter().GetResult())</textarea>
+    <h2>Editor</h2>
+    <textarea onclick="this.select()">@Html.Raw(renderer.RenderPartialToStringAsync("~/CodeTemplates/EntityType/Editor.cshtml", Model.EntityType).GetAwaiter().GetResult())</textarea>
+}

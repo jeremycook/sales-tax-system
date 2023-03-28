@@ -1,0 +1,20 @@
+﻿@model Batch
+@{ ViewBag._Title = "Delete Batch"; }
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card w-sm">
+        <form method="post">
+            <partial name="UI/ValidationSummary" />
+
+            <p>
+                Delete the @Model batch?
+            </p>
+
+            <div>
+                <button class="button">Yes</button>
+                <a class="button" href="@Url.Action("Index")">No</a>
+            </div>
+        </form>
+    </div>
+</div>

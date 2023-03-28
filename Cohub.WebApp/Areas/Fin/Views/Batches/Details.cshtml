@@ -1,0 +1,154 @@
+﻿@model Batch
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Batch> LB
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Transaction> LT
+@inject Microsoft.Extensions.Localization.IStringLocalizer<TransactionDetail> LTD
+@{
+    ViewBag._Title = $"Batch {Model}";
+}
+<div class="pad">
+    <p class="flex-right">
+        <a href="@Url.Action("Index", "Batches")">Batches</a>
+    </p>
+
+    <h1>@ViewBag._Title</h1>
+
+    <dl class="flex-right gap">
+        <div>
+            <dt>
+                @Html.DisplayNameFor(m => m.Posted)
+            </dt>
+            <dd>
+                @if (Model.IsPosted)
+                {
+                    @Html.DisplayFor(m => m.Posted)
+                }
+                else
+                {
+                    @Html.DisplayFor(m => m.IsPosted)
+                }
+            </dd>
+        </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(m => m.IsBalanced)
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.IsBalanced)
+            </dd>
+        </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(m => m.DepositControlAmount)
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.DepositControlAmount)
+            </dd>
+        </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(m => m.TotalDeposited)
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.TotalDeposited)
+            </dd>
+        </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(m => m.TotalRevenueAndOverpayment)
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.TotalRevenueAndOverpayment)
+            </dd>
+        </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(m => m.Created)
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.Created)
+            </dd>
+        </div>
+        <div>
+            <dt>
+                @Html.DisplayNameFor(m => m.CreatedBy)
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.CreatedBy)
+            </dd>
+        </div>
+    </dl>
+
+    @if (Model.IsPosted || !User.CanProcess())
+    {
+        <div class="flex-right wrap-0">
+
+            <div class="w-xs">
+                <details open>
+                    <summary>
+                        Batch Properties
+                    </summary>
+
+                    <div class="input-group">
+                        @Html.DisplayForModel()
+                    </div>
+                </details>
+            </div>
+
+            @if (Model.Transactions.Any())
+            {
+                <div>
+                    <details open>
+                        <summary>
+                            Transactions
+                        </summary>
+                        <vc:batch-transactions-table batch-id="@Model.Id"></vc:batch-transactions-table>
+                    </details>
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="flex-right wrap-0">
+
+            <div class="w-xs">
+                <details open>
+                    <summary>
+                        Batch Properties
+                    </summary>
+
+                    <form method="post">
+
+                        <partial name="UI/ValidationSummary" />
+
+                        <div class="input-group">
+                            @Html.EditorForModel()
+                        </div>
+
+                        <div class="input-group">
+                            <button class="button">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </details>
+            </div>
+
+            <div>
+                <details open>
+                    <summary>
+                        Transactions
+                    </summary>
+                    @if (Model.Transactions.Any())
+                    {
+                        <div class="input-group">
+                            <vc:batch-transactions-table batch-id="@Model.Id"></vc:batch-transactions-table>
+                        </div>
+                    }
+                </details>
+            </div>
+
+        </div>
+    }
+</div>

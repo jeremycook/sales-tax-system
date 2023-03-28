@@ -1,0 +1,5 @@
+﻿@model IEnumerable<OrganizationComment>
+
+<div sk-if="@Model?.Any() == true" style="max-height: 150px; overflow-x: hidden; overflow-y: auto">
+    <partial name="DisplayTemplates/CommentList" model="Model.Select(o => o.Comment)" />
+</div>

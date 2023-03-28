@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Label>
+@{
+    Organization parent = ViewBag._Parent;
+}
+<table sk-if="Model.Any()" class="text-left">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => m.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Title)
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Details", "Labels", new { area = "Org", id = item.Id })" title="@item.Description">@item.Id</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Title)
+                </td>
+                <th>
+                    <form asp-action="RemoveLabel" asp-route-id="@parent.Id">
+                        <button class="badge-red ml-xs" name="LabelId" value="@item.Id" title="Remove @item">X</button>
+                    </form>
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>

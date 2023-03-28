@@ -1,0 +1,7 @@
+﻿@model ReturnStatusId?
+@if (Model == ReturnStatusId.Closed)
+{<span class="badge-black">@VL[Model.ToString()]</span>}
+else if (Model == ReturnStatusId.Payable)
+{<span class="badge-blue">@VL[Model.ToString()]</span>}
+else if (Model == ReturnStatusId.Due)
+{<span class="badge-red">@VL[Model.ToString()]</span>}

@@ -1,0 +1,38 @@
+﻿@inject CohubDbContext db
+@{
+    ViewBag._Title ??= SL["Renew Business License"];
+    var settings = await db.LicenseSettingsAsync();
+}
+<div class="m">
+
+    <h1>@ViewBag._Title</h1>
+
+    <details open class="w-sm">
+
+        <summary>@SL["Properties"]</summary>
+
+        <form method="post">
+
+            <partial name="UI/ValidationSummary" />
+
+            <ul>
+                <li>Change the organization's status to Active if not already Active.
+                <li>Allow online filing if not already allowed.
+                <li>Set the business license's expiration date to @settings.NextBusinessLicenseExpirationDate.ToShortDateString().
+                <li>Set the organization's most current filing schedules to @settings.NextBusinessLicenseExpirationDate.ToShortDateString().
+            </ul>
+
+            <p>
+                @SL["Renew {0}?", Model]
+            </p>
+
+            <div class="input-group">
+                <button class="button">@SL["Yes"]</button>
+                <a class="button" href="@Url.ReturnUrlOrAction("Index")">@SL["No"]</a>
+            </div>
+
+        </form>
+
+    </details>
+
+</div>

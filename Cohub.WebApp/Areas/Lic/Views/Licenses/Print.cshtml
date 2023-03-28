@@ -1,0 +1,117 @@
+﻿@model Cohub.Data.Lic.License
+@{
+    Layout = "_PrintLayout";
+    ViewBag._Title = $"{Model}";
+}
+
+<partial name="UI/PrintHeader" />
+
+<div class="print">
+
+    <div class="page page-letter">
+        <div class="page-content">
+
+            <div class="flex-right wrap-0 mb">
+                <img src="~/lib/anywhereusa/anywhereusa-logo-vertical-dark-text.png" alt="City of AnywhereUSA Logo" height="150" />
+                <div class="flex-down" style="justify-content: center">
+                    <h1 class="text-center">
+                        City of AnywhereUSA<br />
+                        Business License
+                    </h1>
+                </div>
+            </div>
+
+            <hr />
+
+            <table class="text-left border-0">
+                <tr>
+                    <th width="150">
+                        License No:
+                    </th>
+                    <td>
+                        @Model.Title
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        This is to certify that the Business shown hereon, at the location below, is hereby authorized to operate and collect sales tax for the City of AnywhereUSA.
+                        Business agrees to operate in accordance with all laws, rules and regulations.
+                        Additional licenses, permits and/or approvals may be required.
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Business Name:
+                    </th>
+                    <td>
+                        @(Model.Organization.Dba ?? Model.Organization.OrganizationName)<br />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Physical Address:
+                    </th>
+                    <td>
+                        @Html.Br(Model.Organization.PhysicalAddress.MultilineAddress)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Description:
+                    </th>
+                    <td>
+                        @Html.Br(Model.Organization.OrganizationDescription)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Issued Date:
+                    </th>
+                    <td>
+                        @Model.IssuedDate.ToShortDateString()
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Valid Through:
+                    </th>
+                    <td>
+                        @Model.ExpirationDate.ToShortDateString()
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Finance Director:
+                    </th>
+                    <td>
+                        <img src="~/lib/anywhereusa/ca-signature.png" alt="Signature" height="50" />
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p class="paint-black text-center pad-xs">
+                            <small>
+                                NOTICE: THIS LICENSE MUST BE POSTED IN A CONSPICUOUS PLACE AT ALL TIMES.
+                            </small>
+                        </p>
+                    </td>
+                </tr>
+                <tr sk-if="!string.IsNullOrWhiteSpace(Model.Organization.Restrictions)">
+                    <th>
+                        Restrictions:
+                    </th>
+                    <td>
+                        @Html.Br(Model.Organization.Restrictions)
+                    </td>
+                </tr>
+            </table>
+
+            <div style="position: absolute; top: 9.1in; left: 0.6in;">
+                @(Model.Organization.Dba ?? Model.Organization.OrganizationName)<br />
+                @Html.Br(Model.Organization.MailingAddress.MultilineAddress)
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+﻿@inject IOptions<AboutOptions> about
+@{
+    Layout = null;
+}
+<?xml version="1.0" ?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+    <ShortName>@SL["Search {0}", about.Value.Title]</ShortName>
+    <Description>@SL["Search {0}", about.Value.Title]</Description>
+    <Url type="text/html" method="get" template="@Url.Action("Search")" />
+</OpenSearchDescription>

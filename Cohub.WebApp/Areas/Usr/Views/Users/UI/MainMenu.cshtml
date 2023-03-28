@@ -1,0 +1,40 @@
+﻿@* Called by SiteNav *@
+@using Cohub.Data.Usr
+@inject CohubReadDbContext db
+@{ 
+    var user = await db.Users().FindAsync(db.Actor.UserId);
+}
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-users-dropdown">
+        Users
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-users-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Users</a>
+                <a href="@Url.Action("Create")">New User</a>
+                <hr />
+                <a href="@Url.Action("Access")">Access</a>
+                <a href="@Url.Action("SwitchRole")">Switch Role</a>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var userId))
+{
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-user-dropdown">
+            User
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-user-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id = userId })">View User</a>
+                    <a href="@Url.ActionWithReturnUrl("Edit", new { id = userId })">Edit User</a>
+                    <a href="@Url.ActionWithReturnUrl("Delete", new { id = userId })">Delete User</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<partial name="UI/SiteNavSearch" />

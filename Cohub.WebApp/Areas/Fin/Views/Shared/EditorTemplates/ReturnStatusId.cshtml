@@ -1,0 +1,7 @@
+﻿@model ReturnStatusId?
+<select asp-for="@Model">
+    <option value=""></option>
+    <option value="@ReturnStatusId.Payable">Payable</option>
+    <option value="@ReturnStatusId.Due">Due</option>
+    <option value="@ReturnStatusId.Closed">Closed</option>
+</select>

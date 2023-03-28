@@ -1,0 +1,61 @@
+﻿@model TransferReturn
+@{ Return @return = ViewBag.Return;
+    ViewBag._Title = SL["Transfer Return {0}", @return.ToString()]; }
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card w-sm">
+        <p>
+            Transfer a return to a different organization and/or period.
+        </p>
+
+        <ul>
+            <li>
+                If a return matching the destination organization, period and category exists it will be deleted if the following rules apply.
+                <ul>
+                    <li>The destination return has no filings.
+                    <li>The destination return has no revenue/overpayment balance.
+                    <li>The destination return is for the same category as the original return.
+                </ul>
+            <li>If the destination organization, period and category has a due balance it will be zeroed out.
+            <li>It will create a batch that reverses all transaction details of the return's current organization, period and category, and apply those amounts to the destination organization, period and category.
+            <li>It will update the return's organization, period and category to the destination organization, period and category.
+        </ul>
+
+        <form method="post">
+            <partial name="UI/ValidationSummary" />
+
+            <input asp-for="ReturnId" type="hidden" />
+            <span asp-validation-for="ReturnId"></span>
+
+            <div class="input-group">
+                <label asp-for="DestinationOrganizationId"></label>
+                @Html.EditorFor(m => m.DestinationOrganizationId)
+                <span asp-validation-for="DestinationOrganizationId"></span>
+                @if (Html.MetadataFor(m => m.DestinationOrganizationId).Description is string DestinationOrganizationIdDescription)
+                {<span class="text-muted">@DestinationOrganizationIdDescription</span>}
+            </div>
+
+            <div class="input-group">
+                <label asp-for="DestinationPeriodId"></label>
+                @Html.EditorFor(m => m.DestinationPeriodId)
+                <span asp-validation-for="DestinationPeriodId"></span>
+                @if (Html.MetadataFor(m => m.DestinationPeriodId).Description is string DestinationPeriodIdDescription)
+                {<span class="text-muted">@DestinationPeriodIdDescription</span>}
+            </div>
+
+            <div class="input-group">
+                <label asp-for="DestinationCategoryId"></label>
+                <input asp-for="DestinationCategoryId" readonly />
+                <span asp-validation-for="DestinationCategoryId"></span>
+                @if (Html.MetadataFor(m => m.DestinationCategoryId).Description is string DestinationCategoryIdDescription)
+                {<span class="text-muted">@DestinationCategoryIdDescription</span>}
+            </div>
+
+            <div class="input-group">
+                <button class="button">@SL["Transfer"]</button>
+                <a class="button" href="@Url.Action("Details", new { id = @return.Id })">@SL["Cancel"]</a>
+            </div>
+        </form>
+    </div>
+</div>

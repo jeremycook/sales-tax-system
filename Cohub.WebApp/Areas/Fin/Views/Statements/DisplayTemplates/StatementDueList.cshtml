@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Cohub.Data.Fin.StatementDue>
+
+<table sk-if="Model.Any()" class="card">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => m.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.PeriodId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.HasFiled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.DueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.NetDue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.PenaltyDue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.InterestDue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.TotalDue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.TotalOverpayment)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderBy(o => o.CategoryId).ThenBy(o => o.DueDate))
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.CategoryId)
+                </td>
+                <td class="text-nowrap">
+                    @Html.DisplayFor(_ => item.PeriodId)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.HasFiled)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.DueDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.NetDue)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.PenaltyDue)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.InterestDue)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.TotalDue)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.TotalOverpayment)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

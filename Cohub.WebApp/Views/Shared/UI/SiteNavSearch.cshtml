@@ -1,0 +1,4 @@
+﻿<form action="@(Model as string ?? Url.Action("Index"))" class="flex-right gap-0 border-left">
+    <input type="search" name="term" value="@Html.Value("term")" aria-label="Search">
+    <button class="button">Search</button>
+</form>

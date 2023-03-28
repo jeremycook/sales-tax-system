@@ -1,0 +1,23 @@
+﻿@model string
+@inject CohubDbContext db
+@{
+    var items = await db.Set<Period>()
+        .Where(o =>
+            (
+                o.Frequency.IsActive &&
+                o.StartDate <= DateTime.Today &&
+                o.DueDate >= DateTime.Today.AddYears(-1)
+            ) ||
+            (Model != null && o.Id == Model)
+        )
+        .ToListAsync();
+}
+<input asp-for="@Model" list="@Html.Id("datalist")" />
+<datalist id="@Html.Id("datalist")">
+    @foreach (var item in items.OrderBy(o => Math.Abs((o.DueDate - DateTime.Today).Ticks)).ThenBy(o => o.EndDate))
+    {
+        <option value="@item.Id">
+            @($"{item.Name} due {item.DueDate:d} ({item.StartDate:d} - {item.EndDate:d})")
+        </option>
+    }
+</datalist>

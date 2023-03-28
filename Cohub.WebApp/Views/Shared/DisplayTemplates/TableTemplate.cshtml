@@ -1,0 +1,35 @@
+﻿<h2>@(ViewData.ModelMetadata.ElementMetadata!.UnderlyingOrModelType.Name)List.cshtml</h2>
+<textarea>@($@"@model IEnumerable<{ViewData.ModelMetadata.ElementMetadata!.UnderlyingOrModelType.FullName!.Replace('+', '.')}>
+
+<table class=""card"">
+    <thead>
+        <tr>")@foreach (var prop in ViewData.ModelMetadata.ElementMetadata!.Properties.OrderBy(o => o.Order)){@($@"
+            <th>
+                @Html.DisplayNameFor(m => m.{prop.Name})
+            </th>")}
+@($@"
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {{
+            <tr>")@foreach (var prop in ViewData.ModelMetadata.ElementMetadata!.Properties.OrderBy(o => o.Order))
+{if(prop.Name == "Id") @($@"
+                <td>
+                    <a asp-action=""Details"" asp-route-id=""@item.Id"">@item.Id</a>
+                </td>") else @($@"
+                <td>
+                    @Html.DisplayFor(_ => item.{prop.Name})
+                </td>")}
+@($@"
+            </tr>
+        }}
+    </tbody>
+    <tbody>
+        <tr>
+            <td colspan=""100"" class=""text-center"">
+                <partial name=""UI/Paging"" />
+            </td>
+        </tr>
+    </tbody>
+</table>")</textarea>

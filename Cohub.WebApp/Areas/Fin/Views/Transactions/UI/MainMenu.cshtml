@@ -1,0 +1,62 @@
+﻿@* Called by SiteNav *@
+@inject CohubDbContext db
+<div class="dropdown">
+    <button class="dropdown-button" type="button" id="main-menu-batches-dropdown">
+        Batches
+    </button>
+    <div class="dropdown-content" aria-labelledby="main-menu-batches-dropdown">
+        <div class="card flex-right gap-0">
+            <div class="menu">
+                <a href="@Url.Action("Index")">List Batches</a>
+                <hr />
+                <a href="@Url.Action("Create", "Batches")">New Batch</a>
+                <a href="@Url.Action("Create", "Batches", new { forwardUrl = Url.Action("Index", "Deposit", new { batchId = "--batchId--" }) })">New Deposit Batch</a>
+                <a href="@Url.ActionWithReturnUrl("Import", "Sto", new { area = "Sto" })">STO Import</a>
+                <hr />
+                <a href="@Url.Action("AdjustDues", "Batches")">Adjust Dues</a>
+                <a href="@Url.Action("ClearOverpayments", "Batches")">Clear Overpayments</a>
+                <a href="@Url.Action("ReduceDuesWithOverpayments", "Batches")">Reduce Dues With Overpayments</a>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewContext.RouteData.Values.TryGetValue("id", out var idValue) && int.TryParse(idValue?.ToString(), out int transactionId))
+{
+    var transaction = await db.Set<Transaction>().FindAsync(transactionId);
+    var batch = await db.Set<Batch>().FindAsync(transaction.BatchId);
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-batch-dropdown">
+            Batch
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-batch-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", "Batches", new { id = transaction.BatchId })">View Batch</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropdown-button" type="button" id="main-menu-transaction-dropdown">
+            Transaction
+        </button>
+        <div class="dropdown-content" aria-labelledby="main-menu-transaction-dropdown">
+            <div class="card flex-right gap-0">
+                <div class="menu">
+                    <a href="@Url.Action("Details", new { id = transactionId })">View Transaction</a>
+                    @if (batch.IsPosted)
+                    {
+                        <a href="@Url.ActionWithReturnUrl("Reverse", new { id = transactionId })">Reverse Transaction</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.ActionWithReturnUrl("Delete", new { id = transactionId })">Delete Transaction</a>
+                        <hr />
+                        <a href="@Url.ActionWithReturnUrl("Create", "TransactionDetails", new { transactionId })">Add Transaction Detail</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<partial name="UI/SiteNavSearch" />

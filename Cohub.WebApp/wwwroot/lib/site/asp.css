@@ -1,0 +1,17 @@
+﻿.validation-summary-valid > ul {
+    display: none;
+}
+
+.validation-summary-errors {
+    color: #c00;
+}
+
+.field-validation-error {
+    color: #c00;
+}
+
+@media not screen {
+    .mp-results {
+        display: none;
+    }
+}

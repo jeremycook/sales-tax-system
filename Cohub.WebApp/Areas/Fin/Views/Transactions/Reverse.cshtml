@@ -1,0 +1,38 @@
+﻿@model Cohub.WebApp.Areas.Fin.Views.Transactions.ReverseTransaction
+@{ ViewBag._Title = "Reverse Transaction"; }
+<div class="pad">
+    <h1>@ViewBag._Title</h1>
+
+    <div class="card w-sm">
+        <p>
+            Reversing a transaction will create a new transaction in the selected
+            (or new) batch with the amounts negated (positive amounts
+            become negative, negative amounts become positive). The original
+            transaction will not be modified.
+        </p>
+
+        <form method="post">
+            <partial name="UI/ValidationSummary" />
+
+            <div class="input-group">
+                <label asp-for="BatchId"></label>
+                @Html.EditorFor(m => m.BatchId, additionalViewData: new { newOption = true, autofocus = true })
+                <span asp-validation-for="BatchId"></span>
+            </div>
+            <div class="input-group">
+                <label asp-for="NSFFee"></label>
+                @Html.EditorFor(m => m.NSFFee)
+                <span asp-validation-for="NSFFee"></span>
+            </div>
+            <div class="input-group">
+                <label asp-for="OpenRelatedReturns"></label>
+                @Html.EditorFor(m => m.OpenRelatedReturns)
+                <span asp-validation-for="OpenRelatedReturns"></span>
+            </div>
+
+            <div>
+                <button class="button">Reverse Transaction</button>
+            </div>
+        </form>
+    </div>
+</div>

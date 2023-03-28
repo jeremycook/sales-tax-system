@@ -1,0 +1,12 @@
+﻿@model string
+@inject CohubDbContext db
+@{
+    var selected = string.IsNullOrWhiteSpace(Model) ? null : await db.Organizations(Model).SingleOrDefaultAsync();
+}
+<input asp-for="@Model" list="@Html.Id("datalist")" />
+<datalist id="@Html.Id("datalist")" src="@Url.Action("Options", "LabelsData", new { area = "Org", groupId = "NAICS" })?term=">
+    @if (selected != null)
+    {
+        <option value="@selected.Id">@selected</option>
+    }
+</datalist>

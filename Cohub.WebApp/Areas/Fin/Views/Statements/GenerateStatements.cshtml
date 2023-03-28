@@ -1,0 +1,31 @@
+﻿@model GenerateStatements
+
+<div class="pad">
+    <h1>Generate Statements</h1>
+
+    <details open class="w-sm">
+        <summary>Options</summary>
+
+        <ul>
+            <li>The Notice Date is informational (not used to calculate dues or overpayments), and is used to set the Notice Date and Due Dates.
+            <li>A draft statement can be converted to an assessment after it is created by editing it.
+            <li>Dues are based on summing the current state of the Due bucket of transaction details for an Organization, Category and Period.
+            <li>Overpayments are based on summing the current state of the Ovr bucket of transaction details for an Organization, Category and Period.
+            <li>Although negative values should be considered invalid, both positive and negative values will be displayed, giving you the chance to clean up any negative values before publishing.
+        </ul>
+
+        <form method="post">
+
+            <partial name="UI/ValidationSummary" />
+
+            @Html.EditorForModel("Complex")
+
+            <div class="input-group">
+                <button class="button">Generate Statements</button>
+                <a class="button" href="@Url.ReturnUrlOrAction("Index")">Cancel</a>
+            </div>
+
+        </form>
+    </details>
+
+</div>

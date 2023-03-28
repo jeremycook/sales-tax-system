@@ -1,0 +1,25 @@
+﻿@model Boolean?
+@{
+    SiteKit.ComponentModel.BooleanAttribute? booleanAttribute = null;
+    if (ViewData.ModelMetadata.PropertyName is string propertyName)
+    {
+        booleanAttribute = ViewData.ModelMetadata.ContainerType?.GetProperty(propertyName)?.GetCustomAttribute<SiteKit.ComponentModel.BooleanAttribute>();
+    }
+}
+<div class="input@(ViewData.ModelMetadata.IsRequired ? " required" : "")">
+    <label>
+        <input type="radio" name="@Html.NameForModel()" value="True" checked="@(Model == true)" />
+        @VL[booleanAttribute?.TrueText ?? "Yes"]
+    </label>
+    <label>
+        <input type="radio" name="@Html.NameForModel()" value="False" checked="@(Model == false)" />
+        @VL[booleanAttribute?.FalseText ?? "No"]
+    </label>
+    @if (!ViewData.ModelMetadata.IsRequired)
+    {
+        <label>
+            <input type="radio" name="@Html.NameForModel()" value="" checked="@(Model == null)" />
+            @VL[(booleanAttribute?.NullText).IsNullOrWhiteSpace() ? "Unset" : booleanAttribute?.NullText]
+        </label>
+    }
+</div>
